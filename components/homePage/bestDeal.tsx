@@ -16,7 +16,7 @@ const bestDealsData: Product[] = [
     name: "Samsung TV",
     description: "Discover the latest Samsung TV deals at unbeatable prices.",
     price: "678,453",
-    image: "/assets/images/Products/tv1.jpg", // your local static image
+    image: "/assets/images/Products/phone.jpg", // your local static image
   },
   {
     id: "2",
