@@ -5,6 +5,7 @@ import Footer from '@/components/homePage/Footer';
 import PopularProducts from '@/components/homePage/TrendingProducts';
 import AboutJEAN from '@/components/homePage/AboutUs';
 import ContactSection from '@/components/homePage/contact';
+import BestDeals from '@/components/homePage/bestDeal';
 
 function index() {
   return (
@@ -13,6 +14,7 @@ function index() {
 	<HeroSection />
 	<PopularProducts />
 	<AboutJEAN/>
+	<BestDeals/>
 	<ContactSection/>
 	<Footer />
 	</>
