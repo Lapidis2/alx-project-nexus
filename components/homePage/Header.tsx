@@ -29,7 +29,7 @@ const Header = () => {
   const router = useRouter();
   const { t } = useTranslation();
 
-  const [user, setUser] = useState<User | null>(null); // null means guest
+  const [user, setUser] = useState<User | null>(null); 
 
   useEffect(() => {
   
@@ -100,10 +100,9 @@ const Header = () => {
         </nav>
       </div>
 
-      {/* User & Language Section */}
       <div className="hidden lg:flex items-center gap-6">
         {user ? (
-          // Logged in user dropdown
+         
           <div className="relative" ref={userDropdownRef}>
             <button
               onClick={() => setIsUserDropdownOpen(!isUserDropdownOpen)}
@@ -173,16 +172,16 @@ const Header = () => {
             )}
           </div>
         ) : (
-          // Guest buttons
+        
           <div className="flex gap-4">
             <Link
-              href="/login"
+              href="/auth/login"
               className="px-4 py-2 border border-white rounded hover:bg-white hover:text-primary transition"
             >
               {t("Login")}
             </Link>
             <Link
-              href="/register"
+              href="/auth/register"
               className="px-4 py-2 bg-white text-primary rounded hover:bg-gray-200 transition"
             >
               {t("Register")}

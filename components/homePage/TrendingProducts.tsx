@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Skeleton from "react-loading-skeleton";
 
-// Sample static data for demonstration
+
 const popularProducts = [
   {
     id: 1,
@@ -67,7 +67,7 @@ const PopularProducts: React.FC = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // simulate loading
+   
     const timer = setTimeout(() => {
       setLoading(false);
     }, 1000);
@@ -80,7 +80,7 @@ const PopularProducts: React.FC = () => {
         <div className="flex items-center">
           <div className="w-24 h-2 bg-secondary mr-4"></div>
           <h2 className="text-xl sm:text-2xl font-bold text-black">
-            POPULAR PRODUCTS
+            TRENDING PRODUCTS
           </h2>
         </div>
       </div>
