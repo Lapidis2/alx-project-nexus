@@ -16,14 +16,14 @@ const bestDealsData: Product[] = [
     name: "Samsung TV",
     description: "Discover the latest Samsung TV deals at unbeatable prices.",
     price: "678,453",
-    image: "/assets/images/Products/phone.jpg", // your local static image
+    image: "/assets/images/Products/tv.png", 
   },
   {
     id: "2",
     name: "Sony Headphones",
     description: "Experience immersive sound with the latest Sony headphones.",
     price: "123,000",
-    image: "/assets/images/Products/headphones.jpg",
+    image: "/assets/images/Products/headphone.png",
   },
 ];
 
