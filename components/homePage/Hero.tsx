@@ -39,7 +39,7 @@ const HeroSection: React.FC = () => {
           {t("deals or a seller wanting to showcase your products, our platform")}{" "}
           {t("offers you the opportunity to connect and thrive. Explore our wide")}{" "}
           {t("range of products and create an account")}{" "}
-          <Link href="/signup" className="text-secondary font-bold px-1">{t("here")}</Link>{" "}
+          <Link href="/auth/register" className="text-secondary font-bold px-1">{t("here")}</Link>{" "}
           {t("to get started")}
         </p>
         <div className="flex flex-col sm:flex-row gap-4">

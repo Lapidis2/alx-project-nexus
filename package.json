@@ -16,6 +16,7 @@
     "react-auth-kit": "^4.0.2-alpha.11",
     "react-dom": "19.1.0",
     "react-i18next": "^15.7.3",
+    "react-loader-spinner": "^6.1.6",
     "react-loading-skeleton": "^3.5.0"
   },
   "devDependencies": {

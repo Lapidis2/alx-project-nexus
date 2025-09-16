@@ -4,10 +4,10 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import axios from "axios";
-import Puff  from "react-loader-spinner";
-import AuthButton from "../Constants/AuthButton";
-import Input from "../Constants/Input";
-import EmailSent from "../Components/Modal/EmailSent";
+import {Puff}  from "react-loader-spinner";
+import AuthButton from "@/constants/AuthButton";
+import Input from "@/constants/Input";
+import EmailSent from "@/components/modal/EmailSent";
 
 const SignUpPage = () => {
   const router = useRouter();
@@ -107,8 +107,20 @@ const SignUpPage = () => {
       )}
 
       <form className="flex flex-col gap-2 items-center w-full md:w-1/2 lg:w-1/3" onSubmit={handleSubmit}>
-        <Input placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} />
-        <Input placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
+      <Input 
+  label="Name"
+  placeholder="Name" 
+  value={name} 
+  onChange={(val: string) => setName(val)} 
+/>
+
+<Input 
+  label="Email"
+  placeholder="Email" 
+  value={email} 
+  onChange={(val: string) => setEmail(val)} 
+/>
+
         <Input
           placeholder="Password"
           type="password"
