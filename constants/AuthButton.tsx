@@ -2,10 +2,12 @@ import React, { FC, ReactNode } from "react";
 import {ThreeDots} from "react-loader-spinner";
 
 interface AuthButtonProps {
-  type: "button" | "submit" | "reset";
-  isLoading?: boolean;
-  onClick?: () => void;
-  children: ReactNode; 
+	type: "button" | "submit" | "reset";
+	isLoading?: boolean;
+	disabled?: boolean; 
+	onClick?: () => void;
+	children: ReactNode; 
+	className?:string
 }
 
 const AuthButton: FC<AuthButtonProps> = ({ type, isLoading = false, onClick, children }) => {

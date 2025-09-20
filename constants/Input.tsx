@@ -4,11 +4,13 @@ import React, { useState, useCallback } from "react";
 
 interface InputProps {
   label?: string;
+  className?:string;
   type?: string;
   value?: string;
   placeholder?: string;
   error?: boolean;
   onChange: (value: string) => void;
+  
 }
 
 const Input: React.FC<InputProps> = ({ label, type, value, placeholder, onChange, error }) => {

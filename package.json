@@ -9,15 +9,19 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^7.0.1",
+    "@fortawesome/free-solid-svg-icons": "^7.0.1",
+    "@fortawesome/react-fontawesome": "^3.0.0",
     "axios": "^1.12.2",
     "i18next": "^25.5.2",
     "next": "15.5.3",
     "react": "19.1.0",
-    "react-auth-kit": "^4.0.2-alpha.11",
+    "react-auth-kit": "^2.0.0",
     "react-dom": "19.1.0",
     "react-i18next": "^15.7.3",
     "react-loader-spinner": "^6.1.6",
-    "react-loading-skeleton": "^3.5.0"
+    "react-loading-skeleton": "^3.5.0",
+    "react-toastify": "^11.0.5"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
