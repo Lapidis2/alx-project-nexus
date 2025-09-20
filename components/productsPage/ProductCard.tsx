@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 interface Product {
-  productId: string;
+  id: string;
   name: string;
   price: number;
   image: string;
@@ -19,7 +19,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const router = useRouter();
 
   const handleCardClick = () => {
-    router.push(`/products/${product.productId}`);
+    router.push(`/products/${product.id}`);
   };
 
   return (

@@ -10,7 +10,7 @@ import LoadingFrame from "@/constants/LoadingFrame";
 import { useTranslation } from "react-i18next";
 
 interface Product {
-  productId: string;
+  id: string;
   name: string;
   price: number;
   image: string;
@@ -37,9 +37,9 @@ const ProductsPage = () => {
 		const res = await fetch("/api/products");
 		const data = await res.json();
   
-		// Map API `id` → `productId` for consistency
+		
 		const mappedData = data.map((p: any) => ({
-		  productId: p.id,
+		  id: p.id,
 		  name: p.name,
 		  price: p.price,
 		  image: p.image || "/placeholder.jpg",
@@ -152,7 +152,7 @@ const ProductsPage = () => {
               </div>
             ) : (
               currentProducts.map((product) => (
-                <ProductCard key={product.productId} product={product} />
+                <ProductCard key={product.id} product={product} />
               ))
             )}
           </section>
