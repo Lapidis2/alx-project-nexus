@@ -20,7 +20,7 @@ interface Product {
 }
 
 const ProductPage: React.FC = () => {
-  const router = useRouter();
+  const router = useRouter()
   const { id } = router.query;
   const productId = Array.isArray(id) ? id[0] : id;
 
@@ -37,7 +37,7 @@ const ProductPage: React.FC = () => {
         if (!res.ok) throw new Error("Product not found");
         const data = await res.json();
 
-        // Parse image array if stored as string
+    
         if (data.image && typeof data.image === "string") {
           data.image = JSON.parse(data.image);
         }
@@ -63,14 +63,14 @@ const ProductPage: React.FC = () => {
   return (
     <div>
       <Header />
-      <main className="flex flex-col justify-center w-full">
-        {/* Single product */}
+      <main className="flex flex-col justify-center  mt-80">
+      
         <Sproduct product={product} />
 
-        {/* Reviews */}
+ 
         <Reviews productId={productId!} />
 
-        {/* Similar products */}
+     
         <SimilarProduct productId={productId!} />
       </main>
       <Footer />

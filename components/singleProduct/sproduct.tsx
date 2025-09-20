@@ -66,30 +66,40 @@ const Sproduct: React.FC<Props> = ({
     <div className="flex flex-col md:flex-row gap-8 p-6 md:p-10">
       {/* Images */}
       <div className="flex flex-col gap-4 w-full md:w-1/2">
-        <div className="relative w-full h-[300px] md:h-[400px] border rounded-md overflow-hidden">
-          <Image
-            src={selectedImage}
-            alt={product.name}
-            fill
-            className="object-cover"
-          />
-        </div>
+  {/* Main Image */}
+  <div className="relative w-full h-[300px] md:h-[400px] border rounded-md overflow-hidden">
+    <Image
+      src={selectedImage}
+      alt={product.name}
+      fill
+      sizes="(max-width: 768px) 100vw, 50vw"
+      className="object-container"
+      priority
+    />
+  </div>
 
-        {/* Thumbnail images */}
-        <div className="flex gap-2 mt-2">
-          {product.image.map((img, idx) => (
-            <div
-              key={idx}
-              onClick={() => handleImageClick(img)}
-              className={`w-20 h-20 relative cursor-pointer border rounded-md ${
-                selectedImage === img ? "border-primary" : "border-gray-300"
-              }`}
-            >
-              <Image src={img} alt={`Thumbnail ${idx}`} fill className="object-cover" />
-            </div>
-          ))}
-        </div>
+  {/* Thumbnail Images */}
+  <div className="flex gap-2 mt-2">
+    {product.image.map((img, idx) => (
+      <div
+        key={idx}
+        onClick={() => handleImageClick(img)}
+        className={`w-20 h-20 relative cursor-pointer border rounded-md ${
+          selectedImage === img ? "border-primary" : "border-gray-300"
+        }`}
+      >
+        <Image
+          src={img}
+          alt={`Thumbnail ${idx}`}
+          fill
+          className="object-cover"
+          sizes="80px"
+        />
       </div>
+    ))}
+  </div>
+</div>
+
 
       {/* Product Info */}
       <div className="flex flex-col gap-4 w-full md:w-1/2">
