@@ -111,7 +111,7 @@ const Signin: NextPage = () => {
 
         <p className="text-center text-gray-500 mt-6">
           {t("Don't have an account?")}{" "}
-          <a href="/signup" className="text-blue-500 hover:underline">
+          <a href="/auth/register" className="text-blue-500 hover:underline">
             {t("Sign Up")}
           </a>
         </p>
