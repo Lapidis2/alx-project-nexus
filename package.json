@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-	 "vercel-build": "npm install --legacy-peer-deps && next build"
+    "vercel-build": "npm install --legacy-peer-deps && next build"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^7.0.1",
@@ -16,9 +16,9 @@
     "axios": "^1.12.2",
     "i18next": "^25.5.2",
     "next": "15.5.3",
-    "react": "19.1.0",
+    "react": "^18.3.1",
     "react-auth-kit": "^2.0.0",
-    "react-dom": "19.1.0",
+    "react-dom": "^18.3.1",
     "react-i18next": "^15.7.3",
     "react-loader-spinner": "^6.1.6",
     "react-loading-skeleton": "^3.5.0",
