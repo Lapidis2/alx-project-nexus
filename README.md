@@ -50,9 +50,55 @@ skills in modern frontend development. The program covers essential technologies
 - Use **version control** (Git) effectively — feature branching, atomic commits.
 - Adopt **CI/CD workflows** to automate builds and deployments.
 - Document everything — from components to API endpoints.
-
-
-
+  
 ### Final Thoughts
 
 This program not only helped solidify my frontend development skills but also instilled a mindset of building for scale and maintainability. I now feel confident in approaching real-world frontend projects with a structured and efficient workflow.
+
+
+# My chosen project nexus is e-commerce website
+
+# My Next.js Tailwind Project
+
+A modern web application built with **Next.js** and **Tailwind CSS**, providing a fast, responsive, and scalable solution.
+
+---
+
+##  Features
+-  Built with **Next.js 14**
+-  Styled using **Tailwind CSS**
+-  Fully responsive & mobile-friendly
+-  Easy to maintain and extend
+-  SEO-friendly and optimized
+
+---
+
+##  Tech Stack
+- [Next.js](https://nextjs.org/) – React framework  
+- [Tailwind CSS](https://tailwindcss.com/) – Utility-first CSS framework  
+- [TypeScript](https://www.typescriptlang.org/) (if used)  
+
+---
+
+##  Installation
+
+### 1. Clone the repository
+```bash
+git clone https://github.com/yourusername/yourproject.git
+cd yourproject
+### 2.Install dependencies
+npm install
+# or
+yarn install
+### 3.run development server
+npm run dev
+# or
+yarn dev
+### 3. Build production
+npm run build
+npm start
+
+
+
+
+
