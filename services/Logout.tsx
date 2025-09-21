@@ -1,4 +1,4 @@
-import useSignOut from 'react-auth-kit/hooks/useSignOut';
+import {useSignOut} from 'react-auth-kit';
 
 const Logout = () => {
   const signOut = useSignOut();
