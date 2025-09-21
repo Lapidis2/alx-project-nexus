@@ -21,7 +21,7 @@ const Search: React.FC<SearchProps> = ({ onSearchChange }) => {
   };
 
   return (
-    <div className="py-1 rounded-xl px-4 bg-gray-100 flex flex-row gap-2 items-center md:p-2">
+    <section className="py-1 rounded-xl px-4 bg-gray-100 flex flex-row gap-2 items-center md:p-2">
    
       <svg
         width="20"
@@ -56,7 +56,7 @@ const Search: React.FC<SearchProps> = ({ onSearchChange }) => {
         className="p-1 bg-transparent outline-none md:p-2 w-full"
         onChange={handleChange}
       />
-    </div>
+    </section>
   );
 };
 

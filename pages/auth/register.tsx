@@ -14,7 +14,7 @@ const SignUpPage = () => {
 			  <Link href="/" aria-label="Homepage">
           <Image src={Logo} alt="Logo" width={120} height={48} />
         </Link>
-      <section className="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-md w-full max-w-md">
+      <section className="bg-white p-8 rounded-xl shadow-md w-full max-w-md">
 
         <h1 className="text-2xl font-bold text-center mb-2 text-gray-900 dark:text-white">
           Create Account
@@ -23,16 +23,16 @@ const SignUpPage = () => {
           Enter your credentials
         </p>
 
-        {/* Sign Up Form */}
+       
         <SignUpForm onSuccess={() => setShowVerifyModal(true)} />
 
-        {/* Social Logins */}
+     
         <div className="mt-6">
           <SocialLogin />
         </div>
       </section>
 
-      {/* Verify Email Modal */}
+
       {showVerifyModal && (
         <VerifyEmailModal onClose={() => setShowVerifyModal(false)} />
       )}

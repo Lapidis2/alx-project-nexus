@@ -45,7 +45,7 @@ const SignUpForm = ({ onSuccess }: SignUpFormProps) => {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      {/* Name */}
+    
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-1">
           Enter your name
@@ -61,7 +61,7 @@ const SignUpForm = ({ onSuccess }: SignUpFormProps) => {
         />
       </div>
 
-      {/* Email */}
+
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-1">
           Enter your email
@@ -77,7 +77,7 @@ const SignUpForm = ({ onSuccess }: SignUpFormProps) => {
         />
       </div>
 
-      {/* Password */}
+    
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-1">
           Enter your Password
