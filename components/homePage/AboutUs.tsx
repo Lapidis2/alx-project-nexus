@@ -1,5 +1,5 @@
 import React from "react";
-import Image from "next/image";
+
 import { useTranslation } from "react-i18next";
 const about = "/assets/images/products/about.png";
 const AboutJEAN: React.FC = () => {
@@ -19,13 +19,13 @@ const AboutJEAN: React.FC = () => {
       <article className="flex flex-col md:flex-row gap-8 md:gap-20">
       
         <figure className="flex-none w-full md:w-1/3 mb-8">
-          <Image
+          <img
             src={about}
             alt={t("About JEAN")}
             width={600}
             height={400}
             className="w-full h-60 sm:h-80 md:h-full rounded-lg object-cover"
-            priority
+         
           />
         </figure>
 
