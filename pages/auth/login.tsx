@@ -53,7 +53,7 @@ const Signin: NextPage = () => {
 
       switch (data.user.role) {
         case "buyer":
-          router.push("/products");
+          router.push("/products")
           break;
         case "vendor":
           router.push("/vendor");

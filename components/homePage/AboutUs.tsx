@@ -18,7 +18,7 @@ const AboutJEAN: React.FC = () => {
       </header>
 
       <article className="flex flex-col md:flex-row gap-8 md:gap-20">
-        {/* Image Section */}
+      
         <figure className="flex-none w-full md:w-1/3 mb-8">
           <Image
             src={about}
@@ -30,7 +30,6 @@ const AboutJEAN: React.FC = () => {
           />
         </figure>
 
-        {/* Text Content */}
         <div className="flex-1">
           <p className="text-gray-700 text-base sm:text-lg md:text-xl">
             {t(

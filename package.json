@@ -6,8 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint",
-    "vercel-build": "npm install --legacy-peer-deps && next build"
+    "lint": "eslint"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^7.0.1",
