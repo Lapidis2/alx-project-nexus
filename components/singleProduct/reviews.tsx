@@ -45,7 +45,7 @@ const Reviews: React.FC<ReviewsProps> = ({ productId }) => {
     <section className="p-5">
       <h2 className="text-2xl font-bold mb-4">Reviews ({reviews.length})</h2>
       <div className="flex flex-col gap-4">
-        {reviews.slice(0, visible).map((review, idx) => (
+        {reviews.slice(0, visible).map((review) => (
           <div key={review.id} className="border p-3 rounded">
             <div className="flex justify-between items-center mb-2">
               <span className="font-bold text-orange-500">{review.name}</span>

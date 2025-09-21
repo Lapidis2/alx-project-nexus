@@ -23,7 +23,7 @@ const popularProducts: Product[] = [
 ];
 
 const PopularProducts: React.FC = () => {
-  const [currentProducts, setCurrentProducts] = useState<Product[]>(popularProducts);
+  const [currentProducts] = useState<Product[]>(popularProducts);
   const [loading, setLoading] = useState(true);
   const [likedProducts, setLikedProducts] = useState<number[]>([]); 
 

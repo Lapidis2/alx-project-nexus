@@ -17,9 +17,17 @@ interface Product {
   category: string;
 }
 
-const ProductsPage = () => {
-  const { t } = useTranslation();
 
+interface ApiProduct {
+  id: string;
+  name: string;
+  price: number;
+  image?: string;
+  category?: string;
+}
+
+const ProductsPage: React.FC = () => {
+  const { t } = useTranslation();
 
   const [products, setProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -29,36 +37,38 @@ const ProductsPage = () => {
 
   const productsPerPage = 9;
 
- 
+
   useEffect(() => {
-	const fetchProducts = async () => {
-	  try {
-		setIsLoading(true);
-		const res = await fetch("/api/products");
-		const data = await res.json();
-  
-		
-		const mappedData = data.map((p: any) => ({
-		  id: p.id,
-		  name: p.name,
-		  price: p.price,
-		  image: p.image || "/placeholder.jpg",
-		  category: p.category || "Uncategorized",
-		}));
-  
-		setProducts(mappedData);
-	  } catch (error) {
-		console.error("Failed to fetch products:", error);
-	  } finally {
-		setIsLoading(false);
-	  }
-	};
-  
-	fetchProducts();
-  }, []);
-  
+    const fetchProducts = async () => {
+      try {
+        setIsLoading(true);
+        const res = await fetch("/api/products");
+        if (!res.ok) throw new Error(t("Failed to fetch products"));
 
+        const data: ApiProduct[] = await res.json();
 
+        const mappedData: Product[] = data.map((p) => ({
+          id: p.id,
+          name: p.name,
+          price: p.price,
+          image: p.image || "/placeholder.jpg",
+          category: p.category || t("Uncategorized"),
+        }));
+
+        setProducts(mappedData);
+      } catch (err: unknown) {
+        if (err instanceof Error) {
+          console.error("Error fetching products:", err.message);
+        }
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, [t]);
+
+ 
   const filteredProducts = products.filter((product) => {
     const matchCategory = activeCategory ? product.category === activeCategory : true;
     const matchSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase());
@@ -90,7 +100,7 @@ const ProductsPage = () => {
       <Header />
 
       <main className="mt-40 flex flex-col gap-8 px-6 md:px-10 mb-20">
-      
+       
         <header className="flex flex-col-reverse gap-4 justify-between items-center md:flex-row">
           <nav aria-label="breadcrumb">
             <ol className="flex flex-row gap-3 items-center font-outfit text-sm md:text-base">
@@ -114,6 +124,7 @@ const ProductsPage = () => {
           <Search onSearchChange={setSearchTerm} />
         </header>
 
+      
         <section className="flex flex-col gap-6 md:flex-row">
         
           <aside className="w-full md:w-1/4" aria-label="Product Categories">
@@ -138,12 +149,10 @@ const ProductsPage = () => {
             </ul>
           </aside>
 
-        
-          <section className="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-6 w-full ">
+          {/* Product Grid */}
+          <section className="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-6 w-full">
             {isLoading ? (
-              Array.from({ length: productsPerPage }).map((_, index) => (
-                <LoadingFrame key={index} />
-              ))
+              Array.from({ length: productsPerPage }).map((_, index) => <LoadingFrame key={index} />)
             ) : filteredProducts.length === 0 ? (
               <div className="col-span-full flex justify-center items-center">
                 <h2 className="text-lg md:text-xl lg:text-2xl font-poppins text-secondary">
@@ -151,14 +160,12 @@ const ProductsPage = () => {
                 </h2>
               </div>
             ) : (
-              currentProducts.map((product) => (
-                <ProductCard key={product.id} product={product} />
-              ))
+              currentProducts.map((product) => <ProductCard key={product.id} product={product} />)
             )}
           </section>
         </section>
 
-      
+       
         <nav aria-label="Product Pagination" className="mt-6">
           <Pagination
             totalProducts={filteredProducts.length}

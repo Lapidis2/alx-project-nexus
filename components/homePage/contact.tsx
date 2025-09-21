@@ -14,16 +14,16 @@ const ContactSection: React.FC = () => {
       return;
     }
 
-    // Simulate sending message
+
     setStatus("loading");
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1500)); // simulate API call
+      await new Promise((resolve) => setTimeout(resolve, 1500)); 
       setStatus("succeeded");
       setName("");
       setEmail("");
       setMessage("");
       setError(null);
-    } catch (err: any) {
+    } catch  {
       setStatus("failed");
       setError("Failed to send message. Try again later.");
     }
@@ -34,7 +34,7 @@ const ContactSection: React.FC = () => {
       id="contact-us"
       className="bg-gray-100 py-16 px-6 md:px-24 font-outfit flex flex-col md:flex-row gap-12 md:gap-24 items-start md:items-center"
     >
-      {/* Contact Info */}
+    
       <aside className="w-full md:w-1/2 flex flex-col gap-8">
         <header>
           <h2 className="text-primary text-3xl md:text-4xl font-bold mb-2">
@@ -68,7 +68,6 @@ const ContactSection: React.FC = () => {
         </div>
       </aside>
 
-      {/* Contact Form */}
       <article className="w-full md:w-1/2 flex flex-col gap-6">
         <header>
           <h3 className="text-secondary text-2xl md:text-4xl font-bold">Send Us a Message</h3>
