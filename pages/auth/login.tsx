@@ -1,5 +1,7 @@
-"use client"
+"use client";
+
 import { NextPage } from "next";
+import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
@@ -32,7 +34,7 @@ const Signin: NextPage = () => {
         body: JSON.stringify({ email, password }),
       });
 
-      const data = await res.json();
+      const data: { user: { isVerified: boolean; role: string }; token: string; message?: string } = await res.json();
 
       if (!res.ok) {
         setError(data.message || t("Something went wrong"));
@@ -46,11 +48,9 @@ const Signin: NextPage = () => {
         return;
       }
 
-      // Store token and user info in localStorage
       localStorage.setItem("token", data.token);
       localStorage.setItem("user", JSON.stringify(data.user));
 
-      // Navigate based on role
       switch (data.user.role) {
         case "buyer":
           router.push("/products");
@@ -64,7 +64,7 @@ const Signin: NextPage = () => {
         default:
           router.push("/");
       }
-    } catch (err: any) {
+    } catch (error: unknown) {
       setError(t("Something went wrong"));
     } finally {
       setLoading(false);
@@ -72,7 +72,9 @@ const Signin: NextPage = () => {
   };
 
   const loginWithGoogle = () => {
-    window.location.href = `${process.env.NEXT_PUBLIC_GOOGLE_AUTH_URL}`;
+    if (process.env.NEXT_PUBLIC_GOOGLE_AUTH_URL) {
+      window.location.href = process.env.NEXT_PUBLIC_GOOGLE_AUTH_URL;
+    }
   };
 
   return (
@@ -87,13 +89,13 @@ const Signin: NextPage = () => {
             type="email"
             placeholder={t("Email")}
             value={email}
-            onChange={(value:string) => setEmail(value)}
+            onChange={(value: string) => setEmail(value)}
           />
           <Input
             type="password"
             placeholder={t("Password")}
             value={password}
-            onChange={(value:string) => setPassword(value)}
+            onChange={(value: string) => setPassword(value)}
           />
           <AuthButton type="submit" disabled={loading}>
             {loading ? t("Loading...") : t("Sign In")}
@@ -111,9 +113,9 @@ const Signin: NextPage = () => {
 
         <p className="text-center text-gray-500 mt-6">
           {t("Don't have an account?")}{" "}
-          <a href="/auth/register" className="text-blue-500 hover:underline">
+          <Link href="/auth/register" className="text-blue-500 hover:underline">
             {t("Sign Up")}
-          </a>
+          </Link>
         </p>
       </div>
     </div>

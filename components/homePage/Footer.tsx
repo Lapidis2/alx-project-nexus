@@ -2,17 +2,17 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
-import Logo from "@/public/assets/images/logo1.png"; // Path to your logo
+import Logo from "@/public/assets/images/logo1.png"; 
 
 const Footer: React.FC = () => {
   const { t } = useTranslation();
 
   return (
     <footer className="bg-primary font-outfit text-base md:text-xl text-white pt-8">
-      {/* Top Section */}
+      
       <section className="container mx-auto px-4 md:px-8 border-b border-border pb-4 grid grid-cols-1 md:grid-cols-3 gap-8">
         
-        {/* Logo & Description */}
+       
         <div className="footer-description mr-0 md:mr-32">
           <div className="mb-6">
             <Image src={Logo} alt="JEAN Logo" width={150} height={48} priority />
@@ -24,7 +24,6 @@ const Footer: React.FC = () => {
           </p>
         </div>
 
-        {/* Navigation Links */}
         <nav className="footer-links max-w-full md:max-w-md" aria-label="Footer Navigation">
           <h2 className="mb-4 md:mb-10 font-bold">{t("Links")}</h2>
           <ul className="grid grid-cols-2 gap-2">
@@ -70,7 +69,7 @@ const Footer: React.FC = () => {
 
       
       <section className="bg-primary text-center py-4 md:py-8">
-        <p>&copy; 2024 Jean, {t("all rights reserved")}</p>
+        <p>&copy; 2025 Jean, {t("all rights reserved")}</p>
       </section>
     </footer>
   );

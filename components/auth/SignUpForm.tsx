@@ -1,23 +1,37 @@
+"use client";
+
 import { useState } from "react";
 
 interface SignUpFormProps {
   onSuccess: () => void;
 }
 
+interface FormData {
+  name: string;
+  email: string;
+  password: string;
+}
+
+interface ApiResponse {
+  message?: string;
+  success?: boolean;
+}
+
 const SignUpForm = ({ onSuccess }: SignUpFormProps) => {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     name: "",
     email: "",
     password: "",
   });
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string>("");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError("");
     setLoading(true);
@@ -29,15 +43,19 @@ const SignUpForm = ({ onSuccess }: SignUpFormProps) => {
         body: JSON.stringify(formData),
       });
 
-      const data = await res.json();
+      const data: ApiResponse = await res.json();
 
       if (!res.ok) {
         throw new Error(data?.message || "Registration failed");
       }
 
       onSuccess();
-    } catch (err: any) {
-      setError(err.message || "Registration failed");
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError("Registration failed");
+      }
     } finally {
       setLoading(false);
     }
@@ -45,7 +63,6 @@ const SignUpForm = ({ onSuccess }: SignUpFormProps) => {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-    
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-1">
           Enter your name
@@ -60,7 +77,6 @@ const SignUpForm = ({ onSuccess }: SignUpFormProps) => {
           required
         />
       </div>
-
 
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -77,15 +93,14 @@ const SignUpForm = ({ onSuccess }: SignUpFormProps) => {
         />
       </div>
 
-    
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-1">
-          Enter your Password
+          Enter your password
         </label>
         <input
           type="password"
           name="password"
-          placeholder="Enter your Password"
+          placeholder="Enter your password"
           value={formData.password}
           onChange={handleChange}
           className="w-full px-4 py-2 border rounded-lg focus:ring focus:ring-blue-500"

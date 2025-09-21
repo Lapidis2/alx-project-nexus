@@ -1,4 +1,5 @@
 "use client";
+
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 
@@ -22,20 +23,23 @@ const VerifyEmailModal = ({ onClose }: Props) => {
       }
 
       try {
-        // 🔹 Replace this with your backend API endpoint
         const res = await fetch(`/api/auth/verify-email?token=${token}`, {
           method: "GET",
         });
 
         if (!res.ok) {
-          const errData = await res.json().catch(() => null);
+          const errData: { message?: string } | null = await res.json().catch(() => null);
           throw new Error(errData?.message || "Verification failed");
         }
 
         setStatus("success");
-      } catch (err: any) {
+      } catch (error: unknown) {
         setStatus("error");
-        setErrorMessage(err.message || "Invalid token.");
+        if (error instanceof Error) {
+          setErrorMessage(error.message);
+        } else {
+          setErrorMessage("Invalid token.");
+        }
       }
     };
 
