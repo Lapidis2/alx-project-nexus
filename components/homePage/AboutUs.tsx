@@ -1,8 +1,7 @@
 import React from "react";
 import Image from "next/image";
-import about from"@/public/assets/images/products/about.png"
 import { useTranslation } from "react-i18next";
-
+const about = "/assets/images/products/about.png";
 const AboutJEAN: React.FC = () => {
   const { t } = useTranslation();
 
