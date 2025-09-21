@@ -6,9 +6,9 @@ import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 
 const heroImages: string[] = [
-  "/assets/images/Products/watch1.jpg",
-  "/assets/images/Products/shoes.png",
-  "/assets/images/Products/watch4.png",
+  "/assets/images/products/watch1.jpg",
+  "/assets/images/products/shoes.png",
+  "/assets/images/products/watch4.png",
 ];
 
 const HeroSection: React.FC = () => {

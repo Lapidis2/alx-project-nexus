@@ -13,12 +13,12 @@ interface Product {
 }
 
 const popularProducts: Product[] = [
-  { id: 1, name: "Classic Watch", category: "Accessories", price: 25000, image: "/assets/images/Products/watch1.jpg" },
-  { id: 2, name: "Running Shoes", category: "Footwear", price: 45000, image: "/assets/images/Products/shoes.jpg" },
-  { id: 3, name: "Headphones", category: "Electronics", price: 35000, image: "/assets/images/Products/headphone.jpg" },
-  { id: 4, name: "Running Shoes", category: "Footwear", price: 45000, image: "/assets/images/Products/shoes.jpg" },
-  { id: 5, name: "Headphones", category: "Electronics", price: 35000, image: "/assets/images/Products/headphone.jpg" },
-  { id: 6, name: "Headphones", category: "Electronics", price: 35000, image: "/assets/images/Products/headphone.jpg" },
+  { id: 1, name: "Classic Watch", category: "Accessories", price: 25000, image: "/assets/images/products/watch1.jpg" },
+  { id: 2, name: "Running Shoes", category: "Footwear", price: 45000, image: "/assets/images/products/shoes.jpg" },
+  { id: 3, name: "Headphones", category: "Electronics", price: 35000, image: "/assets/images/products/headphone.jpg" },
+  { id: 4, name: "Running Shoes", category: "Footwear", price: 45000, image: "/assets/images/products/shoes.jpg" },
+  { id: 5, name: "Headphones", category: "Electronics", price: 35000, image: "/assets/images/products/headphone.jpg" },
+  { id: 6, name: "Headphones", category: "Electronics", price: 35000, image: "/assets/images/products/headphone.jpg" },
  
 ];
 
