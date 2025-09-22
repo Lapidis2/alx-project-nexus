@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
-import i18n from "@/lib/i18n";
+
 
 import Logo from "@/public/assets/images/logo1.png";
 import Bag from "@/public/assets/images/Bag.svg";
@@ -72,9 +72,9 @@ const Header = () => {
         <nav className="hidden lg:block">
           <ul className="flex gap-8">
             <li><Link href="/">{t("Home")}</Link></li>
-            <li><Link href="/#about-us">{t("About Us")}</Link></li>
+            <li><Link href="">{t("About Us")}</Link></li>
             <li><Link href="/products">{t("Products")}</Link></li>
-            <li><Link href="/#contact-us">{t("Contact")}</Link></li>
+            <li><Link href="">{t("Contact")}</Link></li>
           </ul>
         </nav>
       </div>

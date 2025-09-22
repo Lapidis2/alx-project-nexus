@@ -1,95 +1,135 @@
-import React from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 
-const Payment = () => {
+interface PaymentProps {
+  className?: string;
+}
+
+const Payment: React.FC<PaymentProps> = ({ className }) => {
   const { t } = useTranslation();
 
+  const [firstName, setFirstName] = useState("");
+  const [secondName, setSecondName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [street, setStreet] = useState("");
+  const [country, setCountry] = useState("");
+  const [city, setCity] = useState("");
+  const [deliveryMethod, setDeliveryMethod] = useState("");
+  const [paymentMethod, setPaymentMethod] = useState("Stripe");
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const formData = { firstName, secondName, email, phone, street, country, city, deliveryMethod, paymentMethod };
+    console.log(formData);
+  };
+
   return (
-    <section className="payment-details w-[550px] rounded-[5px] hover:shadow-md hover:shadow-black">
+    <section className={`rounded-md hover:shadow-md hover:shadow-black p-4 bg-white ${className}`}>
       <header className="bg-blue-900 text-white text-center p-3 rounded-t-[5px]">
         <h2>{t("PAYMENT DETAILS")}</h2>
       </header>
 
-      <div className="payment-content px-[30px] py-[50px]">
-        <form className="p-[5px] w-[90%] m-auto">
-          <div className="Mots w-full flex justify-between mb-5">
-            <label className="sr-only">{t("First Name")}</label>
-            <input
-              type="text"
-              className="name first w-[49%] h-[35px] rounded-[7px] bg-gray-200 pl-[15px]"
-              placeholder={t("First Name")}
-            />
-            <label className="sr-only">{t("Second Name")}</label>
-            <input
-              type="text"
-              className="name second w-[49%] h-[35px] rounded-[7px] bg-gray-200 pl-[15px]"
-              placeholder={t("Second Name")}
-            />
-          </div>
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4 mt-4">
+        {/* Names */}
+        <div className="flex flex-col sm:flex-row gap-4">
+          <input
+            type="text"
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+            placeholder={t("First Name")}
+            className="flex-1 h-10 rounded bg-gray-200 px-3"
+          />
+          <input
+            type="text"
+            value={secondName}
+            onChange={(e) => setSecondName(e.target.value)}
+            placeholder={t("Second Name")}
+            className="flex-1 h-10 rounded bg-gray-200 px-3"
+          />
+        </div>
 
-          <div className="email w-full mb-5">
-            <label className="sr-only">{t("Email Address")}</label>
-            <input
-              className="w-full h-[35px] rounded-[7px] bg-gray-300 pl-[15px]"
-              type="email"
-              placeholder={t("Email Address")}
-            />
-          </div>
+        {/* Email */}
+        <input
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder={t("Email Address")}
+          className="w-full h-10 rounded bg-gray-200 px-3"
+        />
 
-          <div className="contacts w-full flex justify-between mb-5">
-            <label className="sr-only">{t("Phone Number")}</label>
-            <input
-              type="tel"
-              className="contact number w-[49%] h-[35px] rounded-[7px] bg-gray-200 pl-[15px]"
-              placeholder={t("Phone Number")}
-            />
-            <label className="sr-only">{t("Street")}</label>
-            <input
-              type="text"
-              className="contact street w-[49%] h-[35px] rounded-[7px] bg-gray-200 pl-[15px]"
-              placeholder={t("Street")}
-            />
-          </div>
+        {/* Phone & Street */}
+        <div className="flex flex-col sm:flex-row gap-4">
+          <input
+            type="tel"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+            placeholder={t("Phone Number")}
+            className="flex-1 h-10 rounded bg-gray-200 px-3"
+          />
+          <input
+            type="text"
+            value={street}
+            onChange={(e) => setStreet(e.target.value)}
+            placeholder={t("Street")}
+            className="flex-1 h-10 rounded bg-gray-200 px-3"
+          />
+        </div>
 
-          <div className="location w-full flex justify-between mb-5">
-            <label className="sr-only">{t("Country")}</label>
-            <select
-              className="w-[49%] h-[35px] rounded-[7px] bg-gray-300 pl-[15px]"
-              name="Country"
-              title={t("Country")}
-            ></select>
-            <label className="sr-only">{t("City")}</label>
-            <select
-              className="w-[49%] h-[35px] rounded-[7px] bg-gray-300 pl-[15px]"
-              name="City"
-              title={t("City")}
-            ></select>
-          </div>
-
-          <div className="delivery w-full mb-5">
-            <label className="sr-only">{t("Delivery Method")}</label>
-            <select
-              className="w-full h-[35px] rounded-[7px] bg-gray-300 pl-[15px]"
-              name="delivery"
-              title={t("Delivery Method")}
-            ></select>
-          </div>
-
-          <div className="method w-full mb-4">
-            <p>{t("Payment method")}:</p>
-            <label htmlFor="method">
-              <input type="radio" name="method" className="ml-3 my-3" /> Stripe
-            </label>
-          </div>
-
-          <button
-            className="payment bg-blue-900 w-[96%] h-10 rounded-[7px] m-auto text-white hover:bg-blue-800"
-            type="submit"
+        {/* Country & City */}
+        <div className="flex flex-col sm:flex-row gap-4">
+          <select
+            value={country}
+            onChange={(e) => setCountry(e.target.value)}
+            className="flex-1 h-10 rounded bg-gray-200 px-3"
           >
-            {t("Continue To Payment")}
-          </button>
-        </form>
-      </div>
+            <option value="" disabled>{t("Select Country")}</option>
+            <option value="Rwanda">Rwanda</option>
+            <option value="Uganda">Uganda</option>
+            <option value="Kenya">Kenya</option>
+          </select>
+          <select
+            value={city}
+            onChange={(e) => setCity(e.target.value)}
+            className="flex-1 h-10 rounded bg-gray-200 px-3"
+          >
+            <option value="" disabled>{t("Select City")}</option>
+            <option value="Kigali">Kigali</option>
+            <option value="Musanze">Musanze</option>
+            <option value="Huye">Huye</option>
+            <option value="Nairobi">Nairobi</option>
+            <option value="Kampala">Kampala</option>
+          </select>
+        </div>
+
+        {/* Delivery Method */}
+        <select
+          value={deliveryMethod}
+          onChange={(e) => setDeliveryMethod(e.target.value)}
+          className="w-full h-10 rounded bg-gray-200 px-3"
+        >
+          <option value="" disabled>{t("Select Delivery Method")}</option>
+          <option value="Standard">Standard</option>
+          <option value="Express">Express</option>
+        </select>
+
+        {/* Payment Method */}
+        <div className="flex items-center gap-4">
+          <label>
+            <input
+              type="radio"
+              checked={paymentMethod === "Stripe"}
+              onChange={() => setPaymentMethod("Stripe")}
+              className="mr-2"
+            />
+            Stripe
+          </label>
+        </div>
+
+        <button type="submit" className="bg-blue-900 h-10 rounded text-white hover:bg-blue-800">
+          {t("Continue To Payment")}
+        </button>
+      </form>
     </section>
   );
 };

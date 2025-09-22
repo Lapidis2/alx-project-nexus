@@ -45,13 +45,13 @@ const CartItemList: React.FC<CartItemListProps> = ({
             </div>
             <div>
               <p className="font-semibold">{item.name}</p>
-              <p className="text-gray-500">{item.price} RWF each</p>
+              <p className="text-gray-800">{item.price} RWF each</p>
             </div>
           </div>
 
           {/* Quantity Controls & Price */}
-          <div className="flex items-center gap-4">
-            <div className="flex items-center border rounded-md">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 w-full">
+            <div className="flex flex-row sm:flex-row items-center border rounded-md justify-center w-full sm:w-auto">
               <button
                 className="px-2 py-1 disabled:opacity-50"
                 onClick={() =>
