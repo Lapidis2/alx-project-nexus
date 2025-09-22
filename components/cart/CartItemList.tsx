@@ -3,6 +3,8 @@
 import React from "react";
 import Image from "next/image";
 import { Product } from "@/interfaces";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
 
 interface CartItemListProps {
   cartItems: Product[];
@@ -18,7 +20,7 @@ const CartItemList: React.FC<CartItemListProps> = ({
 }) => {
   if (cartItems.length === 0) {
     return (
-      <div className="text-center py-20 text-lg text-gray-700">
+      <div className="text-center py-20 text-xlg text-gray-700">
         Your cart is empty.
       </div>
     );
@@ -70,13 +72,13 @@ const CartItemList: React.FC<CartItemListProps> = ({
 
             <p className="font-semibold">{item.price * item.quantity} RWF</p>
 
-            {/* Delete Button */}
+           
             <button
-              onClick={() => handleDelete(item.id)}
-              className="text-red-500 hover:text-red-700"
-            >
-              &#10005;
-            </button>
+  onClick={() => handleDelete(item.id)}
+  className="text-red-500 hover:text-red-700 p-2 rounded-full hover:bg-red-100 transition"
+>
+<FontAwesomeIcon icon={faTrash} size="lg" />
+</button>
           </div>
         </div>
       ))}

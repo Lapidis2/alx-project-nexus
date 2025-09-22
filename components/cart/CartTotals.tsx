@@ -43,7 +43,7 @@ const CartTotals: React.FC<CartTotalsProps> = ({
         <span>{formatPrice(total)} RWF</span>
       </div>
 
-      <button className="w-full bg-black text-white py-2 rounded-lg hover:bg-gray-800">
+      <button className="w-full bg-primary text-white py-2 rounded-lg hover:bg-gray-800">
         Proceed to Checkout
       </button>
     </div>

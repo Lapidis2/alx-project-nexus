@@ -22,7 +22,7 @@ const Cart: React.FC = () => {
     const fetchCart = async () => {
       try {
         setIsLoading(true);
-        const res = await fetch("/api/products", { cache: "no-store" });
+        const res = await fetch("/api/cart", { cache: "no-store" });
         if (!res.ok) throw new Error("Failed to fetch cart data");
 
         const data: Product[] = await res.json();
