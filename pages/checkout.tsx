@@ -37,7 +37,7 @@ const Checkout: React.FC = () => {
 
       <Header />
 
-      <main className="w-[80%] mt-24 mx-auto">
+      <main className="w-[80%] mx-auto mt-60">
         <div className="flex justify-between m-auto">
           <Payment />
           <OrderSummary
@@ -51,7 +51,7 @@ const Checkout: React.FC = () => {
         </div>
 
         <a href="/products">
-          <button className="bg-amber-600 px-32 py-3 rounded-lg text-2xl mx-[410px] my-20 text-white font-semibold hover:shadow-sm hover:shadow-black">
+          <button className="bg-amber-600 px-32 py-3 rounded-lg text-xl mx-[410px] my-20 text-white font-semibold hover:shadow-sm hover:shadow-black">
             {t("BACK TO HOME")}
           </button>
         </a>
