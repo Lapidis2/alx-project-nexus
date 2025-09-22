@@ -4,38 +4,41 @@ import React, { useEffect, useState } from "react";
 import Pusher from "pusher-js";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
-import { isVendor, getToken } from "@/components/OrderTracking/AuthUtils";
 import { ThreeDots } from "react-loader-spinner";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { isVendor, getToken } from "@/components/OrderTracking/AuthUtils";
+
 interface OrderStatusProps {
-	orderId: string;
-	currentStatus: string; 
-  }
+  orderId: string | string[] | undefined;
+  currentState:string;
+}
+
+// Define allowed statuses (union type)
+const STATUSES = ["pending", "processing", "shipped", "delivered"] as const;
+type Status = (typeof STATUSES)[number]; // "pending" | "processing" | "shipped" | "delivered"
 
 interface Order {
-  status: string;
+  status: Status;
 }
 
 interface OrderUpdateEvent {
   orderId: string;
-  status: string;
+  status: Status;
+ 
 }
 
-const statuses = ["pending", "processing", "shipped", "delivered"];
+const OrderStatus: React.FC<OrderStatusProps> = ({ orderId ,currentState}) => {
+  const orderIdString = Array.isArray(orderId) ? orderId[0] : orderId;
 
-const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_KEY as string, {
-  cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER as string,
-});
-
-const OrderStatus: React.FC<OrderStatusProps> = ({ orderId }) => {
-  const [orderStatus, setOrderStatus] = useState<string | null>(null);
+  const [orderStatus, setOrderStatus] = useState<Status | null>(null);
   const [isUpdating, setIsUpdating] = useState(false);
 
-  // Fetch order status
+  // Fetch current order status
   const fetchOrder = async () => {
+    if (!orderIdString) return;
     try {
-      const res = await fetch(`/api/orders/${orderId}`);
+      const res = await fetch(`/api/orders/${orderIdString}`);
       if (!res.ok) throw new Error("Failed to fetch order");
       const data: Order = await res.json();
       setOrderStatus(data.status);
@@ -47,14 +50,22 @@ const OrderStatus: React.FC<OrderStatusProps> = ({ orderId }) => {
 
   useEffect(() => {
     fetchOrder();
-  }, [orderId]);
+  }, [orderIdString]);
 
-  // Pusher subscription
+  // Real-time updates with Pusher
   useEffect(() => {
+    if (!orderIdString) return;
+
+    const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_KEY!, {
+      cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER!,
+      forceTLS: true,
+    });
+
     const channel = pusher.subscribe("order-channel");
     channel.bind("order-updated", (data: OrderUpdateEvent) => {
-      if (data.orderId === orderId) {
+      if (data.orderId === orderIdString) {
         setOrderStatus(data.status);
+        toast.info(`Order status updated to ${data.status}`);
       }
     });
 
@@ -62,29 +73,27 @@ const OrderStatus: React.FC<OrderStatusProps> = ({ orderId }) => {
       channel.unbind_all();
       pusher.unsubscribe("order-channel");
     };
-  }, [orderId]);
+  }, [orderIdString]);
 
-  const currentStatusIndex = orderStatus ? statuses.indexOf(orderStatus) : -1;
+  const currentStatusIndex = orderStatus ? STATUSES.indexOf(orderStatus) : -1;
 
-  const getStatusClass = (status: string) => {
-    const statusIndex = statuses.indexOf(status);
-    return statusIndex <= currentStatusIndex
-      ? "bg-primary text-white"
-      : "bg-gray-200";
+  const getStatusClass = (status: Status) => {
+    const idx = STATUSES.indexOf(status);
+    return idx <= currentStatusIndex ? "bg-primary text-white" : "bg-gray-200";
   };
 
   const getLineClass = (index: number) => {
     return currentStatusIndex >= index + 1 ? "bg-primary" : "bg-gray-200";
   };
 
-  const getNextStatus = (current: string | null) => {
-    if (!current) return statuses[0];
-    const idx = statuses.indexOf(current);
-    return idx < statuses.length - 1 ? statuses[idx + 1] : null;
+  const getNextStatus = (): Status | null => {
+    if (!orderStatus) return STATUSES[0];
+    const idx = STATUSES.indexOf(orderStatus);
+    return idx < STATUSES.length - 1 ? STATUSES[idx + 1] : null;
   };
 
   const handleUpdateStatus = async () => {
-    const nextStatus = getNextStatus(orderStatus);
+    const nextStatus = getNextStatus();
     if (!nextStatus) {
       toast.info("No further status updates available");
       return;
@@ -94,12 +103,12 @@ const OrderStatus: React.FC<OrderStatusProps> = ({ orderId }) => {
       setIsUpdating(true);
       const token = getToken();
       if (!token) {
-        toast.error("No authentication token found");
+        toast.error("Authentication token not found");
         setIsUpdating(false);
         return;
       }
 
-      const res = await fetch(`/api/orders/${orderId}/status`, {
+      const res = await fetch(`/api/orders/${orderIdString}/status`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -119,13 +128,20 @@ const OrderStatus: React.FC<OrderStatusProps> = ({ orderId }) => {
     }
   };
 
-  if (!orderStatus) return <p>Loading order status...</p>;
+  if (!orderStatus)
+    return (
+      <p className="text-center p-4" role="status">
+        Loading order status...
+      </p>
+    );
 
   return (
-    <section className="font-outfit">
+    <section className="font-outfit" aria-label="Order Status">
       <ToastContainer />
+
+      {/* Status Timeline */}
       <div className="flex items-center justify-center mt-8 gap-14">
-        {statuses.map((status, index) => (
+        {STATUSES.map((status, index) => (
           <div key={status} className="flex items-center">
             <div className="flex flex-col items-center relative">
               <div
@@ -136,7 +152,7 @@ const OrderStatus: React.FC<OrderStatusProps> = ({ orderId }) => {
                 <FontAwesomeIcon icon={faCheck} className="text-white" />
               </div>
               <span className="mt-2 text-sm capitalize">{status}</span>
-              {index < statuses.length - 1 && (
+              {index < STATUSES.length - 1 && (
                 <div
                   className={`absolute top-5 transform -translate-y-1/2 left-10 w-24 h-1 ${getLineClass(
                     index
@@ -148,9 +164,10 @@ const OrderStatus: React.FC<OrderStatusProps> = ({ orderId }) => {
         ))}
       </div>
 
+      {/* Vendor Update Button */}
       {isVendor() && (
         <div className="pt-10 flex justify-center">
-          {getNextStatus(orderStatus) ? (
+          {getNextStatus() ? (
             <button
               onClick={handleUpdateStatus}
               disabled={isUpdating}
@@ -166,7 +183,7 @@ const OrderStatus: React.FC<OrderStatusProps> = ({ orderId }) => {
                   ariaLabel="three-dots-loading"
                 />
               ) : (
-                <span>Update to {getNextStatus(orderStatus)}</span>
+                <span>Update to {getNextStatus()}</span>
               )}
             </button>
           ) : (

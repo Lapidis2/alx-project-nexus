@@ -1,91 +1,119 @@
-"use client";
-
 import React, { useEffect, useState } from "react";
 import WeeklyReport from "@/components/dashboard/analytics/WeeklyReports";
-import UserTable, { User as UserType } from "@/components/dashboard/UserTable";
-import VendorRequestList, { Seller as SellerType } from "@/components/dashboard/VendorRequestList";
+import UserTable from "@/components/dashboard/UserTable";
+import VendorRequestList from "@/components/dashboard/VendorRequestList";
 import InteractionCard from "@/components/dashboard/InteractiveCard";
 
-interface Order {
-  id: string;
-  status: string;
-  [key: string]: any;
-}
+function AdminHome() {
+ 
+  const [sellers, setSellers] = useState<any[]>([
+    { id: 1, name: "Vendor A", status: "approved" },
+    { id: 2, name: "Vendor B", status: "pending" },
+    { id: 3, name: "Vendor C", status: "approved" },
+  ]);
+  const [users, setUsers] = useState<any[]>([
+    { id: 1, name: "User 1" },
+    { id: 2, name: "User 2" },
+    { id: 3, name: "User 3" },
+  ]);
+  const [orders, setOrders] = useState<any[]>([
+    { id: 1, status: "delivered" },
+    { id: 2, status: "pending" },
+    { id: 3, status: "delivered" },
+  ]);
 
-const AdminHome: React.FC = () => {
-  const [sellers, setSellers] = useState<SellerType[]>([]);
-  const [users, setUsers] = useState<UserType[]>([]);
-  const [orders, setOrders] = useState<Order[]>([]);
-  const [loading, setLoading] = useState(true);
+  const approvedSellers = sellers.filter(
+    (seller) => seller.status === "approved"
+  );
+  const transactions = orders.filter((order) => order.status === "delivered");
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-        const [sellersRes, usersRes, ordersRes] = await Promise.all([
-          fetch("/api/admin/sellers"),
-          fetch("/api/admin/users"),
-          fetch("/api/orders"),
-        ]);
-
-        const [sellersData, usersData, ordersData] = await Promise.all([
-          sellersRes.ok ? sellersRes.json() : [],
-          usersRes.ok ? usersRes.json() : [],
-          ordersRes.ok ? ordersRes.json() : [],
-        ]);
-
-        setSellers(sellersData as SellerType[]);
-        setUsers(usersData as UserType[]);
-        setOrders(ordersData as Order[]);
-      } catch (error) {
-        console.error("Error fetching admin data:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  // Filter data
-  const approvedSellers = sellers.filter((seller) => seller.status === "approved");
-  const deliveredOrders = orders.filter((order) => order.status === "delivered");
-
-  // Cards data
   const cardData = [
-    { name: "Vendors", numbers: approvedSellers.length, icon: <div>V</div> },
-    { name: "Users", numbers: users.length, icon: <div>U</div> },
-    { name: "Transactions", numbers: deliveredOrders.length, icon: <div>T</div> },
-    { name: "Orders", numbers: orders.length, icon: <div>O</div> },
+    {
+      name: "Vendors",
+      numbers: approvedSellers.length,
+      icon: (
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 20 20"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          {/* SVG paths */}
+        </svg>
+      ),
+    },
+    {
+      name: "Users",
+      numbers: users.length,
+      icon: (
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 20 20"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          {/* SVG paths */}
+        </svg>
+      ),
+    },
+    {
+      name: "Transactions",
+      numbers: transactions.length,
+      icon: (
+        <svg
+          width="20"
+          height="21"
+          viewBox="0 0 20 21"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          {/* SVG paths */}
+        </svg>
+      ),
+    },
+    {
+      name: "Orders",
+      numbers: orders.length,
+      icon: (
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 20 20"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          {/* SVG paths */}
+        </svg>
+      ),
+    },
   ];
 
-  if (loading) return <div className="text-center p-10">Loading...</div>;
-
   return (
-    <div className="flex flex-col space-y-6 p-4 lg:p-10">
-      {/* Cards */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        {cardData.map((item, idx) => (
-          <InteractionCard key={idx} data={item} />
-        ))}
+    <div className="flex flex-col space-y-2 lg:space-y-0 w-full">
+      <div className="flex flex-col w-full lg:p-[1%] xl:h-50 xl:p-1 2xl:p-3 3xl:p-5">
+        <div className="grid grid-cols-2 gap-[10px] w-full lg:gap-[5px] lg:h-[15%] xl:gap-[10px] xl:w-[90%] xl:ml-[40px] xl:mt-2 xl:grid-cols-4">
+          {cardData.map((item, index) => (
+            <InteractionCard key={index} data={item} />
+          ))}
+        </div>
       </div>
 
-      {/* Weekly Report */}
-      <div className="w-full h-[400px] lg:h-[500px] mt-4">
+      <div className="w-full h-60 lg:p-[1%] md:h-80 xl:h-96 xl:w-full xl:ml-[10px] lg:px-2 md:px-1 xl:px-6 xl:pr-3 2xl:px-8 3xl:px-12 2xl:h-[500px] 2xl:pt-0">
         <WeeklyReport />
       </div>
 
-      {/* Tables */}
-      <div className="flex flex-col lg:flex-row w-full mt-4 space-y-4 lg:space-y-0 lg:space-x-6">
-        <div className="w-full">
+      <div className="flex flex-col md:flex-col lg:flex-row w-full space-y-2 lg:space-y-0 lg:space-x-5 pb-10 xl:ml-[15px] xl:pl-6 2xl:px-12">
+        <div className="w-full md:mt-2 md:px-2 lg:mt-0 xl:p-0">
           <UserTable users={users} />
         </div>
-        <div className="w-full">
-          <VendorRequestList sellers={sellers} />
+        <div className="w-full md:mt-2 md:px-2 xl:pr-3">
+          <VendorRequestList sellers={sellers}/>
         </div>
       </div>
     </div>
   );
-};
+}
 
 export default AdminHome;

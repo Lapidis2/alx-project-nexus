@@ -1,66 +1,98 @@
 "use client";
 
+import React, { useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import Image from "next/image";
 
-const AdminHeader: React.FC = () => {
-  const pathname = usePathname();
-  const [menuTitle, setMenuTitle] = useState("");
+// Example SVG component (replace with your actual SVG if different)
+const BellIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    className="h-5 w-5 text-gray-600"
+    viewBox="0 0 20 20"
+    fill="currentColor"
+  >
+    <path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6z" />
+  </svg>
+);
 
-  // Update menu title based on current path
-  useEffect(() => {
-    switch (pathname) {
-      case "/":
-        setMenuTitle("Home");
-        break;
-      case "/about":
-        setMenuTitle("About");
-        break;
-      case "/contact":
-        setMenuTitle("Contact");
-        break;
-      default:
-        setMenuTitle("");
-    }
-  }, [pathname]);
+interface AdminHeaderProps {
+  userData?: {
+    name?: string;
+    avatar?: string;
+  };
+}
 
-  // Current date/time
-  const [currentTime, setCurrentTime] = useState(new Date());
-  useEffect(() => {
-    const timer = setInterval(() => setCurrentTime(new Date()), 1000);
-    return () => clearInterval(timer);
-  }, []);
+const AdminHeader: React.FC<AdminHeaderProps> = ({ userData }) => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { t } = useTranslation();
 
   return (
-    <header className="w-full bg-white shadow-md">
-      <nav className="container mx-auto flex items-center justify-between p-4">
-        {/* Logo */}
-        <Link href="/" className="flex items-center gap-2">
-          {/* SVG goes here */}
+    <header className="w-full bg-white shadow-md px-4 py-2 flex items-center justify-between">
+      {/* Left / Logo */}
+      <div className="flex items-center space-x-2">
+        <Link href="/admin">
+          <span className="text-xl font-bold text-gray-800">AdminPanel</span>
+        </Link>
+      </div>
+
+      {/* Right / User Info */}
+      <div className="flex items-center space-x-4">
+        {/* Notification SVG */}
+        <button className="p-2 rounded-full hover:bg-gray-100">
+          <BellIcon />
+        </button>
+
+        {/* User Avatar & Name */}
+        <div className="hidden lg:flex items-center space-x-2 bg-gray-100 rounded-lg py-1 px-4 xl:mr-2">
+          <div className="bg-secondary rounded-full p-2 flex items-center justify-center h-8 w-8 text-white">
+            <span className="text-xs font-medium">
+              {`${userData?.name}`
+                ?.split(" ")
+                .map((n) => n[0])
+                .join("")
+                .toUpperCase()}
+            </span>
+          </div>
+          <div className="flex flex-col">
+            <span className="font-medium">{userData?.name}</span>
+            <span className="text-xs text-gray-500">{t("Administrator")}</span>
+          </div>
+        </div>
+
+        {/* Dropdown menu toggle */}
+        <button
+          className="lg:hidden p-2 rounded-full hover:bg-gray-100"
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            width="40"
-            height="40"
-            viewBox="0 0 100 100"
-            fill="currentColor"
+            className="h-5 w-5 text-gray-600"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={2}
           >
-            <circle cx="50" cy="50" r="50" />
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M4 6h16M4 12h16M4 18h16"
+            />
           </svg>
-          <span className="font-bold text-xl">MySite</span>
-        </Link>
+        </button>
+      </div>
 
-        {/* Menu Title */}
-        <h1 className="text-lg font-medium">{menuTitle}</h1>
-
-        {/* Current Time */}
-        <time
-          dateTime={currentTime.toISOString()}
-          className="text-sm text-gray-600"
-        >
-          {currentTime.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
-        </time>
-      </nav>
+      {/* Mobile dropdown */}
+      {isMenuOpen && (
+        <div className="absolute top-16 right-4 bg-white shadow-md rounded-md p-2 flex flex-col space-y-2 lg:hidden">
+          <Link href="/admin">Dashboard</Link>
+          <Link href="/admin/users">Users</Link>
+          <Link href="/admin/sellers">Sellers</Link>
+          <Link href="/admin/analytics">Analytics</Link>
+          <Link href="/admin/settings">Settings</Link>
+        </div>
+      )}
     </header>
   );
 };

@@ -1,11 +1,20 @@
-import {useSignOut} from 'react-auth-kit';
+"use client";
 
-const Logout = () => {
+import { useSignOut } from "react-auth-kit";
+import { useRouter } from "next/navigation";
+
+const useLogout = () => {
   const signOut = useSignOut();
-  return () => {
-    signOut();
-    window.location.href = '/';
+  const router = useRouter();
+
+  const logout = () => {
+    if (typeof window !== "undefined") {
+      signOut(); 
+      router.push("/login");
+    }
   };
+
+  return logout;
 };
 
-export default Logout;
+export default useLogout;

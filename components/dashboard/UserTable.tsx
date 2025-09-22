@@ -18,7 +18,7 @@ interface UserTableProps {
 
 const UserTable: React.FC<UserTableProps> = ({ users }) => {
   const [activeTab, setActiveTab] = useState<"Buyers" | "Sellers">("Buyers");
-  const [loading, setLoading] = useState(false); // already have data
+  const [loading, setLoading] = useState(false);
 
   // Sort users by updatedAt
   const sortedUsers = users.slice().sort(

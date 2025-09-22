@@ -1,68 +1,69 @@
+
 "use client";
 
-import React, { useState, ReactNode } from "react";
-import Link from "next/link";
-import { Home, Users, Store, Settings } from "lucide-react";
+import React, { useState } from "react";
+import { useRouter } from "next/navigation"; // Next.js router
 
-interface NavItem {
+import { FaTachometerAlt, FaUsers, FaUserShield, FaClipboardList, FaChartLine, FaCog, FaSignOutAlt } from "react-icons/fa";
+
+interface NavLink {
   id: string;
   label: string;
-  href: string;
-  icon: ReactNode; // ✅ works with Next.js & TS
+  location: string;
+  icon: React.JSX.Element;
 }
 
-const navItems: NavItem[] = [
-  { id: "home", label: "Home", href: "/", icon: <Home size={20} /> },
-  { id: "users", label: "Users", href: "/users", icon: <Users size={20} /> },
-  { id: "sellers", label: "Sellers", href: "/sellers", icon: <Store size={20} /> },
-  { id: "settings", label: "Settings", href: "/settings", icon: <Settings size={20} /> },
-];
+const Sidebar = () => {
+  const router = useRouter();
+  const [active, setActive] = useState<string>("001");
 
-const Sidebar: React.FC = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const Navlinks: NavLink[] = [
+    { id: "001", label: "Dashboard", location: "/admin", icon: <FaTachometerAlt /> },
+    { id: "002", label: "Users", location: "/admin/users", icon: <FaUsers /> },
+    { id: "003", label: "Sellers", location: "/admin/sellers", icon: <FaUserShield /> },
+    { id: "004", label: "Requests", location: "/admin/requests", icon: <FaClipboardList /> },
+    { id: "005", label: "Analytics", location: "/admin/analytics", icon: <FaChartLine /> },
+    { id: "006", label: "Settings", location: "/admin/settings", icon: <FaCog /> },
+  ];
+
+  const handleNavigate = (link: NavLink) => {
+    setActive(link.id);
+    router.push(link.location);
+  };
+
+ 
 
   return (
-    <aside className="flex">
-      {/* Mobile Toggle Button */}
-      <button
-        className="md:hidden p-3 text-gray-700 focus:outline-none"
-        onClick={() => setIsOpen(!isOpen)}
-      >
-        ☰
-      </button>
+    <aside className="w-80 hidden lg:flex flex-col fixed gap-6 bg-primary p-6 h-full text-white">
+      {/* Logo */}
+      <div className="text-2xl font-bold mb-10 cursor-pointer" onClick={() => router.push("/admin")}>
+        AdminPanel
+      </div>
 
-      {/* Sidebar */}
-      <nav
-        className={`fixed top-0 left-0 h-full w-64 bg-white shadow-md transform 
-        ${isOpen ? "translate-x-0" : "-translate-x-full"} 
-        transition-transform duration-300 ease-in-out md:translate-x-0`}
-      >
-        <div className="p-4 border-b">
-          <h1 className="text-xl font-bold text-gray-700">Admin Panel</h1>
-        </div>
-
-        <ul className="p-4 space-y-3">
-          {navItems.map((item) => (
-            <li key={item.id}>
-              <Link
-                href={item.href}
-                className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-100 transition-colors"
-              >
-                {item.icon}
-                <span className="text-gray-700">{item.label}</span>
-              </Link>
-            </li>
-          ))}
-        </ul>
+      {/* Navigation Links */}
+      <nav className="flex flex-col gap-4 flex-1">
+        {Navlinks.map((link) => (
+          <div
+            key={link.id}
+            onClick={() => handleNavigate(link)}
+            className={`flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-all ${
+              active === link.id ? "bg-yellow-500 text-black" : "hover:bg-gray-700"
+            }`}
+          >
+            <span className="text-lg">{link.icon}</span>
+            <span className="font-medium">{link.label}</span>
+          </div>
+        ))}
       </nav>
 
-      {/* Overlay for Mobile */}
-      {isOpen && (
-        <div
-          className="fixed inset-0 bg-black bg-opacity-40 md:hidden"
-          onClick={() => setIsOpen(false)}
-        />
-      )}
+      {/* Logout */}
+      <button
+      onClick={() => alert('logout')}
+        className="flex items-center gap-3 p-3 mt-auto rounded-lg hover:bg-red-600 text-red-500 font-medium transition-all"
+      >
+        <FaSignOutAlt />
+        Logout
+      </button>
     </aside>
   );
 };
