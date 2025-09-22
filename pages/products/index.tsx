@@ -39,34 +39,33 @@ const ProductsPage: React.FC = () => {
 
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        setIsLoading(true);
-        const res = await fetch("/api/products");
-        if (!res.ok) throw new Error(t("Failed to fetch products"));
-
-        const data: ApiProduct[] = await res.json();
-
-        const mappedData: Product[] = data.map((p) => ({
-          id: p.id,
-          name: p.name,
-          price: p.price,
-          image: p.image || "/placeholder.jpg",
-          category: p.category || t("Uncategorized"),
-        }));
-
-        setProducts(mappedData);
-      } catch (err: unknown) {
-        if (err instanceof Error) {
-          console.error("Error fetching products:", err.message);
-        }
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchProducts();
-  }, [t]);
+	const fetchProducts = async () => {
+	  setIsLoading(true);
+	  try {
+		const res = await fetch("/api/products", { cache: "no-store" });
+		if (!res.ok) throw new Error("Failed to fetch products");
+  
+		const data: ApiProduct[] = await res.json();
+  
+		const mappedData: Product[] = data.map((p) => ({
+		  id: p.id,
+		  name: p.name,
+		  price: p.price,
+		  image: p.image || "/placeholder.jpg",
+		  category: p.category || "Uncategorized",
+		}));
+  
+		setProducts(mappedData);
+	  } catch (err) {
+		console.error("Error fetching products:", err);
+	  } finally {
+		setIsLoading(false); 
+	  }
+	};
+  
+	fetchProducts();
+  }, []); 
+  
 
  
   const filteredProducts = products.filter((product) => {
