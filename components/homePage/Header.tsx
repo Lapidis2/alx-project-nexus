@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 
-
+import Board from"@/public/assets/images/board.png"
 import Logo from "@/public/assets/images/logo1.png";
 import Bag from "@/public/assets/images/Bag.svg";
 import Heart from "@/public/assets/images/heart 1.svg";
@@ -72,9 +72,9 @@ const Header = () => {
         <nav className="hidden lg:block">
           <ul className="flex gap-8">
             <li><Link href="/">{t("Home")}</Link></li>
-            <li><Link href="">{t("About Us")}</Link></li>
+            <li><Link href="/#about-us">{t("About Us")}</Link></li>
             <li><Link href="/products">{t("Products")}</Link></li>
-            <li><Link href="">{t("Contact")}</Link></li>
+            <li><Link href="/#contact-us">{t("Contact")}</Link></li>
           </ul>
         </nav>
       </div>
@@ -121,6 +121,10 @@ const Header = () => {
                     <button onClick={() => router.push("/profile")} className="flex items-center gap-2">
                       <Image src={profileIcon} alt="Profile Icon" width={20} height={20} />
                       {t("Profile")}
+                    </button>
+					<button onClick={() => router.push("/dashboard")} className="flex items-center gap-2">
+                      <Image src={Board} alt="dashboard" width={20} height={20} />
+                      {t("Dashboard")}
                     </button>
                     <button onClick={handleLogout} className="flex items-center gap-2 text-red-400">
                       <Image src={LogoutIcon} alt="Logout Icon" width={20} height={20} />
