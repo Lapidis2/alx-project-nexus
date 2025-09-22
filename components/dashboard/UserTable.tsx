@@ -1,56 +1,29 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Circles } from "react-loader-spinner";
 import Link from "next/link";
 
-interface User {
+export interface User {
+  id: string;
   name: string;
   email: string;
   role: "buyer" | "vendor";
   updatedAt: string;
 }
 
-const UserTable: React.FC = () => {
-  const [users, setUsers] = useState<User[]>([]);
-  const [loading, setLoading] = useState(true);
+interface UserTableProps {
+  users: User[];
+}
+
+const UserTable: React.FC<UserTableProps> = ({ users }) => {
   const [activeTab, setActiveTab] = useState<"Buyers" | "Sellers">("Buyers");
+  const [loading, setLoading] = useState(false); // already have data
 
-  // Mock fetching API data
-  useEffect(() => {
-    setLoading(true);
-    setTimeout(() => {
-      const mockUsers: User[] = [
-        {
-          name: "Alice Johnson",
-          email: "alice@example.com",
-          role: "buyer",
-          updatedAt: "2025-09-20T10:00:00Z",
-        },
-        {
-          name: "Bob Smith",
-          email: "bob@example.com",
-          role: "vendor",
-          updatedAt: "2025-09-21T14:30:00Z",
-        },
-        {
-          name: "Carla Doe",
-          email: "carla@example.com",
-          role: "buyer",
-          updatedAt: "2025-09-22T09:15:00Z",
-        },
-      ];
-      setUsers(mockUsers);
-      setLoading(false);
-    }, 1000);
-  }, []);
-
-  const sortedUsers = users
-    .slice()
-    .sort(
-      (a, b) =>
-        new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
-    );
+  // Sort users by updatedAt
+  const sortedUsers = users.slice().sort(
+    (a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+  );
 
   const buyersCount = sortedUsers.filter((u) => u.role === "buyer").length;
   const sellersCount = sortedUsers.filter((u) => u.role === "vendor").length;
@@ -111,9 +84,9 @@ const UserTable: React.FC = () => {
             </tbody>
           ) : (
             <tbody>
-              {filteredUsers.slice(0, 6).map((user, index) => (
+              {filteredUsers.slice(0, 6).map((user) => (
                 <tr
-                  key={index}
+                  key={user.id}
                   className="border-b text-sm hover:bg-gray-50 transition"
                 >
                   <td className="p-2">{user.name}</td>

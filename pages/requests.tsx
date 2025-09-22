@@ -1,0 +1,56 @@
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import RequestsTable from "@/components/dashboard/RequestTable";
+import { Circles } from "react-loader-spinner";
+
+const Requests = () => {
+  const [sellers, setSellers] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isError, setIsError] = useState<boolean>(false);
+
+  const fetchSellers = async () => {
+    setIsLoading(true);
+    setIsError(false);
+    try {
+      const response = await axios.get("/api/seller-requests"); // replace with your API
+      setSellers(response.data);
+    } catch (error) {
+      console.error(error);
+      setIsError(true);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchSellers();
+  }, []);
+
+  if (isLoading)
+    return (
+      <div className="flex justify-center items-center h-[90%]">
+        <Circles visible height="80" width="80" color="#C9974C" />
+      </div>
+    );
+
+  if (isError)
+    return (
+      <div className="flex justify-center items-center h-[90%]">
+        <div className="text-center">
+          <p className="text-red-600 font-semibold">
+            An error occurred while loading seller requests. Please try again later.
+          </p>
+          <button
+            className="mt-3 px-4 py-2 bg-primary text-white rounded-md hover:bg-secondary"
+            onClick={fetchSellers}
+          >
+            Retry
+          </button>
+        </div>
+      </div>
+    );
+
+  return <RequestsTable sellers={sellers} />;
+};
+
+export default Requests;

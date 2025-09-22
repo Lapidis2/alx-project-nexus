@@ -4,14 +4,18 @@ import React, { useEffect, useState } from "react";
 import { Circles } from "react-loader-spinner";
 import Link from "next/link";
 
-interface Seller {
+export interface Seller {
   storeName: string;
+  status?:string;
   address: {
     city: string;
   };
 }
+interface VendorRequestListProps {
+	sellers: Seller[];
+  }
 
-const VendorRequestList: React.FC = () => {
+const VendorRequestList: React.FC<VendorRequestListProps> = () => {
   const [sellers, setSellers] = useState<Seller[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
