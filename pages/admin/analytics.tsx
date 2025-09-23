@@ -38,7 +38,7 @@ const Analytics = () => {
     fetchData();
   }, []);
 
-  const approvedSellers = sellers.filter((seller) => seller.status === "approved");
+//   const approvedSellers = sellers.filter((seller) => seller.status === "approved");
   const transactions = orders.filter((order) => order.status === "delivered");
 
   const cardData = [
@@ -71,7 +71,7 @@ const Analytics = () => {
           <InteractionCard key={index} data={item} />
         ))}
       </div>
-
+	 
       <div className="mt-5 w-full">
         <OrderStatus />
       </div>
@@ -82,6 +82,9 @@ const Analytics = () => {
 
       <div className="mt-5 w-full mb-8">
         <SellingReport />
+      </div>
+	  <div className="mt-5 w-full mb-8">
+        <WeeklyReport />
       </div>
     </div>
   );

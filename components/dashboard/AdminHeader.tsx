@@ -19,7 +19,7 @@ const BellIcon = () => (
 interface AdminHeaderProps {
   userData?: {
     name?: string;
-    avatar?: string; // profile picture URL
+    avatar?: string; 
   };
 }
 
@@ -67,17 +67,17 @@ const AdminHeader: React.FC<AdminHeaderProps> = ({ userData }) => {
 
 
       <div className="flex items-center space-x-4">
-        {/* Notification */}
+       
         <button className="p-2 rounded-full hover:bg-gray-100">
           <BellIcon />
         </button>
 
-        {/* User avatar + details + dropdown */}
+      
         <div className="flex items-center relative">
-          {/* Avatar (profile picture instead of initials) */}
+   
           <div className="h-10 w-10 rounded-full overflow-hidden border border-gray-300">
             <Image
-              src={userData?.avatar || "/default-avatar.png"} // fallback if no avatar
+              src={userData?.avatar || "/default-avatar.png"} 
               alt="User Avatar"
               width={40}
               height={40}
@@ -85,12 +85,12 @@ const AdminHeader: React.FC<AdminHeaderProps> = ({ userData }) => {
             />
           </div>
 
-          {/* Name + ADMIN text */}
+      
           <div className="flex flex-col ml-2">
             <span className="text-xs text-secondary">{t("ADMIN")}</span>
           </div>
 
-          {/* Dropdown toggle */}
+        
           <button
             className="ml-2 p-1 rounded-full hover:bg-gray-100"
             onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
@@ -111,7 +111,6 @@ const AdminHeader: React.FC<AdminHeaderProps> = ({ userData }) => {
             </svg>
           </button>
 
-          {/* Dropdown menu */}
           {isUserMenuOpen && (
             <div className="absolute top-12 right-0 bg-white shadow-lg rounded-md w-40 py-2 z-50">
               <Link
@@ -130,7 +129,7 @@ const AdminHeader: React.FC<AdminHeaderProps> = ({ userData }) => {
           )}
         </div>
 
-        {/* Mobile menu button */}
+       
         <button
           className="lg:hidden p-2 rounded-full hover:bg-gray-100"
           onClick={() => setIsMenuOpen(!isMenuOpen)}
