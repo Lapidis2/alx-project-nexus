@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 
-let order = {
+const order = {
   orderId: "12345",
   status: "pending",
   createdAt: "2025-09-22T10:00:00Z",

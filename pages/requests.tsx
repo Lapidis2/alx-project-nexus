@@ -1,10 +1,20 @@
+"use client";
+
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import RequestsTable from "@/components/dashboard/RequestTable";
 import { Circles } from "react-loader-spinner";
 
-const Requests = () => {
-  const [sellers, setSellers] = useState<any[]>([]);
+interface SellerData {
+  sellerId: string;
+  userId: string;
+  storeName: string;
+  address: { city: string };
+  TIN: string;
+}
+
+const Requests: React.FC = () => {
+  const [sellers, setSellers] = useState<SellerData[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isError, setIsError] = useState<boolean>(false);
 
@@ -12,8 +22,18 @@ const Requests = () => {
     setIsLoading(true);
     setIsError(false);
     try {
-      const response = await axios.get("/api/seller-requests"); // replace with your API
-      setSellers(response.data);
+      const response = await axios.get<SellerData[]>("/api/seller-requests");
+
+      // Optional: Map API data if it doesn’t exactly match SellerData
+      const mappedSellers: SellerData[] = response.data.map((s) => ({
+        sellerId: s.sellerId,
+        userId: s.userId,
+        storeName: s.storeName,
+        address: { city: s.address.city }, // ensure the structure matches
+        TIN: s.TIN,
+      }));
+
+      setSellers(mappedSellers);
     } catch (error) {
       console.error(error);
       setIsError(true);
@@ -26,14 +46,15 @@ const Requests = () => {
     fetchSellers();
   }, []);
 
-  if (isLoading)
+  if (isLoading) {
     return (
       <div className="flex justify-center items-center h-[90%]">
         <Circles visible height="80" width="80" color="#C9974C" />
       </div>
     );
+  }
 
-  if (isError)
+  if (isError) {
     return (
       <div className="flex justify-center items-center h-[90%]">
         <div className="text-center">
@@ -49,6 +70,7 @@ const Requests = () => {
         </div>
       </div>
     );
+  }
 
   return <RequestsTable sellers={sellers} />;
 };

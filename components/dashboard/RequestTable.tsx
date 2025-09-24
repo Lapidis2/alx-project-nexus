@@ -18,10 +18,9 @@ const RequestsTable: React.FC<RequestsTableProps> = ({ sellers: initialSellers }
   const [selectedSeller, setSelectedSeller] = useState<SellerData | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
-  const [successMessage, setSuccessMessage] = useState<string | null>(null);
+
   const [search, setSearch] = useState("");
-  const [rejectMessage, setRejectMessage] = useState("");
-  const [isMessageOpen, setIsMessageOpen] = useState(false);
+
 
   const sellersPerPage = 15;
 
@@ -43,21 +42,21 @@ const RequestsTable: React.FC<RequestsTableProps> = ({ sellers: initialSellers }
     setIsLoading(true);
     await new Promise((r) => setTimeout(r, 1000));
     setSellers((prev) => prev.filter((s) => s.userId !== selectedSeller.userId));
-    setSuccessMessage("Seller approved successfully");
+  
     setIsLoading(false);
     setSelectedSeller(null);
   };
 
   const handleDeny = async () => {
     if (!selectedSeller) return;
-    setIsMessageOpen(false);
+    
     setIsLoading(true);
     await new Promise((r) => setTimeout(r, 1000));
     setSellers((prev) => prev.filter((s) => s.userId !== selectedSeller.userId));
-    setSuccessMessage("Seller rejected successfully");
+ 
     setIsLoading(false);
     setSelectedSeller(null);
-    setRejectMessage("");
+ 
   };
 
   return (
@@ -119,7 +118,9 @@ const RequestsTable: React.FC<RequestsTableProps> = ({ sellers: initialSellers }
                 ))}
               </tbody>
             </table>
+			
           </main>
+
 
           {/* Modal */}
           {selectedSeller && (

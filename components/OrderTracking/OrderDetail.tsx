@@ -23,8 +23,12 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ orderId }) => {
         if (!res.ok) throw new Error("Order not found");
         const data: Order = await res.json();
         setOrder(data);
-      } catch (err: any) {
-        setError(err.message);
+      } catch (err: unknown) {
+        if (err instanceof Error) {
+          setError(err.message);
+        } else {
+          setError("An unexpected error occurred");
+        }
       } finally {
         setLoading(false);
       }

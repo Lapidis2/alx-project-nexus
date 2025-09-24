@@ -1,5 +1,5 @@
 import React, { ChangeEventHandler, ReactNode } from "react";
-
+import { UseFormRegisterReturn } from "react-hook-form";
 interface CustomInputProps {
  type: string;
  label: string;
@@ -16,7 +16,7 @@ interface CustomInputProps {
  rows?: number;
  accept?: string;
  multiple?: boolean;
- register?: any;
+ register?: UseFormRegisterReturn;
  value?: string;
  disable?: boolean;
 }

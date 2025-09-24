@@ -35,7 +35,7 @@ const VendorRequestList: React.FC<VendorRequestListProps> = () => {
         ];
         setSellers(mockData);
         setLoading(false);
-      } catch (err) {
+      } catch  {
         setError(true);
         setLoading(false);
       }

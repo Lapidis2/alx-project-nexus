@@ -4,7 +4,7 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation"; // Next.js router
 
-import { FaTachometerAlt, FaUsers, FaUserShield, FaClipboardList, FaChartLine, FaCog, FaSignOutAlt } from "react-icons/fa";
+import { FaTachometerAlt, FaUsers, FaClipboardList, FaChartLine, FaCog, FaSignOutAlt } from "react-icons/fa";
 
 interface NavLink {
   id: string;

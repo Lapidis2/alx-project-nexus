@@ -1,6 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-
+import Image from "next/image";
 interface Product {
   id: number;
   img: string;
@@ -45,7 +45,7 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({
             className="flex flex-col sm:flex-row justify-between items-center bg-gray-100 rounded-md p-3 my-2 gap-3"
           >
             <div className="img h-20 w-20 sm:h-24 sm:w-24 flex-shrink-0">
-              <img className="h-full w-full object-cover rounded-md" src={item.img} alt={item.name} />
+              <Image className="h-full w-full object-cover rounded-md" src={item.img} alt={item.name} />
             </div>
 
             <div className="details flex-1 flex flex-col justify-center text-xs sm:text-sm">

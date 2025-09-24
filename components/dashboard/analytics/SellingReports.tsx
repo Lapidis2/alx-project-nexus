@@ -29,8 +29,12 @@ const SellingReport: React.FC = () => {
         if (!res.ok) throw new Error("Failed to fetch data");
         const data: MonthSales[] = await res.json();
         setMonthlySales(data);
-      } catch (err: any) {
-        setError(err.message);
+      } catch (err: unknown) {
+		if (err instanceof Error) {
+			setError(err.message);
+		  } else {
+			setError("An unexpected error occurred");
+		  }
       } finally {
         setLoading(false);
       }

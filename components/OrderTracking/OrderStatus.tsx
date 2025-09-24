@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import Pusher from "pusher-js";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
@@ -11,12 +11,12 @@ import { isVendor, getToken } from "@/components/OrderTracking/AuthUtils";
 
 interface OrderStatusProps {
   orderId: string | string[] | undefined;
-  currentState:string;
+  currentState:string
 }
 
-// Define allowed statuses (union type)
+
 const STATUSES = ["pending", "processing", "shipped", "delivered"] as const;
-type Status = (typeof STATUSES)[number]; // "pending" | "processing" | "shipped" | "delivered"
+type Status = (typeof STATUSES)[number];
 
 interface Order {
   status: Status;
@@ -25,32 +25,35 @@ interface Order {
 interface OrderUpdateEvent {
   orderId: string;
   status: Status;
- 
 }
 
-const OrderStatus: React.FC<OrderStatusProps> = ({ orderId ,currentState}) => {
+const OrderStatus: React.FC<OrderStatusProps> = ({ orderId }) => {
   const orderIdString = Array.isArray(orderId) ? orderId[0] : orderId;
 
   const [orderStatus, setOrderStatus] = useState<Status | null>(null);
   const [isUpdating, setIsUpdating] = useState(false);
 
   // Fetch current order status
-  const fetchOrder = async () => {
+  const fetchOrder = useCallback(async () => {
     if (!orderIdString) return;
     try {
       const res = await fetch(`/api/orders/${orderIdString}`);
       if (!res.ok) throw new Error("Failed to fetch order");
       const data: Order = await res.json();
       setOrderStatus(data.status);
-    } catch (err: any) {
-      console.error(err);
-      toast.error("Failed to fetch order");
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        console.error(err.message);
+        toast.error(err.message);
+      } else {
+        toast.error("Failed to fetch order");
+      }
     }
-  };
+  }, [orderIdString]);
 
   useEffect(() => {
     fetchOrder();
-  }, [orderIdString]);
+  }, [fetchOrder]);
 
   // Real-time updates with Pusher
   useEffect(() => {
@@ -82,9 +85,8 @@ const OrderStatus: React.FC<OrderStatusProps> = ({ orderId ,currentState}) => {
     return idx <= currentStatusIndex ? "bg-primary text-white" : "bg-gray-200";
   };
 
-  const getLineClass = (index: number) => {
-    return currentStatusIndex >= index + 1 ? "bg-primary" : "bg-gray-200";
-  };
+  const getLineClass = (index: number) =>
+    currentStatusIndex >= index + 1 ? "bg-primary" : "bg-gray-200";
 
   const getNextStatus = (): Status | null => {
     if (!orderStatus) return STATUSES[0];
@@ -120,9 +122,13 @@ const OrderStatus: React.FC<OrderStatusProps> = ({ orderId ,currentState}) => {
       if (!res.ok) throw new Error("Failed to update status");
       setOrderStatus(nextStatus);
       toast.success(`Status updated to ${nextStatus}`);
-    } catch (err: any) {
-      console.error(err);
-      toast.error(err.message || "Failed to update status");
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        console.error(err.message);
+        toast.error(err.message);
+      } else {
+        toast.error("Failed to update status");
+      }
     } finally {
       setIsUpdating(false);
     }
@@ -175,11 +181,10 @@ const OrderStatus: React.FC<OrderStatusProps> = ({ orderId ,currentState}) => {
             >
               {isUpdating ? (
                 <ThreeDots
-                  visible={true}
+                  visible
                   height="30"
                   width="50"
                   color="white"
-                  radius="9"
                   ariaLabel="three-dots-loading"
                 />
               ) : (

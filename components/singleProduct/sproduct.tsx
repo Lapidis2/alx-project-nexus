@@ -180,6 +180,8 @@ const Sproduct: React.FC<Props> = ({ product, isLoading = false }) => {
 
           <div className="flex items-center border rounded-md p-2 gap-2">
             <span>Size:</span>
+
+	
             <button onClick={subtractSize}>
               <FontAwesomeIcon icon={faMinus} />
             </button>

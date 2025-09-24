@@ -73,7 +73,7 @@ const BestDeals: React.FC = () => {
           fill
           className="object-contain rounded-lg"
           sizes="(max-width: 768px) 100vw, 50vw"
-          onLoadingComplete={() => setLoading(false)}
+          onLoad={() => setLoading(false)}
           priority
         />
       </figure>

@@ -9,13 +9,38 @@ interface Order {
   status: "pending" | "delivered" | "cancelled";
 }
 
-const colors = {
+interface PieData {
+	name: "pending" | "delivered" | "cancelled"; 
+	value: number;       
+	actualValue: number;  
+	color: string;  
+	[key: string]: string | number;      
+  }
+const colors: Record<Order["status"], string> = {
   pending: "#FFC632",
   delivered: "#17BF6B",
   cancelled: "#ED3333",
 };
 
-const validStatuses = ["pending", "delivered", "cancelled"];
+const validStatuses: Order["status"][] = ["pending", "delivered", "cancelled"];
+
+
+interface CustomTooltipProps {
+  active?: boolean;
+  payload?: { payload: PieData }[];
+}
+
+const CustomTooltip: React.FC<CustomTooltipProps> = ({ active, payload }) => {
+  if (!active || !payload || payload.length === 0) return null;
+
+  const data = payload[0].payload;
+
+  return (
+    <div className="bg-white p-2 rounded shadow text-sm font-medium">
+      {data.name}: {data.actualValue}
+    </div>
+  );
+};
 
 const OrderStatus: React.FC = () => {
   const [orders, setOrders] = useState<Order[]>([]);
@@ -29,12 +54,14 @@ const OrderStatus: React.FC = () => {
         if (!res.ok) throw new Error("Failed to fetch orders");
         const data: Order[] = await res.json();
         setOrders(data);
-      } catch (err: any) {
-        setError(err.message || "Something went wrong");
+      } catch (err: unknown) {
+        if (err instanceof Error) setError(err.message);
+        else setError("Something went wrong");
       } finally {
         setIsLoading(false);
       }
     };
+
     fetchOrders();
   }, []);
 
@@ -57,8 +84,7 @@ const OrderStatus: React.FC = () => {
     );
   }
 
-  // Count only valid statuses
-  const statusCounts: { [key: string]: number } = {
+  const statusCounts: Record<Order["status"], number> = {
     pending: 0,
     delivered: 0,
     cancelled: 0,
@@ -70,12 +96,11 @@ const OrderStatus: React.FC = () => {
     }
   });
 
-  // Prepare chart data (always show all valid statuses)
-  const datas = validStatuses.map((status) => ({
+  const datas: PieData[] = validStatuses.map((status) => ({
     name: status,
-    value: statusCounts[status] === 0 ? 0.1 : statusCounts[status], // tiny slice for zero
-    actualValue: statusCounts[status], // real count for tooltip/legend
-    color: colors[status as keyof typeof colors],
+    value: statusCounts[status] === 0 ? 0.1 : statusCounts[status],
+    actualValue: statusCounts[status],
+    color: colors[status],
   }));
 
   return (
@@ -89,18 +114,17 @@ const OrderStatus: React.FC = () => {
         <div className="w-full md:w-1/2 h-80">
           <ResponsiveContainer width="100%" height="100%">
             <PieChart>
-              <Tooltip
-                contentStyle={{ background: "white", borderRadius: "5px" }}
-                formatter={(value, name, props) => {
-                  const actual = (props.payload as any).actualValue;
-                  return [actual, name];
-                }}
-              />
-              <Pie data={datas} innerRadius={60} outerRadius={80} dataKey="value">
+              <Pie
+                data={datas}
+                innerRadius={60}
+                outerRadius={80}
+                dataKey="value"
+              >
                 {datas.map((item) => (
                   <Cell key={item.name} fill={item.color} />
                 ))}
               </Pie>
+              <Tooltip content={<CustomTooltip />} />
             </PieChart>
           </ResponsiveContainer>
         </div>

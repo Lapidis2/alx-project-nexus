@@ -15,12 +15,23 @@ const weeklySales: DaySales[] = [
   { day: "Sunday", totalSales: 650 },
 ];
 
-export default function handler(
+// Helper function to simulate delay
+function delay(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<DaySales[]>
 ) {
-  // Simulate a delay for realism
-  setTimeout(() => {
+  try {
+  
+    await delay(500);
+
+   
     res.status(200).json(weeklySales);
-  }, 500);
+  } catch (error) {
+    console.error("Error in /api/weekly-sales:", error);
+    res.status(500).json([]);
+  }
 }

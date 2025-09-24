@@ -14,7 +14,7 @@ const VerifyEmailPage = () => {
         const res = await fetch(`/api/auth/verify-email?token=${token}`);
         if (!res.ok) throw new Error("Failed verification");
         setStatus("success");
-      } catch (error) {
+      } catch {
         setStatus("error");
       }
     };

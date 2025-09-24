@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 import Head from "next/head";
 import OrderSummary from "@/components/checkOut/OrderSummary";
 import Payment from "@/components/checkOut/Payment";
@@ -43,13 +44,13 @@ const Checkout: React.FC = () => {
           />
         </div>
 
-        {/* Back to Products Button */}
+     
         <div className="flex justify-center mt-10">
-          <a href="/products">
-            <button className="bg-amber-600 px-10 py-3 rounded-lg text-lg text-white font-semibold hover:shadow-sm hover:shadow-black">
-              {t("BACK TO HOME")}
-            </button>
-          </a>
+		<Link href="/products" passHref>
+  <button className="bg-amber-600 px-10 py-3 rounded-lg text-lg text-white font-semibold hover:shadow-sm hover:shadow-black">
+    {t("BACK TO HOME")}
+  </button>
+</Link>
         </div>
       </main>
 

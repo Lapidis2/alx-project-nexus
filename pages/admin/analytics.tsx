@@ -6,10 +6,41 @@ import SellingReport from "@/components/dashboard/analytics/SellingReports";
 import TopProduct from "@/components/dashboard/analytics/TopProducts";
 import InteractionCard from "@/components/dashboard/InteractiveCard";
 
+
+interface Seller {
+	id: string;
+	name: string;
+	status: string; 
+	key: string
+  }
+  
+  interface User {
+	id: string;
+	name: string;
+	email: string;
+	key: string
+  }
+  
+  interface Order {
+	id: string;
+	status: string;
+	totalAmount?: number;
+	key: string
+  }
+  
+
+
+
+
+
+
+
+
+
 const Analytics = () => {
-  const [sellers, setSellers] = useState<any[]>([]);
-  const [users, setUsers] = useState<any[]>([]);
-  const [orders, setOrders] = useState<any[]>([]);
+  const [sellers, setSellers] = useState<Seller[]>([]);
+  const [users, setUsers] = useState<User[]>([]);
+  const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<boolean>(false);
 

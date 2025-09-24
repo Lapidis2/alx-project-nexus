@@ -10,7 +10,7 @@ interface AdminLayoutProps {
 const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
 	return (
 	  <div className="w-full min-h-screen flex flex-row">
-		{/* Sidebar */}
+	
 		<div className="hidden lg:flex lg:w-[15%] relative">
 		  <Sidebar />
 		</div>

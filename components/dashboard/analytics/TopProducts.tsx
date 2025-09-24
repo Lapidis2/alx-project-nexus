@@ -19,8 +19,12 @@ const TopProduct: React.FC = () => {
         if (!res.ok) throw new Error("Failed to fetch top products");
         const data: TopProductType[] = await res.json();
         setTopProducts(data);
-      } catch (err: any) {
-        setError(err.message || "An error occurred");
+      } catch (err:unknown) {
+		if (err instanceof Error) {
+			setError(err.message);
+		  } else {
+			setError("An unexpected error occurred");
+		  }
       } finally {
         setIsLoading(false);
       }

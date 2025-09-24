@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Image from "next/image";
 import CustomButton from "./CustomButton";
 import CustomInput from "./CustomInput";
-import { UserDataType } from "@/pages/user";
+import { UserDataType } from "@/components/pages/UserPage";
 
 type ProfileDetailsTabProps = {
   user: UserDataType;
@@ -52,9 +52,11 @@ const ProfileDetailsTab: React.FC<ProfileDetailsTabProps> = ({
       setUser(updatedUser);
 
       alert("Profile updated successfully!");
-    } catch (error: any) {
-      console.error(error);
-      alert("Failed to update profile: " + error.message);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+			 console.error(err.message);
+			 
+		   } 
     } finally {
       setIsSubmitting(false);
     }

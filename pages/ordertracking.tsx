@@ -10,36 +10,55 @@ import { ContactInfo } from "@/components/OrderTracking/ContactInfo";
 import OrderDetails from "@/components/OrderTracking/OrderDetail";
 import OrderStatus from "@/components/OrderTracking/OrderStatus";
 import OrderProductDetails from "@/components/OrderTracking/OrderProductDetail";
+import type { Product as OrderProduct } from "@/components/OrderTracking/OrderProductDetail";
 
-const OrderTrackingPage = () => {
+
+// ------------------- TYPES -------------------
+
+
+interface Order {
+  id: string;
+  status: "pending" | "delivered" | "shipped" | string;
+  contactName: string;
+  email: string;
+  phoneNumber: string;
+  products: OrderProduct[];
+}
+
+interface UserInfo {
+  name: string;
+  email: string;
+  phoneNumber: string;
+}
+
+// ------------------- COMPONENT -------------------
+const OrderTrackingPage: React.FC = () => {
   const router = useRouter();
   const { orderId } = router.query;
 
-  const [orderData, setOrderData] = useState<any>(null);
-  const [userInfo, setUserInfo] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
+  const [orderData, setOrderData] = useState<Order | null>(null);
+  const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<boolean>(false);
 
   useEffect(() => {
-    if (!router.isReady) return; // wait until query params are ready
-    if (!orderId) return;
+    if (!router.isReady || !orderId) return;
 
     const fetchOrderData = async () => {
       setLoading(true);
       setError(false);
       try {
-        const orderRes = await axios.get(`/api/orders/${orderId}`);
+        const orderRes = await axios.get<Order>(`/api/orders/${orderId}`);
         const order = orderRes.data;
         setOrderData(order);
 
-        // Set user info from order
         setUserInfo({
           name: order.contactName,
           email: order.email,
           phoneNumber: order.phoneNumber,
         });
-      } catch (err: any) {
-        console.error("Failed to fetch order:", err.message);
+      } catch (err) {
+        console.error("Failed to fetch order:", err);
         setError(true);
       } finally {
         setLoading(false);

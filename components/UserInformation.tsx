@@ -1,7 +1,7 @@
 import React from "react";
 import CustomButton from "./CustomButton";
-import { UserDataType } from "@/pages/user";
-
+import { UserDataType } from "@/components/pages/UserPage";
+import Image from "next/image";
 interface UserInformationProps {
   user: UserDataType;
 }
@@ -13,7 +13,7 @@ const UserInformation: React.FC<UserInformationProps> = ({
     <section className="py-5">
       <h1 className="font-outfit font-semibold lg:text-xl">Profile Information</h1>
       <div className="py-8 flex flex-col gap-y-5 lg:flex-row lg:items-center md:gap-x-7">
-        <img
+        <Image
           src={profile}
           alt={`${name} profile`}
           className="rounded-full h-24 w-24 max-w-28 max-h-28 lg:w-28 lg:h-28 object-cover border-4 border-primary"

@@ -64,7 +64,7 @@ const Signin: NextPage = () => {
         default:
           router.push("/");
       }
-    } catch (error: unknown) {
+    } catch  {
       setError(t("Something went wrong"));
     } finally {
       setLoading(false);

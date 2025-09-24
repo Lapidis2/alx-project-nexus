@@ -30,7 +30,14 @@ import React, {
 	) as React.ReactElement<TabProps>[];
   
 	const [activeTab, setActiveTab] = useState(tabs[0]?.props.label);
-	const handleActiveTab = useCallback(setActiveTab, []);
+  
+	// ✅ Option 1 fix: add `setActiveTab` in dependency array
+	const handleActiveTab = useCallback(
+	  (label: string | undefined) => {
+		if (label) setActiveTab(label);
+	  },
+	  [setActiveTab]
+	);
   
 	return (
 	  <section className={className}>

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import Image from "next/image";
 import {
   Bar,
   BarChart,
@@ -28,8 +29,12 @@ const WeeklyReport: React.FC = () => {
         if (!res.ok) throw new Error("Failed to fetch weekly sales");
         const data = await res.json();
         setWeeklySales(data);
-      } catch (err: any) {
-        setError(err.message);
+      } catch (err: unknown) {
+		if (err instanceof Error) {
+			setError(err.message);
+		  } else {
+			setError("An unexpected error occurred");
+		  }
       } finally {
         setIsLoading(false);
       }
@@ -63,9 +68,11 @@ const WeeklyReport: React.FC = () => {
         <span className="flex gap-2 mt-3">
           <div className="bg-[#37C9EE] w-3 h-3 inline-block rounded-full" />
           <span>Weekly report</span>
-          <img
-            src="https://static.vecteezy.com/system/resources/previews/026/622/025/original/add-category-icon-symbol-design-illustration-vector.jpg"
+          <Image
+            src="/assets/images/products/category-icon.png"
             className="w-5 h-5 absolute top-3 right-2"
+			width={20}
+			height={20}
             alt="category-icon"
           />
         </span>

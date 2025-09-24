@@ -33,10 +33,15 @@ export const ContactInfo: React.FC<ContactInfoProps> = ({
       try {
         const res = await fetch(`/api/orders/${orderId}`);
         if (!res.ok) throw new Error("Failed to fetch order");
+
         const data: OrderData = await res.json();
         setOrder(data);
-      } catch (err: any) {
-        setError(err.message || "Something went wrong");
+      } catch (err: unknown) {
+        if (err instanceof Error) {
+          setError(err.message);
+        } else {
+          setError("Something went wrong");
+        }
       } finally {
         setLoading(false);
       }

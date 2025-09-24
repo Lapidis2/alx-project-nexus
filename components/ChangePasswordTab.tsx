@@ -1,7 +1,7 @@
 import React from "react";
 import CustomButton from "./CustomButton";
 import CustomInput from "./CustomInput";
-import  {UserDataType}  from "@/pages/user";
+import { UserDataType } from "@/components/pages/UserPage"
 import { SubmitHandler, useForm } from "react-hook-form";
 import { RotatingLines } from "react-loader-spinner";
 import toast from "react-hot-toast";
@@ -19,8 +19,6 @@ interface ChangePasswordTabProps {
 }
 
 const ChangePasswordTab: React.FC<ChangePasswordTabProps> = ({
-  label,
-  tabName,
   user: { userId },
 }) => {
   const {
@@ -50,11 +48,16 @@ const ChangePasswordTab: React.FC<ChangePasswordTabProps> = ({
 
       toast.dismiss(toastId);
       toast.success("Password updated successfully!");
-      reset(); // Clear form after success
-    } catch (error: any) {
-      toast.dismiss(toastId);
-      toast.error(error.message || "Something went wrong");
-    }
+      reset(); 
+    } catch (err: unknown) {
+		toast.dismiss(toastId);
+	  
+		if (err instanceof Error) {
+		  toast.error(err.message);
+		} else {
+		  toast.error("Something went wrong");
+		}
+	  }
   };
 
   return (

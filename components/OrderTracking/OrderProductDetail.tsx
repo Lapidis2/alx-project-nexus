@@ -2,7 +2,7 @@
 import React from "react";
 
 
-interface Product {
+export interface Product {
   productName: string;
   quantity: number;
   price: number;

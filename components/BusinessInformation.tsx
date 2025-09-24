@@ -8,8 +8,8 @@ interface BusinessInformationTabProps {
 }
 
 const BusinessInformationTab: React.FC<BusinessInformationTabProps> = ({
-  label,
-  tabName,
+  label
+
 }) => {
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     console.log(`${e.target.id}: ${e.target.value}`);
