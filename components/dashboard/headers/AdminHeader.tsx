@@ -19,7 +19,7 @@ const BellIcon = () => (
 interface AdminHeaderProps {
   userData?: {
     name?: string;
-    avatar?: string; 
+    avatar?: string|null; 
   };
 }
 
@@ -77,7 +77,7 @@ const AdminHeader: React.FC<AdminHeaderProps> = ({ userData }) => {
    
           <div className="h-10 w-10 rounded-full overflow-hidden border border-gray-300">
             <Image
-              src={userData?.avatar || "/default-avatar.png"} 
+              src={userData?.avatar || "/assets/images/profile.png"} 
               alt="User Avatar"
               width={40}
               height={40}
@@ -114,7 +114,7 @@ const AdminHeader: React.FC<AdminHeaderProps> = ({ userData }) => {
           {isUserMenuOpen && (
             <div className="absolute top-12 right-0 bg-white shadow-lg rounded-md w-40 py-2 z-50">
               <Link
-                href="/admin/profile"
+                href="/admin/settings"
                 className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
               >
                 Profile

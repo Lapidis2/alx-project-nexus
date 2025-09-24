@@ -133,9 +133,9 @@ const RequestsTable: React.FC<RequestsTableProps> = ({ sellers: initialSellers }
                 <p><strong>Store Name:</strong> {selectedSeller.storeName}</p>
                 <p><strong>City:</strong> {selectedSeller.address.city}</p>
                 <p><strong>TIN:</strong> {selectedSeller.TIN}</p>
-                <div className="mt-4 flex flex-col sm:flex-row justify-end gap-2">
+                <div className="mt-4 flex justify-center items-center gap-2 sm:flex-row">
                   {isLoading ? (
-                    <Circles visible height="60" width="60" color="#C9974C" />
+                    <Circles visible={true} height="60" width="60" color="#C9974C" />
                   ) : (
                     <>
                       <button
@@ -148,7 +148,7 @@ const RequestsTable: React.FC<RequestsTableProps> = ({ sellers: initialSellers }
                       <button
                         title="Reject seller"
                         className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600"
-                        onClick={() => setIsMessageOpen(true)}
+                        onClick={handleDeny}
                       >
                         Deny
                       </button>

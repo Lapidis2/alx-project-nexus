@@ -6,7 +6,7 @@ import InteractionCard from "@/components/dashboard/InteractiveCard";
 
 function AdminHome() {
  
-  const [sellers, setSellers] = useState<any[]>([
+  const [sellers] = useState<any[]>([
     { id: 1, name: "Vendor A", status: "approved" },
     { id: 2, name: "Vendor B", status: "pending" },
     { id: 3, name: "Vendor C", status: "approved" },

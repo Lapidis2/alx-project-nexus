@@ -8,7 +8,7 @@ interface UserProfileProps {
   name?: string;
 }
 
-const SettingsPage: React.FC<UserProfileProps> = ({ profileImage, name }) => {
+const SettingsPage: React.FC<UserProfileProps> = ({ profileImage}) => {
   const [activeTab, setActiveTab] = useState<"profile" | "password">("profile");
 
   const initialProfile = {
@@ -28,7 +28,7 @@ const SettingsPage: React.FC<UserProfileProps> = ({ profileImage, name }) => {
   const resetPasswords = () =>
     setPasswords({ oldPassword: "", newPassword: "", confirmPassword: "" });
 
-  // Helper for initials fallback
+  
   const getInitials = (fullName?: string) => {
     if (!fullName) return "U";
     return fullName
@@ -47,7 +47,7 @@ const SettingsPage: React.FC<UserProfileProps> = ({ profileImage, name }) => {
           className={`py-2 px-4 -mb-px ${
             activeTab === "profile"
               ? "border-b-2 border-blue-600 text-blue-600 font-medium"
-              : "text-gray-500"
+              : "text-gray-700"
           }`}
           onClick={() => setActiveTab("profile")}
         >
@@ -57,7 +57,7 @@ const SettingsPage: React.FC<UserProfileProps> = ({ profileImage, name }) => {
           className={`py-2 px-4 -mb-px ${
             activeTab === "password"
               ? "border-b-2 border-blue-600 text-blue-600 font-medium"
-              : "text-gray-500"
+              : "text-gray-700"
           }`}
           onClick={() => setActiveTab("password")}
         >
@@ -67,9 +67,9 @@ const SettingsPage: React.FC<UserProfileProps> = ({ profileImage, name }) => {
 
       <div className="mt-8">
         {activeTab === "profile" ? (
-          // Profile Tab
+         
           <div className="flex flex-col md:flex-row gap-12">
-            {/* Left: Picture */}
+            
             <div className="flex flex-col items-center md:w-1/3">
               {profileImage ? (
                 <Image
@@ -81,13 +81,13 @@ const SettingsPage: React.FC<UserProfileProps> = ({ profileImage, name }) => {
                 />
               ) : (
                 <Image
-                  src="/assets/images/profile-placeholder.png"
+                  src="/assets/images/profile.png"
                   alt="profile placeholder"
                   width={112}
                   height={112}
                   className="w-28 h-28 rounded-full object-cover"
                   onError={(e) => {
-                    // If placeholder fails → replace with initials
+               
                     const target = e.target as HTMLImageElement;
                     target.style.display = "none";
                     const fallback = document.getElementById("fallback-initials");
