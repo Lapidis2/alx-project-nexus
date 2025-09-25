@@ -21,7 +21,7 @@ const Sidebar:React.FC<SidebarProps> = () => {
 
   const Navlinks: NavLink[] = [
     { id: "001", label: "Dashboard", location: "/admin", icon: <FaTachometerAlt /> },
-    { id: "002", label: "Users", location: "/admin/users", icon: <FaUsers /> },
+    { id: "002", label: "Users", location: "/admin/Users", icon: <FaUsers /> },
     { id: "003", label: "Sellers", location: "/admin/sellers", icon: <FaUserShield /> },
 	{ id: "004", label: "All Products", location: "/admin/products", icon: <FaClipboardList /> },
     { id: "005", label: "Requests", location: "/admin/requests", icon: <FaClipboardList /> },

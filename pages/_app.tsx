@@ -1,4 +1,4 @@
-// pages/_app.tsx
+
 import { useRouter } from 'next/router';
 import { useEffect, useState, ReactNode } from 'react';
 import type { AppProps } from 'next/app';
@@ -6,7 +6,7 @@ import '@/styles/globals.css';
 
 import dynamic from 'next/dynamic';
 
-// Dynamically import your AuthProviderWrapper with SSR disabled
+
 const AuthProviderWrapper = dynamic(() => import('@/components/AuthProviderWrapper'), {
   ssr: false,
 });
@@ -17,7 +17,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
   const [Layout, setLayout] = useState<React.FC<{ children: ReactNode }> | null>(null);
   const [loadingLayout, setLoadingLayout] = useState(true);
 
-  // Client check for layout loading (optional)
+ 
   const [isClient, setIsClient] = useState(false);
   useEffect(() => setIsClient(true), []);
 
