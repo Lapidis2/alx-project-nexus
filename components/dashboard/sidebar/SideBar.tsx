@@ -2,7 +2,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { useRouter } from "next/navigation"; // Next.js router
+import { useRouter } from "next/navigation"; 
 
 import { FaTachometerAlt, FaUsers, FaUserShield, FaClipboardList, FaChartLine, FaCog, FaSignOutAlt } from "react-icons/fa";
 
@@ -12,8 +12,10 @@ interface NavLink {
   location: string;
   icon: React.JSX.Element;
 }
-
-const Sidebar = () => {
+interface SidebarProps {
+	role: "admin" | "seller" | "buyer" | "guest";
+  }
+const Sidebar:React.FC<SidebarProps> = () => {
   const router = useRouter();
   const [active, setActive] = useState<string>("001");
 
@@ -21,9 +23,10 @@ const Sidebar = () => {
     { id: "001", label: "Dashboard", location: "/admin", icon: <FaTachometerAlt /> },
     { id: "002", label: "Users", location: "/admin/users", icon: <FaUsers /> },
     { id: "003", label: "Sellers", location: "/admin/sellers", icon: <FaUserShield /> },
-    { id: "004", label: "Requests", location: "/admin/requests", icon: <FaClipboardList /> },
-    { id: "005", label: "Analytics", location: "/admin/analytics", icon: <FaChartLine /> },
-    { id: "006", label: "Settings", location: "/admin/settings", icon: <FaCog /> },
+	{ id: "004", label: "All Products", location: "/admin/products", icon: <FaClipboardList /> },
+    { id: "005", label: "Requests", location: "/admin/requests", icon: <FaClipboardList /> },
+    { id: "006", label: "Analytics", location: "/admin/analytics", icon: <FaChartLine /> },
+    { id: "007", label: "Settings", location: "/admin/settings", icon: <FaCog /> },
   ];
 
   const handleNavigate = (link: NavLink) => {

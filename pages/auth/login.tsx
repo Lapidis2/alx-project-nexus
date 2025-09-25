@@ -8,6 +8,20 @@ import { useTranslation } from "react-i18next";
 import AuthButton from "@/constants/AuthButton";
 import Input from "@/constants/Input";
 
+interface User {
+  name: string;
+  email: string;
+  role: string;
+  profile?: string;
+  isVerified: boolean;
+}
+
+interface LoginResponse {
+  user: User;
+  token: string;
+  message?: string;
+}
+
 const Signin: NextPage = () => {
   const router = useRouter();
   const { t } = useTranslation();
@@ -21,20 +35,26 @@ const Signin: NextPage = () => {
     e.preventDefault();
     setError("");
 
-    if (!email.trim() || !password.trim()) {
+    const trimmedEmail = email.trim();
+    const trimmedPassword = password.trim();
+
+    if (!trimmedEmail || !trimmedPassword) {
       setError(t("Email and password are required"));
       return;
     }
 
     setLoading(true);
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
+      const res = await fetch(
+        "https://alx-e-commerce.onrender.com/api/auth/login",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: trimmedEmail, password: trimmedPassword }),
+        }
+      );
 
-      const data: { user: { isVerified: boolean; role: string }; token: string; message?: string } = await res.json();
+      const data: LoginResponse = await res.json();
 
       if (!res.ok) {
         setError(data.message || t("Something went wrong"));
@@ -48,12 +68,14 @@ const Signin: NextPage = () => {
         return;
       }
 
+      // Save token and user info
       localStorage.setItem("token", data.token);
       localStorage.setItem("user", JSON.stringify(data.user));
 
+      // Redirect based on role
       switch (data.user.role) {
         case "buyer":
-          router.push("/products")
+          router.push("/products");
           break;
         case "vendor":
           router.push("/vendor");

@@ -8,7 +8,7 @@ const Footer: React.FC = () => {
   const { t } = useTranslation();
 
   return (
-    <footer className="bg-primary font-outfit text-base md:text-xl text-white pt-8">
+    <footer className="bg-primary font-outfit text-base md:text-xl text-white pt-8 w-full h-auto">
       <section className="container mx-auto px-4 md:px-8 border-b border-border pb-4 grid grid-cols-1 md:grid-cols-3 gap-8">
         <div className="footer-description mr-0 md:mr-32">
           <div className="mb-6">

@@ -35,14 +35,11 @@ const ProfileDetailsTab: React.FC<ProfileDetailsTabProps> = ({
     setIsSubmitting(true);
 
     try {
-      let uploadedProfile = profileImage;
-
-   
-      if (selectedFile) {
-  
-        uploadedProfile = profileImage; 
-      }
-
+      const uploadedProfile = profileImage;
+if(selectedFile){
+	const formData = new FormData();
+	formData.append("file", selectedFile);
+}
       const updatedUser: UserDataType = {
         ...user,
         email,
@@ -77,23 +74,23 @@ const ProfileDetailsTab: React.FC<ProfileDetailsTabProps> = ({
         onSubmit={handleSubmit}
         className="flex flex-col lg:flex-row gap-4 lg:max-w-fit lg:px-2 md:px-5 pt-5"
       >
-        {/* Profile Image */}
+        
         <fieldset className="flex flex-col lg:flex-row items-center gap-y-4 md:gap-x-5 border-none">
           <legend className="sr-only">Profile Image</legend>
-          <div className="relative w-20 h-20 md:w-24 md:h-24">
-            <Image
-              src={profileImage}
-              alt="User profile image"
-              fill
-              className="rounded-full object-cover border-4 border-primary"
-              sizes="96px"
-            />
-          </div>
+		  <div className="relative w-28 h-28 flex-shrink-0">
+  <Image
+    src={profileImage}
+    alt="User profile image"
+    fill
+    className="rounded-full object-cover border-4 border-primary"
+    sizes="96px"
+  />
+</div>
           <CustomInput
             handleChange={handleProfileChange}
             accept=".jpg,.png"
             label="Upload Picture"
-            labelStyles="inline-flex items-center px-2 md:px-4 py-1 bg-gray-100 rounded-md cursor-pointer text-gray-500 gap-x-3 font-outfit text-sm md:text-sm"
+            labelStyles="inline-flex items-center px-2 md:px-4 py-1 bg-gray-100 rounded-md cursor-pointer text-gray-700 gap-x-3 font-outfit text-sm md:text-sm"
             inputId="upload"
             type="file"
             inputStyles="hidden"
@@ -101,7 +98,7 @@ const ProfileDetailsTab: React.FC<ProfileDetailsTabProps> = ({
           />
         </fieldset>
 
-        {/* Email and Name */}
+  
         <fieldset className="flex flex-col lg:items-end gap-y-2 w-full lg:max-w-lg border-none">
           <legend className="sr-only">User Information</legend>
 
@@ -113,7 +110,7 @@ const ProfileDetailsTab: React.FC<ProfileDetailsTabProps> = ({
             labelStyles="text-gray-300 text-sm md:text-base font-outfit mb-2"
             inputStyles="rounded w-full py-2 px-3 bg-gray-100 font-outfit text-sm md:text-base"
             type="text"
-            placeholder="crafters@gmail.com"
+            placeholder="jean@gmail.com"
             disable={isSubmitting}
           />
 
@@ -125,7 +122,7 @@ const ProfileDetailsTab: React.FC<ProfileDetailsTabProps> = ({
             labelStyles="text-sm text-gray-300 md:text-base font-outfit mb-2"
             inputStyles="rounded w-full py-2 px-3 bg-gray-100 font-outfit text-sm md:text-base"
             type="text"
-            placeholder="Crafters"
+            placeholder="Jean shop"
             disable={isSubmitting}
           />
 

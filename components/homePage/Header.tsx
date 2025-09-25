@@ -5,14 +5,13 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
-
 import Board from"@/public/assets/images/board.png"
 import Logo from "@/public/assets/images/logo1.png";
 import Bag from "@/public/assets/images/Bag.svg";
 import Heart from "@/public/assets/images/heart 1.svg";
 import LogoutIcon from "@/public/assets/images/logout.svg";
 import profileIcon from "@/public/assets/images/profile.png";
-
+import { handleFakeLogin } from "@/testbutton";
 interface User {
   name: string;
   email: string;
@@ -45,16 +44,7 @@ const Header = () => {
     return null;
   }
 
-  const handleLogin = () => {
-    const fakeUser: User = {
-      name: "Jean Pierre",
-      email: "jean@example.com",
-      role: "buyer",
-      profile: "/assets/images/profile.png",
-    };
-    localStorage.setItem("user", JSON.stringify(fakeUser));
-    setUser(fakeUser);
-  };
+
 
   const handleLogout = () => {
     localStorage.removeItem("user");
@@ -63,7 +53,7 @@ const Header = () => {
   };
 
   return (
-    <header className="fixed top-0 w-full z-50 bg-primary text-white px-6 py-4 flex items-center justify-between border-b border-border">
+    <header className="fixed top-0 w-full h-24 z-50 bg-primary text-white px-6 py-4 flex items-center justify-between border-b border-border">
     
       <div className="flex items-center gap-8">
         <Link href="/" aria-label="Homepage">
@@ -138,7 +128,7 @@ const Header = () => {
         ) : (
           <div className="flex gap-4">
             <button
-              onClick={handleLogin}
+              onClick={handleFakeLogin}
               className="px-4 py-2 border border-white rounded hover:bg-white hover:text-primary transition"
             >
               {t("Login")}

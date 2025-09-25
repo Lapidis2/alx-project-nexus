@@ -1,11 +1,32 @@
 
 import type { NextApiRequest, NextApiResponse } from 'next';
-
+import profilePic from "@/public/assets/images/profile.png";
 const mockOrders = [
   {
-    id: '2b701ee8-913f-422f-8f23-902a7687719a',
+    id: '1',
+	name:"Jean Pierre",
+	email:"jean@gmail.com",
+	phone:"+250785934003",
+	profile:profilePic,
     userId: 'user123',
+	role:"buyer",
     status: 'pending',
+	token:"tfhe453",
+    products: [
+      { id: 'p1', name: 'Product 1', quantity: 2, price: 20 },
+      { id: 'p2', name: 'Product 2', quantity: 1, price: 50 },
+    ],
+  },
+  {
+    id: '2',
+	name:"Jean Pierre",
+	email:"jean@gmail.com",
+	phone:"+250785934003",
+	profile:profilePic,
+    userId: 'user123',
+	role:"seller",
+    status: 'pending',
+	token:"tfhe453",
     products: [
       { id: 'p1', name: 'Product 1', quantity: 2, price: 20 },
       { id: 'p2', name: 'Product 2', quantity: 1, price: 50 },

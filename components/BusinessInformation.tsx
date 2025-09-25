@@ -1,10 +1,11 @@
 import React, { ChangeEvent, FormEvent } from "react";
 import CustomButton from "./CustomButton";
 import CustomInput from "./CustomInput";
-
+import { UserDataType } from "./pages/UserPage";
 interface BusinessInformationTabProps {
   label?: string;
   tabName?: string;
+  user?: UserDataType;
 }
 
 const BusinessInformationTab: React.FC<BusinessInformationTabProps> = ({

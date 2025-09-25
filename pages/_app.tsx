@@ -1,28 +1,30 @@
 import '../styles/globals.css';
 import type { AppProps } from 'next/app';
 import { useRouter } from 'next/router';
+import { useEffect, useState, ReactNode } from 'react';
 import AdminLayout from '@/components/dashboard/AdminLayout';
 import SellerLayout from '@/components/dashboard/SellerLayout';
 import BuyerLayout from '@/components/dashboard/BuyerLayout';
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
+  const [layout, setLayout] = useState<React.FC<{ children: ReactNode }> | null>(null);
 
-  
-  const getLayout = () => {
-    if (router.pathname.startsWith('/admin')) return AdminLayout;
-    if (router.pathname.startsWith('/seller')) return SellerLayout;
-    if (router.pathname.startsWith('/buyer')) return BuyerLayout;
-    return null; 
-  };
+  useEffect(() => {
+    if (router.pathname.startsWith('/admin')) setLayout(() => AdminLayout);
+    else if (router.pathname.startsWith('/seller/dashboard')) setLayout(() => SellerLayout);
+    else if (router.pathname.startsWith('/buyer/dashboard')) setLayout(() => BuyerLayout);
+    else setLayout(null);
+  }, [router.pathname]);
 
-  const Layout = getLayout();
+  if (layout) {
+    const Layout = layout;
+    return (
+      <Layout>
+        <Component {...pageProps} />
+      </Layout>
+    );
+  }
 
-  return Layout ? (
-    <Layout>
-      <Component {...pageProps} />
-    </Layout>
-  ) : (
-    <Component {...pageProps} />
-  );
+  return <Component {...pageProps} />;
 }

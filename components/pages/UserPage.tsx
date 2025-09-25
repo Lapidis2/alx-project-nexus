@@ -22,6 +22,7 @@ export interface UserDataType {
   cartId: string | null;
   createdAt: string;
   email: string;
+  phone:string,
   emailVerificationToken: string;
   isTwoFactorEnabled: boolean;
   isVerfied: boolean;
@@ -52,6 +53,7 @@ const UserPage: React.FC = () => {
     if (!authUser) return null;
     return {
       cartId: null,
+	  phone:"",
       createdAt: new Date().toISOString(),
       email: authUser.email || "",
       emailVerificationToken: "",
@@ -91,6 +93,7 @@ const UserPage: React.FC = () => {
         <ChangePasswordTab user={user} label="changepassword" tabName="Change Password" />
         {user.role === "seller" && (
           <BusinessInformationTab
+		  user={user}
             label="bussininfo"
             tabName="Business Information"
           />

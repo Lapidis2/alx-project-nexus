@@ -20,7 +20,7 @@ const Sidebar = () => {
   const Navlinks: NavLink[] = [
 	{ id: "001", label: "Dashboard", location: "/seller", icon: <FaTachometerAlt /> },
 	{ id: "002", label: "Sales", location: "/seller/sales", icon: <FaUsers /> },
-	{ id: "003", label: "My Prodcuts", location: "/seller/products", icon: <FaUserShield /> },
+	{ id: "003", label: "My Products", location: "/seller/products", icon: <FaUserShield /> },
 	{ id: "004", label: "Analytics", location: "/seller/analytics", icon: <FaChartLine /> },
 	{ id: "005", label: "Settings", location: "/seller/settings", icon: <FaCog /> },
   ];
