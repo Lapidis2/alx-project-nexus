@@ -29,9 +29,7 @@ const AdminHeader: React.FC<AdminHeaderProps> = ({ userData }) => {
   const { t } = useTranslation();
 
   return (
-    <header className="fixed top-0 left-0 lg:left-80 w-full lg:w-[calc(100%-20rem)] 
-             bg-white shadow-md px-4 py-2 flex items-center justify-between 
-             z-50 transition-all">
+    <header className="fixed top-0 left-0 lg:left-[15%] w-full lg:w-[85%] bg-white shadow-md px-4 py-2 flex items-center justify-between z-50">
  
       <div className="flex items-center space-x-2 lg:hidden">
         <Link href="/admin">

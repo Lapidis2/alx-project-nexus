@@ -150,11 +150,11 @@ const SellerHeader: React.FC<AdminHeaderProps> = ({ userData }) => {
 	  {/* Mobile dropdown */}
 	  {isMenuOpen && (
 		<div className="absolute top-16 right-4 bg-white shadow-md rounded-md p-2 flex flex-col space-y-2 lg:hidden">
-		  <Link href="/seller">Dashboard</Link>
-		  <Link href="/seller/sales">Sales</Link>
-		  <Link href="/seller/products">My Products</Link>
-		  <Link href="/seller/analytics">Analytics</Link>
-		  <Link href="/seller/settings">Settings</Link>
+		  <Link href="/seller/dashboard">Dashboard</Link>
+		  <Link href="/seller/dashboard/sales">Sales</Link>
+		  <Link href="/seller/dashboard/products">My Products</Link>
+		  <Link href="/seller/dashboard/analytics">Analytics</Link>
+		  <Link href="/seller/dashboard/settings">Settings</Link>
 		</div>
 	  )}
 	</header>

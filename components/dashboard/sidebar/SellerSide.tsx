@@ -18,11 +18,11 @@ const Sidebar = () => {
   const [active, setActive] = useState<string>("001");
 
   const Navlinks: NavLink[] = [
-	{ id: "001", label: "Dashboard", location: "/seller", icon: <FaTachometerAlt /> },
-	{ id: "002", label: "Sales", location: "/seller/sales", icon: <FaUsers /> },
-	{ id: "003", label: "My Products", location: "/seller/products", icon: <FaUserShield /> },
-	{ id: "004", label: "Analytics", location: "/seller/analytics", icon: <FaChartLine /> },
-	{ id: "005", label: "Settings", location: "/seller/settings", icon: <FaCog /> },
+	{ id: "001", label: "Dashboard", location: "/seller/dashboard", icon: <FaTachometerAlt /> },
+	{ id: "002", label: "Sales", location: "/seller/dashboard/sales", icon: <FaUsers /> },
+	{ id: "003", label: "My Products", location: "/seller/dashboard/products", icon: <FaUserShield /> },
+	{ id: "004", label: "Analytics", location: "/seller/dashboard/analytics", icon: <FaChartLine /> },
+	{ id: "005", label: "Settings", location: "/seller/dashboard/settings", icon: <FaCog /> },
   ];
 
   const handleNavigate = (link: NavLink) => {
@@ -34,12 +34,11 @@ const Sidebar = () => {
 
   return (
 	<aside className="w-80 hidden lg:flex flex-col fixed gap-6 bg-primary p-6 h-full text-white">
-	  {/* Logo */}
-	  <div className="text-2xl font-bold mb-10 cursor-pointer" onClick={() => router.push("/seller")}>
+	
+	  <div className="text-2xl font-bold mb-10 cursor-pointer" onClick={() => router.push("/seller/dashboard")}>
 		AdminPanel
 	  </div>
 
-	  {/* Navigation Links */}
 	  <nav className="flex flex-col gap-4 flex-1">
 		{Navlinks.map((link) => (
 		  <div

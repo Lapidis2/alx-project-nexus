@@ -4,7 +4,7 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation"; 
 
-import { FaTachometerAlt, FaUsers, FaUserShield, FaClipboardList, FaChartLine, FaCog, FaSignOutAlt } from "react-icons/fa";
+import { FaTachometerAlt, FaUsers, FaUserShield, FaClipboardList, FaChartLine, FaCog, FaSignOutAlt ,FaMoneyBillWave} from "react-icons/fa";
 
 interface NavLink {
   id: string;
@@ -26,7 +26,9 @@ const Sidebar:React.FC<SidebarProps> = () => {
 	{ id: "004", label: "All Products", location: "/admin/products", icon: <FaClipboardList /> },
     { id: "005", label: "Requests", location: "/admin/requests", icon: <FaClipboardList /> },
     { id: "006", label: "Analytics", location: "/admin/analytics", icon: <FaChartLine /> },
-    { id: "007", label: "Settings", location: "/admin/settings", icon: <FaCog /> },
+	{ id: "007", label: "Sales Analysis", location: "/admin/sales", icon: <FaMoneyBillWave/> },
+    { id: "008", label: "Settings", location: "/admin/settings", icon: <FaCog /> },
+	
   ];
 
   const handleNavigate = (link: NavLink) => {
@@ -37,7 +39,7 @@ const Sidebar:React.FC<SidebarProps> = () => {
  
 
   return (
-    <aside className="w-80 hidden lg:flex flex-col fixed gap-6 bg-primary p-6 h-full text-white">
+    <aside className="fixed w-90 hidden lg:flex flex-col  gap-6 bg-primary p-6 h-full text-white">
       {/* Logo */}
       <div className="text-2xl font-bold mb-10 cursor-pointer" onClick={() => router.push("/admin")}>
         AdminPanel

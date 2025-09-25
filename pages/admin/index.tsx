@@ -70,8 +70,8 @@ const AdminHome: React.FC = () => {
   ];
 
   return (
-    <div className="flex flex-col space-y-2 lg:space-y-0 w-full">
-      {/* Cards */}
+    <div className="flex flex-col space-y-2 lg:space-y-0 w-full min-h-screen">
+    
       <div className="flex flex-col w-full lg:p-[1%] xl:h-50 xl:p-1 2xl:p-3 3xl:p-5">
         <div className="grid grid-cols-2 gap-[10px] w-full lg:gap-[5px] lg:h-[15%] xl:gap-[10px] xl:w-[90%] xl:ml-[40px] xl:mt-2 xl:grid-cols-4">
           {cardData.map((item, index) => (

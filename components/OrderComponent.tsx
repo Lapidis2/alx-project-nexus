@@ -1,18 +1,22 @@
+"use client";
+
 import React from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 
-interface Props {
-  status: "pending" | "processing" | "shipped" | "delivered";
+interface StatusProps {
+  status: "pending" | "processing" | "cancelled" | "delivered";
 }
 
-const StatusIndicator: React.FC<Props> = ({ status }) => {
+const StatusIndicator: React.FC<StatusProps> = ({ status }) => {
   const colorClass =
     status === "pending"
       ? "bg-yellow-400"
       : status === "processing"
       ? "bg-blue-400"
-      : status === "shipped"
-      ? "bg-orange-400"
+      : status === "cancelled"
+      ? "bg-red-600"
       : status === "delivered"
       ? "bg-green-400"
       : "bg-gray-500";
@@ -20,12 +24,13 @@ const StatusIndicator: React.FC<Props> = ({ status }) => {
   return <span className={`inline-block w-3 h-3 rounded-full ${colorClass} mr-2`} />;
 };
 
+
 interface OrderProps {
-  status: "pending" | "processing" | "shipped" | "delivered";
   orderId: string;
-  expectedDeliveryDate: Date;
   orderDate: Date;
-  imageUrl?: string; // optional order image
+  expectedDeliveryDate: Date;
+  status: "pending" | "processing" | "cancelled" | "delivered";
+  imageUrl?: string;
 }
 
 const Order: React.FC<OrderProps> = ({
@@ -35,8 +40,12 @@ const Order: React.FC<OrderProps> = ({
   status,
   imageUrl,
 }) => {
+ 
+
   const formatDate = (date: Date) =>
-    new Intl.DateTimeFormat("en-US", { year: "numeric", month: "short", day: "numeric" }).format(date);
+    new Intl.DateTimeFormat("en-US", { year: "numeric", month: "short", day: "numeric" }).format(
+      date
+    );
 
   return (
     <article className="bg-gray-50 hover:shadow-md rounded-lg p-6 mb-4 flex flex-col md:flex-row justify-between items-start md:items-center transition-shadow duration-300">
@@ -73,22 +82,27 @@ const Order: React.FC<OrderProps> = ({
       </div>
 
       <div className="mt-4 md:mt-0">
-        <button className="text-blue-500 hover:underline text-sm">View Details</button>
+	  <Link href={`/orders/${orderId}`}>
+  <button className="text-blue-500 hover:underline text-sm">
+    View Details
+  </button>
+</Link>
       </div>
     </article>
   );
 };
 
-interface Order {
-  status: "pending" | "processing" | "shipped" | "delivered";
+// OrderTable component
+interface OrderFromApi {
   orderId: string;
-  expectedDeliveryDate: Date;
-  orderDate: Date;
+  orderDate: string;
+  expectedDeliveryDate: string;
+  status: "pending" | "processing" | "cancelled" | "delivered";
   imageUrl?: string;
 }
 
 interface OrderTableProps {
-  orders: Order[];
+  orders: OrderFromApi[];
 }
 
 const OrderTable: React.FC<OrderTableProps> = ({ orders }) => {
@@ -102,8 +116,8 @@ const OrderTable: React.FC<OrderTableProps> = ({ orders }) => {
         <Order
           key={order.orderId}
           orderId={order.orderId}
-          orderDate={order.orderDate}
-          expectedDeliveryDate={order.expectedDeliveryDate}
+          orderDate={new Date(order.orderDate)}
+          expectedDeliveryDate={new Date(order.expectedDeliveryDate)}
           status={order.status}
           imageUrl={order.imageUrl}
         />
