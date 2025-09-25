@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import { useEffect, useState, ReactNode } from 'react';
 import type { AppProps } from 'next/app';
-
+import '@/styles/globals.css';
 export default function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
   const [layout, setLayout] = useState<React.FC<{ children: ReactNode }> | null>(null);
