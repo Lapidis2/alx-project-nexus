@@ -1,17 +1,25 @@
-
-
+// pages/_app.tsx
 import { useRouter } from 'next/router';
 import { useEffect, useState, ReactNode } from 'react';
 import type { AppProps } from 'next/app';
 import '@/styles/globals.css';
 
+import dynamic from 'next/dynamic';
 
-import { AuthProvider } from 'react-auth-kit'; 
+// Dynamically import your AuthProviderWrapper with SSR disabled
+const AuthProviderWrapper = dynamic(() => import('@/components/AuthProviderWrapper'), {
+  ssr: false,
+});
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
+
   const [Layout, setLayout] = useState<React.FC<{ children: ReactNode }> | null>(null);
   const [loadingLayout, setLoadingLayout] = useState(true);
+
+  // Client check for layout loading (optional)
+  const [isClient, setIsClient] = useState(false);
+  useEffect(() => setIsClient(true), []);
 
   useEffect(() => {
     setLoadingLayout(true);
@@ -33,19 +41,15 @@ export default function MyApp({ Component, pageProps }: AppProps) {
     }
   }, [router.pathname]);
 
-  if (loadingLayout) {
-    return <div>Loading layout...</div>;
+  if (!isClient || loadingLayout) {
+    return <div>Loading...</div>; // or a spinner
   }
 
   const PageContent = <Component {...pageProps} />;
 
   return (
-    <AuthProvider
-      authType={'localstorage'}
-      authName={'_auth'}
-     
-    >
+    <AuthProviderWrapper>
       {Layout ? <Layout>{PageContent}</Layout> : PageContent}
-    </AuthProvider>
+    </AuthProviderWrapper>
   );
 }
