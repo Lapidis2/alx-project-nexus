@@ -19,7 +19,7 @@ const SellerProfilePage: React.FC = () => {
 
   useEffect(() => {
 	if (!userId) return;
-
+	if (typeof window === "undefined") return;
 	const fetchUser = async () => {
 	  try {
 		const token = localStorage.getItem("token");

@@ -128,7 +128,11 @@ const Header = () => {
         ) : (
           <div className="flex gap-4">
             <button
-              onClick={handleFakeLogin}
+                onClick={() => {
+					handleFakeLogin();
+					const storedUser = localStorage.getItem("user");
+					if (storedUser) setUser(JSON.parse(storedUser));
+				  }}
               className="px-4 py-2 border border-white rounded hover:bg-white hover:text-primary transition"
             >
               {t("Login")}
