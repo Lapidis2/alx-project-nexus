@@ -52,7 +52,7 @@ const Checkout: React.FC = () => {
           />
         </div>
 
-        <div className="flex justify-center mt-10">
+        <div className="flex justify-center mb-10">
           <Link href="/products" passHref>
             <button className="bg-amber-600 px-10 py-3 rounded-lg text-lg text-white font-semibold hover:shadow-sm hover:shadow-black">
               {t("BACK TO HOME")}
