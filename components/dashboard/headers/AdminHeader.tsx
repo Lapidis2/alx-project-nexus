@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useTranslation } from "react-i18next";
+import { useRouter } from "next/router";
 
 const BellIcon = () => (
   <svg
@@ -26,6 +27,7 @@ interface AdminHeaderProps {
 const AdminHeader: React.FC<AdminHeaderProps> = ({ userData }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const router=useRouter()
   const { t } = useTranslation();
 
   return (
@@ -118,7 +120,7 @@ const AdminHeader: React.FC<AdminHeaderProps> = ({ userData }) => {
                 Profile
               </Link>
               <button
-                onClick={() => console.log("Logout clicked")}
+                onClick={() => router.push("/")}
                 className="w-full text-left block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
               >
                 Logout
@@ -145,7 +147,6 @@ const AdminHeader: React.FC<AdminHeaderProps> = ({ userData }) => {
         </button>
       </div>
 
-      {/* Mobile dropdown */}
       {isMenuOpen && (
         <div className="absolute top-16 right-4 bg-white shadow-md rounded-md p-2 flex flex-col space-y-2 lg:hidden">
           <Link href="/admin">Dashboard</Link>

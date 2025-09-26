@@ -13,30 +13,34 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
   const user = auth();
 
   return (
-    <div className="w-full min-h-screen flex">
-      {/* Sidebar (15%) */}
-      <aside className="w-[15%] min-h-screen hidden lg:flex relative">
-        <Sidebar role={user?.role ?? 'guest'} />
-      </aside>
+	<div className="flex min-h-screen w-full">
 
-      {/* Main Area (85%) */}
-      <div className="w-[85%] flex flex-col min-h-screen">
-        {/* Header */}
-        <div className="w-full">
-          <AdminHeader />
-        </div>
-
-        {/* Main content */}
-        <main className="flex-grow p-4 bg-gray-100 pt-[10vh] pb-[6vh]">
-          {children}
-        </main>
-
-        {/* Footer */}
-        <div className="w-full">
-          <DashFooter />
-        </div>
-      </div>
-    </div>
+	{/* Sidebar */}
+	<aside className="hidden lg:flex fixed lg:relative w-64 bg-primary text-white">
+	  <Sidebar role={user?.role ?? 'guest'} />
+	</aside>
+  
+	{/* Main Area */}
+	<div className="flex flex-col flex-1 lg:ml-64 min-h-screen">
+  
+	  {/* Header */}
+	  <div className="w-full">
+		<AdminHeader />
+	  </div>
+  
+	  {/* Main Content */}
+	  <main className="flex-grow px-4 py-6 bg-gray-100">
+		{children}
+	  </main>
+  
+	  {/* Footer */}
+	  <div className="w-full">
+		<DashFooter />
+	  </div>
+  
+	</div>
+  </div>
+  
   );
 };
 

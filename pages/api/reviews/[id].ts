@@ -20,7 +20,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
     return res.status(400).json({ message: "Missing product id" });
   }
 
-  const productId = Array.isArray(id) ? id[0] : id; // ensure it's a string
+  const productId = Array.isArray(id) ? id[0] : id; 
 
   if (!reviews[productId]) {
     return res.status(404).json({ message: "Reviews not found" });

@@ -24,7 +24,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
   return (
     <article
-      className="flex flex-col w-full gap-2 lift-on-hover transition-transform duration-300 cursor-pointer fade-in pt-20"
+      className="flex flex-col w-full gap-4 transform transition-all duration-300 cursor-pointer pt-6 rounded-lg shadow-md hover:scale-105 hover:shadow-xl bg-white relative"
       onClick={handleCardClick}
       itemScope
       itemType="https://schema.org/Product"

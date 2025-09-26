@@ -39,7 +39,7 @@ const Checkout: React.FC = () => {
 
       <main className="w-[90%] max-w-6xl mx-auto pt-40">
         <div className="flex flex-col md:flex-row justify-center md:justify-between items-start gap-6">
-          <Payment className="w-full md:w-[60%]" />
+         
 
           <OrderSummary
             className="w-full md:w-[35%]"
@@ -49,10 +49,12 @@ const Checkout: React.FC = () => {
             discountPercentage={discountPercentage}
             total={total}
             handleDelete={handleDelete}
+			
           />
+		   <Payment className="w-full md:w-[60%]" />
         </div>
 
-        <div className="flex justify-center mb-10">
+        <div className="flex justify-center m-10 ">
           <Link href="/products" passHref>
             <button className="bg-amber-600 px-10 py-3 rounded-lg text-lg text-white font-semibold hover:shadow-sm hover:shadow-black">
               {t("BACK TO HOME")}

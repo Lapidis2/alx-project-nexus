@@ -39,37 +39,51 @@ const Sidebar:React.FC<SidebarProps> = () => {
  
 
   return (
-    <aside className="fixed w-90 hidden lg:flex flex-col  gap-6 bg-primary p-6 h-full text-white">
-      {/* Logo */}
-      <div className="text-2xl font-bold mb-10 cursor-pointer" onClick={() => router.push("/admin")}>
-        AdminPanel
-      </div>
+    <div className="flex min-h-screen">
+  {/* Sidebar - Hidden on small screens, shown on lg+ */}
+  <aside className="hidden lg:flex w-64 flex-col gap-6 bg-primary p-6 text-white h-full fixed lg:relative">
+    {/* Logo */}
+    <div
+      className="text-2xl font-bold mb-10 cursor-pointer"
+      onClick={() => router.push("/admin")}
+    >
+      AdminPanel
+    </div>
 
-      {/* Navigation Links */}
-      <nav className="flex flex-col gap-4 flex-1">
-        {Navlinks.map((link) => (
-          <div
-            key={link.id}
-            onClick={() => handleNavigate(link)}
-            className={`flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-all ${
-              active === link.id ? "bg-yellow-500 text-black" : "hover:bg-gray-700"
-            }`}
-          >
-            <span className="text-lg">{link.icon}</span>
-            <span className="font-medium">{link.label}</span>
-          </div>
-        ))}
-      </nav>
+    {/* Navigation Links */}
+    <nav className="flex flex-col gap-4 flex-1">
+      {Navlinks.map((link) => (
+        <div
+          key={link.id}
+          onClick={() => handleNavigate(link)}
+          className={`flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-all ${
+            active === link.id ? "bg-yellow-500 text-black" : "hover:bg-gray-700"
+          }`}
+        >
+          <span className="text-lg">{link.icon}</span>
+          <span className="font-medium">{link.label}</span>
+        </div>
+      ))}
+    </nav>
 
-      {/* Logout */}
-      <button
-      onClick={() => alert('logout')}
-        className="flex items-center gap-3 p-3 mt-auto rounded-lg hover:bg-red-600 text-red-500 font-medium transition-all"
-      >
-        <FaSignOutAlt />
-        Logout
-      </button>
-    </aside>
+    {/* Logout */}
+    <button
+      onClick={() => alert("logout")}
+      className="flex items-center gap-3 p-3 mt-auto rounded-lg hover:bg-red-600 text-red-500 font-medium transition-all"
+    >
+      <FaSignOutAlt />
+      Logout
+    </button>
+  </aside>
+
+  {/* Main Content */}
+  <main className="flex-1 lg:ml-64 p-6 bg-gray-100 w-full">
+    {/* Replace this with your actual content */}
+    <h1 className="text-2xl font-bold">Welcome to Admin Panel</h1>
+    <p className="mt-4">Your main content goes here.</p>
+  </main>
+</div>
+
   );
 };
 

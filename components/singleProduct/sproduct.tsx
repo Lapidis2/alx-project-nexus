@@ -209,7 +209,7 @@ const Sproduct: React.FC<Props> = ({ product, isLoading = false }) => {
             disabled={isLoading}
             className="bg-white border p-3 rounded-md w-20 flex justify-center items-center"
           >
-            {wishlist.includes(product.id) ? "♥" : "♡"}
+            {wishlist.includes(product.id) ? "♥" : "❤️"}
           </button>
         </div>
       </div>
