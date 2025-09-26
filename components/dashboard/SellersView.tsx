@@ -99,12 +99,12 @@ const SellersView: React.FC = () => {
   return (
     <section
       aria-labelledby="sellers-heading"
-      className="w-full bg-white rounded-lg shadow-md overflow-hidden lg:mb-12 xl:ml-[5%] mt-3"
+      className="w-full bg-white rounded-lg shadow-md overflow-hidden mt-20"
     >
       <header className="flex justify-between items-center p-4">
         <h1
           id="sellers-heading"
-          className="text-xl font-semibold text-gray-600"
+          className="text-xl md:text-lg font-semibold text-gray-600"
         >
           Approved Sellers
         </h1>

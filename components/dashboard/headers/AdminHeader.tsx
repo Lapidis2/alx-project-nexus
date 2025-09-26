@@ -152,6 +152,8 @@ const AdminHeader: React.FC<AdminHeaderProps> = ({ userData }) => {
           <Link href="/admin">Dashboard</Link>
           <Link href="/admin/users">Users</Link>
 		  <Link href="/admin/sellers">Sellers</Link>
+		  <Link href="/admin/requests">Requests</Link>
+          <Link href="/admin/products">products</Link>
           <Link href="/admin/sales">Sales</Link>
           <Link href="/admin/analytics">Analytics</Link>
           <Link href="/admin/settings">Settings</Link>

@@ -69,8 +69,8 @@ const AdminHome: React.FC = () => {
   ];
 
   return (
-    <div className="flex flex-col w-full min-h-screen space-y-6 px-4 lg:px-6 xl:px-8 py-6 bg-red-500">
-  {/* Cards */}
+    <div className="flex flex-col w-full min-h-screen space-y-6 px-4 lg:px-6 xl:px-8 py-6 pt-20">
+  
   <div className="w-full">
     <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
       {cardData.map((item, index) => (
@@ -89,7 +89,7 @@ const AdminHome: React.FC = () => {
     <div className="w-full">
       <UserTable users={users} />
     </div>
-    <div className="w-full">
+    <div >
       <VendorRequestList sellers={sellers} />
     </div>
   </div>

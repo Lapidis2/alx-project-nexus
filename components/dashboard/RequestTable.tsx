@@ -60,7 +60,7 @@ const RequestsTable: React.FC<RequestsTableProps> = ({ sellers: initialSellers }
   };
 
   return (
-    <section className="w-full bg-white rounded-lg shadow-md overflow-hidden lg:mb-12 xl:ml-[5%] mt-3">
+    <section className="w-full bg-white rounded-lg shadow-md overflow-hidden mt-20">
       {sellers.length === 0 ? (
         <p className="p-4 text-center text-secondary font-semibold">
           No requests present

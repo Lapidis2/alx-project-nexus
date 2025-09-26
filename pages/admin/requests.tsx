@@ -18,7 +18,8 @@ const mockSellers = [
   ];
 const Requests =()=>{
 	return(
-		<RequestsTable sellers={mockSellers} />
+		<div className="mt-0">	<RequestsTable sellers={mockSellers} />
+</div>
 	)
 }
 export default Requests

@@ -74,7 +74,10 @@ const usersData: User[] = [
   ];
   
 const Users = () => {
-  return <SellerTable users={usersData}/>;
+  return (
+<div className="mt-20">  <SellerTable users={usersData}/>;
+</div>
+  )
 };
 
 export default Users;

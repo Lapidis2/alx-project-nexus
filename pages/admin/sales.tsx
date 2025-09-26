@@ -24,7 +24,7 @@ const SalesAnalysis: React.FC = () => {
   const refunded = transactions.filter(t => t.status === "refunded").length;
 
   return (
-    <div className="flex flex-col space-y-6 w-full">
+    <div className="flex flex-col space-y-6 w-full mt-20">
       <h1 className="text-2xl font-bold">Sales Analysis</h1>
 
       <SalesSummary approved={approved} pending={pending} refunded={refunded} total={transactions.length} />

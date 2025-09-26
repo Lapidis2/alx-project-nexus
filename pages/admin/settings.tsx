@@ -40,7 +40,7 @@ const SettingsPage: React.FC<UserProfileProps> = ({ profileImage}) => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-8 bg-white rounded-lg shadow">
+    <div className="max-w-4xl mx-auto p-8 bg-white rounded-lg shadow mt-20">
       {/* Tabs */}
       <div className="flex gap-8 border-b">
         <button

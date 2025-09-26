@@ -6,36 +6,26 @@ import SellingReport from "@/components/dashboard/analytics/SellingReports";
 import TopProduct from "@/components/dashboard/analytics/TopProducts";
 import InteractionCard from "@/components/dashboard/InteractiveCard";
 
-
 interface Seller {
-	id: string;
-	name: string;
-	status: string; 
-	key: string
-  }
-  
-  interface User {
-	id: string;
-	name: string;
-	email: string;
-	key: string
-  }
-  
-  interface Order {
-	id: string;
-	status: string;
-	totalAmount?: number;
-	key: string
-  }
-  
+  id: string;
+  name: string;
+  status: string;
+  key: string;
+}
 
+interface User {
+  id: string;
+  name: string;
+  email: string;
+  key: string;
+}
 
-
-
-
-
-
-
+interface Order {
+  id: string;
+  status: string;
+  totalAmount?: number;
+  key: string;
+}
 
 const Analytics = () => {
   const [sellers, setSellers] = useState<Seller[]>([]);
@@ -49,7 +39,7 @@ const Analytics = () => {
     setError(false);
     try {
       const [sellersRes, usersRes, ordersRes] = await Promise.all([
-        axios.get("/api/stores"), 
+        axios.get("/api/stores"),
         axios.get("/api/users"),
         axios.get("/api/orders"),
       ]);
@@ -69,13 +59,17 @@ const Analytics = () => {
     fetchData();
   }, []);
 
-//   const approvedSellers = sellers.filter((seller) => seller.status === "approved");
+  //   const approvedSellers = sellers.filter((seller) => seller.status === "approved");
   const transactions = orders.filter((order) => order.status === "delivered");
 
   const cardData = [
     { name: "Vendors", numbers: sellers.length, icon: <svg>...</svg> },
     { name: "Users", numbers: users.length, icon: <svg>...</svg> },
-    { name: "Transactions", numbers: transactions.length, icon: <svg>...</svg> },
+    {
+      name: "Transactions",
+      numbers: transactions.length,
+      icon: <svg>...</svg>,
+    },
     { name: "Orders", numbers: orders.length, icon: <svg>...</svg> },
   ];
 
@@ -96,13 +90,13 @@ const Analytics = () => {
     );
 
   return (
-    <div className="items-center flex flex-col md:w-full xl:ml-[5%] xl:mt-5">
+    <div className="items-center flex flex-col w-full mx-auto px-4 xl:mt-5 pt-20">
       <div className="grid gap-5 lg:gap-10 sm:grid-cols-2 grid-cols-1 md:w-full">
         {cardData.map((item, index) => (
           <InteractionCard key={index} data={item} />
         ))}
       </div>
-	 
+
       <div className="mt-5 w-full">
         <OrderStatus />
       </div>
@@ -114,7 +108,7 @@ const Analytics = () => {
       <div className="mt-5 w-full mb-8">
         <SellingReport />
       </div>
-	  <div className="mt-5 w-full mb-8">
+      <div className="mt-5 w-full mb-8">
         <WeeklyReport />
       </div>
     </div>
