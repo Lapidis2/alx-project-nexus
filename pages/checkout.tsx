@@ -9,7 +9,14 @@ import Header from "@/components/homePage/Header";
 import { useTranslation } from "react-i18next";
 
 const Checkout: React.FC = () => {
-  const { cartItems, setCartItems, subTotal, total, discountPercentage, deliveryFeePercentage } = useFetch("/api/cart");
+  const {
+    cartItems,
+    setCartItems,
+    subTotal,
+    total,
+    discountPercentage,
+    deliveryFeePercentage,
+  } = useFetch("/api/cart");
 
   const handleDelete = (id: number) => {
     setCartItems((products) => products.filter((item) => item.id !== id));
@@ -21,18 +28,19 @@ const Checkout: React.FC = () => {
     <>
       <Head>
         <title>{t("Checkout")} | Nexus</title>
-        <meta name="description" content="Securely complete your checkout process on Nexus" />
+        <meta
+          name="description"
+          content="Securely complete your checkout process on Nexus"
+        />
         <meta name="keywords" content="checkout, ecommerce, payment, cart" />
       </Head>
 
       <Header />
 
-      <main className="w-[80%] sm:w-[75%] md:w-[70%] mx-auto  mb-20 mt-60">
+      <main className="w-[90%] max-w-6xl mx-auto mb-20 mt-60">
         <div className="flex flex-col md:flex-row justify-center md:justify-between items-start gap-6">
-       
           <Payment className="w-full md:w-[60%]" />
 
-    
           <OrderSummary
             className="w-full md:w-[35%]"
             cartItems={cartItems}
@@ -44,13 +52,12 @@ const Checkout: React.FC = () => {
           />
         </div>
 
-     
         <div className="flex justify-center mt-10">
-		<Link href="/products" passHref>
-  <button className="bg-amber-600 px-10 py-3 rounded-lg text-lg text-white font-semibold hover:shadow-sm hover:shadow-black">
-    {t("BACK TO HOME")}
-  </button>
-</Link>
+          <Link href="/products" passHref>
+            <button className="bg-amber-600 px-10 py-3 rounded-lg text-lg text-white font-semibold hover:shadow-sm hover:shadow-black">
+              {t("BACK TO HOME")}
+            </button>
+          </Link>
         </div>
       </main>
 

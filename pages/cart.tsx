@@ -44,7 +44,7 @@ const Cart: React.FC = () => {
     fetchCart();
   }, []);
 
-  // ✅ Handle quantity change
+
   const handleQuantityChange = (id: number, newQuantity: number) => {
     setCartItems(prev =>
       prev.map(item =>
@@ -55,12 +55,11 @@ const Cart: React.FC = () => {
     );
   };
 
-  // ✅ Handle delete
   const handleDelete = (id: number) => {
     setCartItems(prev => prev.filter(item => item.id !== id));
   };
 
-  // ✅ Recalculate totals
+ 
   useEffect(() => {
     const subtotal = cartItems.reduce(
       (sum, item) => sum + item.price * item.quantity,
@@ -78,35 +77,43 @@ const Cart: React.FC = () => {
 
   return (
     <>
+	
       <Head>
         <title>{t("Shopping Cart")} | Nexus</title>
         <meta name="description" content="View and manage your shopping cart" />
       </Head>
 
       <Header />
-      <main className="w-[90%] mx-auto my-[50px] p-4 mt-60">
-        <h1 className="text-xl font-semibold ml-10">
-          {t("Shopping Cart")}{" "}
-          <span className="bg-gray-200 py-[4px] px-4 font-bold rounded-lg">
-            {cartItems.length}
-          </span>
-        </h1>
+      <main className="w-full mx-auto my-[50px] p-4 mt-40  sm:text-sm">
+  <h1 className="text-xl font-semibold ml-10">
+    {t("Shopping Cart")}{" "}
+    <span className="bg-gray-200 py-[4px] px-4 font-bold rounded-lg">
+      {cartItems.length}
+    </span>
+  </h1>
 
-        <div className="flex flex-col lg:flex-row pt-11 gap-6">
-          <CartItemList
-            cartItems={cartItems}
-            handleQuantityChange={handleQuantityChange}
-            handleDelete={handleDelete}
-            isLoading={isLoading}
-          />
-          <CartTotals
-            subTotal={subTotal}
-            deliveryFeePercentage={deliveryFeePercentage}
-            discountPercentage={discountPercentage}
-            total={total}
-          />
-        </div>
-      </main>
+
+  <div className="flex flex-col lg:flex-row pt-11 gap-6">
+    <div className="w-full lg:w-2/3">
+      <CartItemList
+        cartItems={cartItems}
+        handleQuantityChange={handleQuantityChange}
+        handleDelete={handleDelete}
+        isLoading={isLoading}
+      />
+    </div>
+
+    <div className="w-full lg:w-1/3">
+      <CartTotals
+        subTotal={subTotal}
+        deliveryFeePercentage={deliveryFeePercentage}
+        discountPercentage={discountPercentage}
+        total={total}
+      />
+    </div>
+  </div>
+</main>
+
       <Footer />
     </>
   );

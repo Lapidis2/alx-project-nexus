@@ -7,7 +7,8 @@ import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
 import AuthButton from "@/constants/AuthButton";
 import Input from "@/constants/Input";
-
+import Image from "next/image";
+import Logo from "@/public/assets/images/logo.png"
 interface User {
   name: string;
   email: string;
@@ -29,6 +30,7 @@ const Signin: NextPage = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string>("");
+  const [isRedirecting,setIsRedirecting]=useState(false)
   const [loading, setLoading] = useState<boolean>(false);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -68,11 +70,10 @@ const Signin: NextPage = () => {
         return;
       }
 
-      // Save token and user info
+
       localStorage.setItem("token", data.token);
       localStorage.setItem("user", JSON.stringify(data.user));
 
-      // Redirect based on role
       switch (data.user.role) {
         case "buyer":
           router.push("/products");
@@ -100,7 +101,10 @@ const Signin: NextPage = () => {
   };
 
   return (
-    <div className="w-full h-screen flex items-center justify-center bg-gray-50">
+    <div className="flex flex-col items-center min-h-screen bg-gray-100 dark:bg-gray-900 ">
+		 <Link href="/" aria-label="Homepage">
+        <Image src={Logo} alt="Logo" width={120} height={48} />
+      </Link>
       <div className="w-full max-w-md p-6 bg-white shadow-lg rounded-lg">
         <h1 className="text-2xl font-bold text-center mb-6">{t("Sign In")}</h1>
 
@@ -133,12 +137,20 @@ const Signin: NextPage = () => {
           {t("Sign in with Google")}
         </button>
 
-        <p className="text-center text-gray-500 mt-6">
-          {t("Don't have an account?")}{" "}
-          <Link href="/auth/register" className="text-blue-500 hover:underline">
-            {t("Sign Up")}
-          </Link>
-        </p>
+		<div className="text-center text-gray-700 mt-6">
+  {t("Don't have an account?")}
+  <button
+    onClick={() => {
+      setIsRedirecting(true);
+      router.push("/auth/register");
+    }}
+    disabled={isRedirecting}
+    className="ml-2 text-blue-500 hover:underline disabled:opacity-50"
+  >
+    {isRedirecting ? t("Redirecting...") : t("Sign Up")}
+  </button>
+</div>
+
       </div>
     </div>
   );

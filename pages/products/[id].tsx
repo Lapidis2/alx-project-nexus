@@ -63,7 +63,7 @@ const ProductPage: React.FC = () => {
   return (
     <div>
       <Header />
-      <main className="flex flex-col justify-center  mt-80">
+      <main className="flex flex-col justify-center pt-24">
       
         <Sproduct product={product} />
 

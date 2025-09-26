@@ -44,8 +44,8 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({
             key={item.id}
             className="flex flex-col sm:flex-row justify-between items-center bg-gray-100 rounded-md p-3 my-2 gap-3"
           >
-            <div className="img h-20 w-20 sm:h-24 sm:w-24 flex-shrink-0">
-              <Image className="h-full w-full object-cover rounded-md" src={item.img} alt={item.name} />
+            <div className="img h-20 w-20 sm:h-24 sm:w-24 flex-shrink-0 relative">
+              <Image className="h-full w-full object-cover rounded-md " fill src={item.img} alt={item.name} />
             </div>
 
             <div className="details flex-1 flex flex-col justify-center text-xs sm:text-sm">

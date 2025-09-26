@@ -7,7 +7,9 @@ interface SignUpFormProps {
 }
 
 interface FormData {
-  name: string;
+  username: string;
+  firstname:string,
+  lastname:string,
   email: string;
   password: string;
 }
@@ -19,7 +21,9 @@ interface ApiResponse {
 
 const SignUpForm = ({ onSuccess }: SignUpFormProps) => {
   const [formData, setFormData] = useState<FormData>({
-    name: "",
+    username: "",
+	firstname:"",
+	lastname:"",
     email: "",
     password: "",
   });
@@ -65,13 +69,41 @@ const SignUpForm = ({ onSuccess }: SignUpFormProps) => {
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-1">
-          Enter your name
+          Enter username
         </label>
         <input
           type="text"
-          name="name"
-          placeholder="Enter your name"
-          value={formData.name}
+          name="username"
+          placeholder="Enter username"
+          value={formData.username}
+          onChange={handleChange}
+          className="w-full px-4 py-2 border rounded-lg focus:ring focus:ring-blue-500"
+          required
+        />
+      </div>
+	  <div>
+        <label className="block text-sm font-medium text-gray-700 mb-1">
+          Enter your firstname
+        </label>
+        <input
+          type="text"
+          name="firstname"
+          placeholder="Enter your firstname"
+          value={formData.firstname}
+          onChange={handleChange}
+          className="w-full px-4 py-2 border rounded-lg focus:ring focus:ring-blue-500"
+          required
+        />
+      </div>
+	  <div>
+        <label className="block text-sm font-medium text-gray-700 mb-1">
+          Enter your lastname
+        </label>
+        <input
+          type="text"
+          name="lastname"
+          placeholder="Enter your lastname"
+          value={formData.lastname}
           onChange={handleChange}
           className="w-full px-4 py-2 border rounded-lg focus:ring focus:ring-blue-500"
           required

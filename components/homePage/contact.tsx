@@ -23,10 +23,17 @@ const ContactSection: React.FC = () => {
       setEmail("");
       setMessage("");
       setError(null);
+	  setTimeout(() => {
+		setStatus("idle");
+	  }, 5000);
     } catch  {
       setStatus("failed");
       setError("Failed to send message. Try again later.");
     }
+	setTimeout(() => {
+		setStatus("idle");
+		setError(null);
+	  }, 5000);
   };
 
   return (
