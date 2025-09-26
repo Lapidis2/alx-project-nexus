@@ -11,7 +11,6 @@ import Bag from "@/public/assets/images/Bag.svg";
 import Heart from "@/public/assets/images/heart 1.svg";
 import LogoutIcon from "@/public/assets/images/logout.svg";
 import profileIcon from "@/public/assets/images/profile.png";
-import { handleFakeLogin } from "@/testbutton";
 interface User {
 	userId:string,
   name: string;
@@ -181,16 +180,12 @@ const Header = () => {
           </>
         ) : (
           <div className="flex gap-4">
-            <button
-              onClick={() => {
-                handleFakeLogin();
-                const storedUser = localStorage.getItem("user");
-                if (storedUser) setUser(JSON.parse(storedUser));
-              }}
-              className="px-4 py-2 border border-white rounded hover:bg-white hover:text-primary transition"
+             <Link
+              href="/auth/login"
+              className="px-4 py-2 bg-white text-primary rounded hover:bg-gray-200 transition"
             >
-              {t("Login")}
-            </button>
+              {t("Register")}
+            </Link>
             <Link
               href="/auth/register"
               className="px-4 py-2 bg-white text-primary rounded hover:bg-gray-200 transition"

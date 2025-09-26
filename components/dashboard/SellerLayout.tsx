@@ -9,19 +9,19 @@ interface AdminLayoutProps {
 
 const SellerLayout: React.FC<AdminLayoutProps> = ({ children }) => {
 	return (
-	  <div className="w-full min-h-screen flex flex-row">
+	  <div className="w-full min-h-screen flex ">
 		{/* SellerSide */}
-		<div className="hidden lg:flex lg:w-[15%] relative">
+		<div className="hidden lg:flex fixed top-0 left-0 h-screen w-64 bg-primary text-white z-50">
 		  <SellerSide />
 		</div>
   
 		{/* Right section */}
-		<div className="flex flex-col flex-1">
+		<div className="flex flex-col w-full min-h-screen lg:ml-64">
 		  {/* Header */}
 		  <SellerHeader />
   
 		  {/* Main content */}
-		  <main className="flex-grow p-4 bg-gray-100 pt-[10vh]">
+		  <main className="flex-grow px-4 py-6 mt-20">
 			{children}
 		  </main>
   

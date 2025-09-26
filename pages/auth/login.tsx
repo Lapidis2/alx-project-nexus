@@ -17,7 +17,7 @@ interface User {
   email: string;
   role: string;
   profile?: string;
-  isConfirmed: boolean;
+  isConfirmed?: boolean;
 }
 
 interface LoginResponse {
@@ -67,12 +67,7 @@ const Signin: NextPage = () => {
         return;
       }
 
-      if (!data.user.isConfirmed) {
-        setError(t("Please confirm your email first"));
-        setLoading(false);
-        return;
-      }
-
+  
       
       localStorage.setItem("token", data.token);
       localStorage.setItem("user", JSON.stringify(data.user));

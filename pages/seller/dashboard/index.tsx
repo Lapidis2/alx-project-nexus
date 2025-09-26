@@ -40,7 +40,7 @@ const SellerDashboard: React.FC = () => {
     { id: "o2", productId: "p2", status: "delivered" },
   ]);
 
-  // Derived data
+
   const approvedReviews = reviews.filter(r => r.status === "approved").length;
   const totalPurchasedProducts = products.reduce((acc, p) => acc + p.quantitySold, 0);
   const totalOrders = orders.length;
@@ -54,18 +54,20 @@ const SellerDashboard: React.FC = () => {
   ];
 
   return (
-    <div className="flex flex-col space-y-5 w-full p-4">
-      {/* Top 4 cards */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+    <div className="flex flex-col w-full min-h-screen space-y-6 px-4 lg:px-6 xl:px-8 py-6 pt-20 ">
+   <div className="w-full">
+   <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
         {cardData.map((card, idx) => (
           <InteractionCard key={idx} data={card} />
         ))}
       </div>
+   </div>
+    
 
-      {/* Weekly Report */}
-      <div className="w-full h-60 lg:h-80 xl:h-96 bg-white p-4 rounded-lg shadow-sm min-h-[600px] ">
-        <WeeklyReport />
-      </div>
+
+   <div className="w-full h-60 md:h-80 xl:h-96 2xl:h-[500px]">
+    <WeeklyReport />
+  </div>
 
       {/* Reviews & Purchases */}
       <div className="flex flex-col lg:flex-row w-full gap-5">
