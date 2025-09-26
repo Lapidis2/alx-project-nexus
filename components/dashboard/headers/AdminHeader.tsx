@@ -31,7 +31,7 @@ const AdminHeader: React.FC<AdminHeaderProps> = ({ userData }) => {
   const { t } = useTranslation();
 
   return (
-    <header className="fixed top-0 left-0 lg:left-[15%] w-full lg:w-[85%] bg-white shadow-md px-4 py-2 flex items-center justify-between z-50">
+    <header className="fixed top-0 lg:ml-64 right-0 w-full lg:w-[calc(100%-16rem)] bg-white shadow-md px-4 py-2 flex items-center justify-between z-50">
  
       <div className="flex items-center space-x-2 lg:hidden">
         <Link href="/admin">
@@ -40,13 +40,13 @@ const AdminHeader: React.FC<AdminHeaderProps> = ({ userData }) => {
       </div>
 
 	  <div className="flex-1 max-w-md mx-4 hidden md:flex">
-        <div className="relative w-full">
+        <div className="relative w-full ">
           <input
             type="text"
             placeholder="Search..."
             className="w-full rounded-full border border-gray-300 pl-10 pr-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
-          {/* Search icon inside input */}
+      
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-5 w-5 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2"
@@ -151,7 +151,8 @@ const AdminHeader: React.FC<AdminHeaderProps> = ({ userData }) => {
         <div className="absolute top-16 right-4 bg-white shadow-md rounded-md p-2 flex flex-col space-y-2 lg:hidden">
           <Link href="/admin">Dashboard</Link>
           <Link href="/admin/users">Users</Link>
-          <Link href="/admin/sellers">Sellers</Link>
+		  <Link href="/admin/sellers">Sellers</Link>
+          <Link href="/admin/sales">Sales</Link>
           <Link href="/admin/analytics">Analytics</Link>
           <Link href="/admin/settings">Settings</Link>
         </div>
