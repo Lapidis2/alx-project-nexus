@@ -145,7 +145,7 @@ const Header = () => {
                     <button
                       onClick={() => {
                         if (role === "buyer") {
-                          router.push("/");
+                          router.push("/buyer/orders");
                         } else if (role === "vendor") {
                           router.push("/seller/dashboard");
                         } else {

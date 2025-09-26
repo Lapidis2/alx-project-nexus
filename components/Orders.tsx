@@ -45,12 +45,14 @@ const OrderComponent: React.FC = () => {
   }));
 
   return (
-    <main className="font-outfit px-4 md:px-8 py-6">
-      <h1 className="text-2xl md:text-3xl font-semibold mb-6">My Orders</h1>
-      <section aria-label="User Orders">
-        <OrderTable orders={ordersFromApi} />
-      </section>
-    </main>
+	<main className="font-outfit px-4 md:px-8 py-6 w-full max-w-5xl mx-auto">
+	<h1 className="text-2xl md:text-3xl font-semibold mb-6">My Orders</h1>
+  
+	<section aria-label="User Orders">
+	  <OrderTable orders={ordersFromApi} />
+	</section>
+  </main>
+  
   );
 };
 
