@@ -22,7 +22,7 @@ const salesData: Sale[] = [
 
 const LatestSales: React.FC = () => {
   return (
-    <div className="p-4  text-white flex justify-center">
+    <div className="p-4 text-white flex justify-center">
       <div className="w-full max-w-5xl">
         <h2 className="text-lg font-bold mb-4 text-black">Latest Sales</h2>
 
