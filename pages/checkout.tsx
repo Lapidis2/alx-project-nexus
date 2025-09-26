@@ -37,7 +37,7 @@ const Checkout: React.FC = () => {
 
       <Header />
 
-      <main className="w-[90%] max-w-6xl mx-auto mb-20 mt-60">
+      <main className="w-[90%] max-w-6xl mx-auto pt-40">
         <div className="flex flex-col md:flex-row justify-center md:justify-between items-start gap-6">
           <Payment className="w-full md:w-[60%]" />
 
