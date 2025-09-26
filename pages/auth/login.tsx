@@ -8,13 +8,16 @@ import { useTranslation } from "react-i18next";
 import AuthButton from "@/constants/AuthButton";
 import Input from "@/constants/Input";
 import Image from "next/image";
-import Logo from "@/public/assets/images/logo.png"
+import Logo from "@/public/assets/images/logo.png";
+
 interface User {
-  name: string;
+  username: string;
+  firstname: string;
+  lastname: string;
   email: string;
   role: string;
   profile?: string;
-  isVerified: boolean;
+  isConfirmed: boolean;
 }
 
 interface LoginResponse {
@@ -30,7 +33,7 @@ const Signin: NextPage = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string>("");
-  const [isRedirecting,setIsRedirecting]=useState(false)
+  const [isRedirecting, setIsRedirecting] = useState(false);
   const [loading, setLoading] = useState<boolean>(false);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -48,7 +51,7 @@ const Signin: NextPage = () => {
     setLoading(true);
     try {
       const res = await fetch(
-        "https://alx-e-commerce.onrender.com/api/auth/login",
+        "https://umurava-challenge-bn.onrender.com/api/login",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -64,22 +67,23 @@ const Signin: NextPage = () => {
         return;
       }
 
-      if (!data.user.isVerified) {
-        setError(t("Please verify your email first"));
+      if (!data.user.isConfirmed) {
+        setError(t("Please confirm your email first"));
         setLoading(false);
         return;
       }
 
-
+      
       localStorage.setItem("token", data.token);
       localStorage.setItem("user", JSON.stringify(data.user));
 
+     
       switch (data.user.role) {
         case "buyer":
-          router.push("/products");
+          router.push("/");
           break;
-        case "vendor":
-          router.push("/vendor");
+        case "seller":
+          router.push("/seller/dashboard");
           break;
         case "admin":
           router.push("/admin");
@@ -87,7 +91,7 @@ const Signin: NextPage = () => {
         default:
           router.push("/");
       }
-    } catch  {
+    } catch {
       setError(t("Something went wrong"));
     } finally {
       setLoading(false);
@@ -101,8 +105,8 @@ const Signin: NextPage = () => {
   };
 
   return (
-    <div className="flex flex-col items-center min-h-screen bg-gray-100 dark:bg-gray-900 ">
-		 <Link href="/" aria-label="Homepage">
+    <div className="flex flex-col items-center min-h-screen bg-gray-100 dark:bg-gray-900">
+      <Link href="/" aria-label="Homepage">
         <Image src={Logo} alt="Logo" width={120} height={48} />
       </Link>
       <div className="w-full max-w-md p-6 bg-white shadow-lg rounded-lg">
@@ -137,20 +141,19 @@ const Signin: NextPage = () => {
           {t("Sign in with Google")}
         </button>
 
-		<div className="text-center text-gray-700 mt-6">
-  {t("Don't have an account?")}
-  <button
-    onClick={() => {
-      setIsRedirecting(true);
-      router.push("/auth/register");
-    }}
-    disabled={isRedirecting}
-    className="ml-2 text-blue-500 hover:underline disabled:opacity-50"
-  >
-    {isRedirecting ? t("Redirecting...") : t("Sign Up")}
-  </button>
-</div>
-
+        <div className="text-center text-gray-700 mt-6">
+          {t("Don't have an account?")}
+          <button
+            onClick={() => {
+              setIsRedirecting(true);
+              router.push("/auth/register");
+            }}
+            disabled={isRedirecting}
+            className="ml-2 text-blue-500 hover:underline disabled:opacity-50"
+          >
+            {isRedirecting ? t("Redirecting...") : t("Sign Up")}
+          </button>
+        </div>
       </div>
     </div>
   );
