@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useTranslation } from "react-i18next";
-
+import { useHandleLogout } from "@/services/Logout";
 const BellIcon = () => (
   <svg
 	xmlns="http://www.w3.org/2000/svg"
@@ -114,13 +114,13 @@ const SellerHeader: React.FC<AdminHeaderProps> = ({ userData }) => {
 		  {isUserMenuOpen && (
 			<div className="absolute top-12 right-0 bg-white shadow-lg rounded-md w-40 py-2 z-50">
 			  <Link
-				href="/seller/settings"
+				href="/seller/dashboard/settings"
 				className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
 			  >
 				Profile
 			  </Link>
 			  <button
-				onClick={() => console.log("Logout clicked")}
+				onClick={() => useHandleLogout()}
 				className="w-full text-left block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
 			  >
 				Logout
