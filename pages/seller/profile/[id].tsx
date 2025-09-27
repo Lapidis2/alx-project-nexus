@@ -31,7 +31,7 @@ const SellerProfilePage: React.FC = () => {
           return;
         }
 
-        const res = await fetch(`/api/users/${userId}`, {
+        const res = await fetch(`https://umurava-challenge-bn.onrender.com/api/getSingleUser/${userId}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 

@@ -1,21 +1,19 @@
-import { jwtDecode } from "jwt-decode";
 
+import { jwtDecode } from "jwt-decode";
 
 export interface JwtPayload {
   userId: string;
-  role: "admin" | "seller" | "buyer"; 
+  role: "admin" | "seller" | "buyer";
   exp: number;
 }
 
-export const getUserRoleFromToken = (): JwtPayload["role"] | null => {
+export const getUserFromToken = (): JwtPayload | null => {
   const token = localStorage.getItem("token");
   if (!token) return null;
 
   try {
-    const decoded = jwtDecode<JwtPayload>(token); 
-	console.log(decoded)
-    return decoded.role;
-	
+    const decoded = jwtDecode<JwtPayload>(token);
+    return decoded; 
   } catch (err) {
     console.error("Invalid token", err);
     return null;

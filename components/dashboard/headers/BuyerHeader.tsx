@@ -5,6 +5,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { useTranslation } from "react-i18next";
 import { useRouter } from "next/router";
+import { useHandleLogout } from "@/services/Logout";
+import { Circles } from "react-loader-spinner";
 const BellIcon = () => (
   <svg
 	xmlns="http://www.w3.org/2000/svg"
@@ -26,7 +28,7 @@ interface AdminHeaderProps {
 const BuyerHeader: React.FC<AdminHeaderProps> = ({ userData }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
-  const router=useRouter()
+  const {handleLogout,loading} = useHandleLogout(); 
   const { t } = useTranslation();
 
   return (
@@ -120,12 +122,20 @@ const BuyerHeader: React.FC<AdminHeaderProps> = ({ userData }) => {
 			  >
 				Profile
 			  </Link>
-			  <button
-				onClick={() => router.push("/")}
-				className="w-full text-left block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-			  >
-				Logout
-			  </button>
+			 	  <button
+				   onClick={handleLogout}
+				   disabled={loading}
+				   className="w-full text-left block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+				 >
+				   {loading ? (
+					 <div className="flex items-center gap-2">
+					   <Circles visible height="20" width="20" color="#C9974C" />
+					   Logging out...
+					 </div>
+				   ) : (
+					 "Logout"
+				   )}
+				 </button>
 			</div>
 		  )}
 		</div>

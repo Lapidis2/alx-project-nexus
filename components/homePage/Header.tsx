@@ -11,8 +11,12 @@ import Bag from "@/public/assets/images/Bag.svg";
 import Heart from "@/public/assets/images/heart 1.svg";
 import LogoutIcon from "@/public/assets/images/logout.svg";
 import profileIcon from "@/public/assets/images/profile.png";
+import { useHandleLogout } from "@/services/Logout";
+import { Circles } from "react-loader-spinner";
+import { getUserFromToken } from "@/utils/auth";
+
 interface User {
-	userId:string,
+  userId: string;
   name: string;
   email: string;
   role: "buyer" | "seller";
@@ -25,28 +29,50 @@ const Header = () => {
 
   const [user, setUser] = useState<User | null>(null);
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
-  const [mounted, setMounted] = useState(false);
-  const role=user?.role
-  useEffect(() => {
-    setMounted(true);
+  const [isAuthChecked, setIsAuthChecked] = useState(false);
 
-    if (typeof window !== "undefined") {
-      const storedUser = localStorage.getItem("user");
-      if (storedUser) {
-        setUser(JSON.parse(storedUser));
+  const { handleLogout, loading } = useHandleLogout();
+  const onLogout = async () => {
+	await handleLogout();
+	setUser(null);
+	setIsUserDropdownOpen(false);
+	router.push("/"); 
+  };
+  useEffect(() => {
+    const loadUser = async () => {
+      const tokenUser = getUserFromToken();
+
+      if (!tokenUser) {
+        setIsAuthChecked(true);
+        return;
       }
-    }
+
+      try {
+        const token = localStorage.getItem("token");
+        const res = await fetch(`https://umurava-challenge-bn.onrender.com/api/getSingleUser/${tokenUser.userId}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (!res.ok) throw new Error("Failed to fetch user");
+
+        const fullUser: User = await res.json();
+        setUser(fullUser);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setIsAuthChecked(true);
+      }
+    };
+    loadUser();
   }, []);
 
-  if (!mounted) {
-    return null;
+  if (!isAuthChecked) {
+   
+    return (
+      <header className="fixed top-0 w-full h-24 z-50 bg-primary text-white flex items-center justify-center border-b border-border">
+        <Circles height={40} width={40} color="#C9974C" />
+      </header>
+    );
   }
-
-  const handleLogout = () => {
-    localStorage.removeItem("user");
-    setUser(null);
-    router.push("/");
-  };
 
   return (
     <header className="fixed top-0 w-full h-24 z-50 bg-primary text-white px-6 py-4 flex items-center justify-between border-b border-border">
@@ -96,7 +122,7 @@ const Header = () => {
                 className="flex items-center gap-2"
               >
                 <Image
-                  src={user.profile}
+                  src={user.profile || profileIcon}
                   alt="Profile"
                   width={40}
                   height={40}
@@ -109,7 +135,7 @@ const Header = () => {
                 <div className="absolute right-0 mt-2 w-56 bg-[#012F5A] rounded-lg shadow-lg border border-[#ffffff3e]">
                   <div className="p-4 bg-[#0E3F6D] rounded-t-lg flex items-center gap-3">
                     <Image
-                      src={user.profile}
+                      src={user.profile || profileIcon}
                       alt="Profile"
                       width={48}
                       height={48}
@@ -122,15 +148,7 @@ const Header = () => {
                   </div>
                   <div className="flex flex-col p-4 gap-3">
                     <button
-                      onClick={() => {
-                        if (role === "buyer") {
-                          router.push(`/buyer/profile/${user.userId}`);
-                        } else if (role === "seller") {
-                          router.push(`/seller/profile/${user.userId}`);
-                        } else {
-                          router.push("/");
-                        }
-                      }}
+                      onClick={() => router.push(`/buyer/profile/${user.userId}`)}
                       className="flex items-center gap-2"
                     >
                       <Image
@@ -142,35 +160,22 @@ const Header = () => {
                       {t("Profile")}
                     </button>
                     <button
-                      onClick={() => {
-                        if (role === "buyer") {
-						router.push(`/buyer/profile/${user.userId}`);
-                        } else if (role === "seller") {
-                          router.push("/seller/dashboard");
-                        } else {
-                          router.push("/");
-                        }
-                      }}
+                      onClick={() => router.push(`/buyer/profile/${user.userId}`)}
                       className="flex items-center gap-2"
                     >
-                      <Image
-                        src={Board}
-                        alt="dashboard"
-                        width={20}
-                        height={20}
-                      />
-                      {t("Dashboard")}
+                      <Image src={Board} alt="My Order" width={20} height={20} />
+                      {t("My Order")}
                     </button>
                     <button
-                      onClick={handleLogout}
+                      onClick={onLogout}
+                      disabled={loading}
                       className="flex items-center gap-2 text-red-400"
                     >
-                      <Image
-                        src={LogoutIcon}
-                        alt="Logout Icon"
-                        width={20}
-                        height={20}
-                      />
+                      {loading ? (
+                        <Circles height={20} width={20} color="#C9974C" />
+                      ) : (
+                        <Image src={LogoutIcon} alt="Logout Icon" width={20} height={20} />
+                      )}
                       {t("Logout")}
                     </button>
                   </div>
@@ -180,7 +185,7 @@ const Header = () => {
           </>
         ) : (
           <div className="flex gap-4">
-             <Link
+            <Link
               href="/auth/login"
               className="px-4 py-2 bg-white text-primary rounded hover:bg-gray-200 transition"
             >
