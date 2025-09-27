@@ -1,24 +1,24 @@
-
 import { useRouter } from 'next/router';
 import { useEffect, useState, ReactNode } from 'react';
 import type { AppProps } from 'next/app';
 import '@/styles/globals.css';
 
 import dynamic from 'next/dynamic';
+import { Provider } from 'react-redux';
+import { store } from '@/store'; 
 
-
-const AuthProviderWrapper = dynamic(() => import('@/components/AuthProviderWrapper'), {
-  ssr: false,
-});
+const AuthProviderWrapper = dynamic(
+  () => import('@/components/AuthProviderWrapper'),
+  { ssr: false }
+);
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
 
   const [Layout, setLayout] = useState<React.FC<{ children: ReactNode }> | null>(null);
   const [loadingLayout, setLoadingLayout] = useState(true);
-
- 
   const [isClient, setIsClient] = useState(false);
+
   useEffect(() => setIsClient(true), []);
 
   useEffect(() => {
@@ -42,14 +42,16 @@ export default function MyApp({ Component, pageProps }: AppProps) {
   }, [router.pathname]);
 
   if (!isClient || loadingLayout) {
-    return <div>Loading...</div>; // or a spinner
+    return <div>Loading...</div>; 
   }
 
   const PageContent = <Component {...pageProps} />;
 
   return (
-    <AuthProviderWrapper>
-      {Layout ? <Layout>{PageContent}</Layout> : PageContent}
-    </AuthProviderWrapper>
+    <Provider store={store}>  
+      <AuthProviderWrapper>
+        {Layout ? <Layout>{PageContent}</Layout> : PageContent}
+      </AuthProviderWrapper>
+    </Provider>
   );
 }

@@ -8,7 +8,6 @@ import { useTranslation } from "react-i18next";
 import Board from "@/public/assets/images/board.png";
 import Logo from "@/public/assets/images/logo1.png";
 import Bag from "@/public/assets/images/Bag.svg";
-import Heart from "@/public/assets/images/heart 1.svg";
 import LogoutIcon from "@/public/assets/images/logout.svg";
 import profileIcon from "@/public/assets/images/profile.png";
 import { useHandleLogout } from "@/services/Logout";
@@ -23,21 +22,36 @@ interface User {
   profile: string;
 }
 
-const Header = () => {
+interface CartItem {
+  productId: string;
+  quantity: number;
+}
+
+interface Cart {
+  userId: string;
+  email: string;
+  items: CartItem[];
+}
+
+const Header: React.FC = () => {
   const { t } = useTranslation();
   const router = useRouter();
 
   const [user, setUser] = useState<User | null>(null);
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
   const [isAuthChecked, setIsAuthChecked] = useState(false);
+  const [cartCount, setCartCount] = useState(0);
 
   const { handleLogout, loading } = useHandleLogout();
+
   const onLogout = async () => {
-	await handleLogout();
-	setUser(null);
-	setIsUserDropdownOpen(false);
-	router.push("/"); 
+    await handleLogout();
+    setUser(null);
+    setIsUserDropdownOpen(false);
+    router.push("/");
   };
+
+  // ✅ Fetch logged-in user
   useEffect(() => {
     const loadUser = async () => {
       const tokenUser = getUserFromToken();
@@ -49,9 +63,10 @@ const Header = () => {
 
       try {
         const token = localStorage.getItem("token");
-        const res = await fetch(`https://umurava-challenge-bn.onrender.com/api/getSingleUser/${tokenUser.userId}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const res = await fetch(
+          `https://umurava-challenge-bn.onrender.com/api/getSingleUser/${tokenUser.userId}`,
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
         if (!res.ok) throw new Error("Failed to fetch user");
 
         const fullUser: User = await res.json();
@@ -62,11 +77,46 @@ const Header = () => {
         setIsAuthChecked(true);
       }
     };
+
     loadUser();
   }, []);
 
+
+  useEffect(() => {
+	const fetchCart = async () => {
+	  try {
+		const token = localStorage.getItem("token");
+		if (!token) return;
+  
+		const res = await fetch("/api/cart", {
+		  method: "GET",
+		  headers: {
+			Authorization: `Bearer ${token}`,
+			"Content-Type": "application/json",
+		  },
+		});
+  
+		if (!res.ok) {
+		  console.error("Failed to fetch cart");
+		  return;
+		}
+  
+		const data: Cart = await res.json();
+  
+
+		const total = data.items?.reduce((sum, item) => sum + item.quantity, 0) || 0;
+		setCartCount(total);
+	  } catch (error) {
+		console.error("Failed to fetch cart:", error);
+	  }
+	};
+  
+	fetchCart();
+  }, []);
+  
+
+  
   if (!isAuthChecked) {
-   
     return (
       <header className="fixed top-0 w-full h-24 z-50 bg-primary text-white flex items-center justify-center border-b border-border">
         <Circles height={40} width={40} color="#C9974C" />
@@ -76,6 +126,7 @@ const Header = () => {
 
   return (
     <header className="fixed top-0 w-full h-24 z-50 bg-primary text-white px-6 py-4 flex items-center justify-between border-b border-border">
+
       <div className="flex items-center gap-8">
         <Link href="/" aria-label="Homepage">
           <Image src={Logo} alt="Logo" width={120} height={48} priority />
@@ -98,20 +149,15 @@ const Header = () => {
         </nav>
       </div>
 
+      {/* Right Side */}
       <div className="flex items-center gap-6">
         {user ? (
           <>
-            {/* Wishlist & Cart */}
-            <Link href="/wishlist" className="relative">
-              <Image src={Heart} alt="Wishlist" width={28} height={28} />
-              <span className="absolute -top-2 -right-2 bg-secondary text-xs px-2 py-0.5 rounded-full">
-                04
-              </span>
-            </Link>
+            {/* Cart */}
             <Link href="/cart" className="relative">
               <Image src={Bag} alt="Cart" width={28} height={28} />
               <span className="absolute -top-2 -right-2 bg-secondary text-xs px-2 py-0.5 rounded-full">
-                04
+                {cartCount}
               </span>
             </Link>
 
@@ -151,12 +197,7 @@ const Header = () => {
                       onClick={() => router.push(`/buyer/profile/${user.userId}`)}
                       className="flex items-center gap-2"
                     >
-                      <Image
-                        src={profileIcon}
-                        alt="Profile Icon"
-                        width={20}
-                        height={20}
-                      />
+                      <Image src={profileIcon} alt="Profile Icon" width={20} height={20} />
                       {t("Profile")}
                     </button>
                     <button

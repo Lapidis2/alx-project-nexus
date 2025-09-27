@@ -2,6 +2,7 @@ import { jwtDecode } from "jwt-decode";
 
 export interface JwtPayload {
   userId: string;
+  email:string;
   role: "admin" | "seller" | "buyer";
   exp: number;
 }

@@ -1,118 +1,99 @@
-import { useEffect, useState } from "react";
+"use client";
+
 import Head from "next/head";
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
+import { RootState, useAppDispatch } from "@/store";
+import { fetchCart, updateQuantity, removeItem } from "@/store/cartSlice";
+
 import CartItemList from "@/components/cart/CartItemList";
 import CartTotals from "@/components/cart/CartTotals";
-import Footer from "@/components/homePage/Footer";
 import Header from "@/components/homePage/Header";
+import Footer from "@/components/homePage/Footer";
 import { useTranslation } from "react-i18next";
-import {Product} from "@/interfaces"
+
+const deliveryFeePercentage = 5;
+const discountPercentage = 10;
 
 const Cart: React.FC = () => {
-  const [cartItems, setCartItems] = useState<Product[]>([]);
-  const [subTotal, setSubTotal] = useState(0);
-  const [total, setTotal] = useState(0);
-  const [isLoading, setIsLoading] = useState(true);
-
-  const deliveryFeePercentage = 5;
-  const discountPercentage = 10;
+  const dispatch = useAppDispatch();
+  const { items: cartItems, status } = useSelector((state: RootState) => state.cart);
   const { t } = useTranslation();
 
-  
   useEffect(() => {
-    const fetchCart = async () => {
-      try {
-        setIsLoading(true);
-        const res = await fetch("/api/cart", { cache: "no-store" });
-        if (!res.ok) throw new Error("Failed to fetch cart data");
+    dispatch(fetchCart());
+  }, [dispatch]);
 
-        const data: Product[] = await res.json();
-
-        const formattedData = data.map(item => ({
-          ...item,
-          img: item.img || "/placeholder.png",
-          quantity: item.quantity || 1,
-        }));
-
-        setCartItems(formattedData);
-      } catch (error) {
-        console.error("Error fetching cart:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchCart();
-  }, []);
-
-
-  const handleQuantityChange = (id: number, newQuantity: number) => {
-    setCartItems(prev =>
-      prev.map(item =>
-        item.id === id
-          ? { ...item, quantity: Math.max(1, newQuantity) }
-          : item
-      )
-    );
+  const handleQuantityChange = async (productId: string, newQuantity: number) => {
+    dispatch(updateQuantity({ productId, quantity: newQuantity }));
+    try {
+      await fetch("/api/cart", {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify({ productId, quantity: newQuantity }),
+      });
+    } catch (err) {
+      console.error("Failed to update cart quantity", err);
+    }
   };
 
-  const handleDelete = (id: number) => {
-    setCartItems(prev => prev.filter(item => item.id !== id));
+  const handleDelete = async (productId: string) => {
+    dispatch(removeItem(productId));
+    try {
+      await fetch("/api/cart", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify({ productId }),
+      });
+    } catch (err) {
+      console.error("Failed to delete cart item", err);
+    }
   };
 
- 
-  useEffect(() => {
-    const subtotal = cartItems.reduce(
-      (sum, item) => sum + item.price * item.quantity,
-      0
-    );
-    setSubTotal(subtotal);
-
-    const totalCalc =
-      subtotal +
-      (subtotal * deliveryFeePercentage) / 100 -
-      (subtotal * discountPercentage) / 100;
-
-    setTotal(totalCalc);
-  }, [cartItems]);
+  const subTotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const total = subTotal + (subTotal * deliveryFeePercentage) / 100 - (subTotal * discountPercentage) / 100;
 
   return (
     <>
-	
       <Head>
         <title>{t("Shopping Cart")} | Nexus</title>
         <meta name="description" content="View and manage your shopping cart" />
       </Head>
 
       <Header />
-      <main className="w-full mx-auto my-[50px] p-4 mt-40  sm:text-sm">
-  <h1 className="text-xl font-semibold ml-10">
-    {t("Shopping Cart")}{" "}
-    <span className="bg-gray-200 py-[4px] px-4 font-bold rounded-lg">
-      {cartItems.length}
-    </span>
-  </h1>
 
+      <main className="w-full mx-auto my-[50px] p-4 mt-40 sm:text-sm">
+        <h1 className="text-xl font-semibold ml-10">
+          {t("Shopping Cart")}{" "}
+          <span className="bg-gray-200 py-[4px] px-4 font-bold rounded-lg">{cartItems.length}</span>
+        </h1>
 
-  <div className="flex flex-col lg:flex-row pt-11 gap-6">
-    <div className="w-full lg:w-2/3">
-      <CartItemList
-        cartItems={cartItems}
-        handleQuantityChange={handleQuantityChange}
-        handleDelete={handleDelete}
-        isLoading={isLoading}
-      />
-    </div>
+        <div className="flex flex-col lg:flex-row pt-11 gap-6">
+          <div className="w-full lg:w-2/3">
+            <CartItemList
+              cartItems={cartItems}
+              handleQuantityChange={handleQuantityChange}
+              handleDelete={handleDelete}
+              isLoading={status === "loading"}
+            />
+          </div>
 
-    <div className="w-full lg:w-1/3">
-      <CartTotals
-        subTotal={subTotal}
-        deliveryFeePercentage={deliveryFeePercentage}
-        discountPercentage={discountPercentage}
-        total={total}
-      />
-    </div>
-  </div>
-</main>
+          <div className="w-full lg:w-1/3">
+            <CartTotals
+              subTotal={subTotal}
+              deliveryFeePercentage={deliveryFeePercentage}
+              discountPercentage={discountPercentage}
+              total={total}
+            />
+          </div>
+        </div>
+      </main>
 
       <Footer />
     </>

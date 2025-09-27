@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+
 interface CartTotalsProps {
   subTotal: number;
   deliveryFeePercentage: number;
@@ -44,10 +45,10 @@ const CartTotals: React.FC<CartTotalsProps> = ({
       </div>
 
       <Link href="/checkout">
-  <button className="w-full bg-primary text-white py-2 rounded-lg hover:bg-gray-800">
-    Proceed to Checkout
-  </button>
-</Link>
+        <button className="w-full bg-primary text-white py-2 rounded-lg hover:bg-gray-800">
+          Proceed to Checkout
+        </button>
+      </Link>
     </div>
   );
 };
