@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 
 interface AdminProduct {
@@ -10,15 +10,15 @@ interface AdminProduct {
   quantity?: number;
   category?: string;
   expiration?: string;
-  images?: string[];
+  images: string[];
 }
 
 interface ProductModalProps {
-  product?: AdminProduct;
-  onClose: () => void;
-  onSave: (product: AdminProduct) => void;
-}
-
+	product?: AdminProduct;
+	onClose: () => void;
+	onSave: (product: AdminProduct) => void | Promise<void>;  
+  }
+  
 const ProductModal: React.FC<ProductModalProps> = ({ product, onClose, onSave }) => {
   const [formData, setFormData] = useState<AdminProduct>({
     name: "",

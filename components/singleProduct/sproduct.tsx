@@ -86,16 +86,16 @@ const Sproduct: React.FC<Props> = ({ product, isLoading = false, onCartUpdate })
 
       alert(`${quantity} ${product.name} added to cart!`);
 
-      // Update header cart count
+      
       if (onCartUpdate) {
         const cartRes = await fetch("/api/cart", { headers: { Authorization: `Bearer ${token}` } });
         const cartData = await cartRes.json();
-        const count = cartData.cart?.items?.reduce((acc: number, item: any) => acc + item.quantity, 0) || 0;
+        const count = cartData.cart?.items?.reduce((acc: number, item: CartItem) => acc + item.quantity, 0) || 0;
         onCartUpdate(count);
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error(err);
-      alert(err.message || "Error adding to cart");
+    
     } finally {
       setLoading(false);
     }

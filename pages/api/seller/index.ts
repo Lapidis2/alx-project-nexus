@@ -1,4 +1,4 @@
-// pages/api/seller/products.ts
+
 
 import type { NextApiRequest, NextApiResponse } from 'next';
 

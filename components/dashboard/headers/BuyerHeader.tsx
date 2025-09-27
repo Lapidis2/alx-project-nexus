@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useTranslation } from "react-i18next";
-import { useRouter } from "next/router";
 import { useHandleLogout } from "@/services/Logout";
 import { Circles } from "react-loader-spinner";
 const BellIcon = () => (

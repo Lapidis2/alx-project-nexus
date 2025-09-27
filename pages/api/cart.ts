@@ -80,8 +80,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     
     res.setHeader("Allow", ["GET", "POST", "DELETE"]);
     return res.status(405).json({ message: "Method not allowed" });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Cart API error:", error);
-    return res.status(500).json({ message: "Internal server error", error: error.message });
+    return res.status(500).json({ message: "Internal server error",  });
   }
 }
