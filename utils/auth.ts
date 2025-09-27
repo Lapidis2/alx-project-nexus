@@ -1,4 +1,3 @@
-
 import { jwtDecode } from "jwt-decode";
 
 export interface JwtPayload {
@@ -7,15 +6,19 @@ export interface JwtPayload {
   exp: number;
 }
 
-export const getUserFromToken = (): JwtPayload | null => {
-  const token = localStorage.getItem("token");
-  if (!token) return null;
-
+export const getUserFromToken = (
+  req?: { headers: { authorization?: string } }
+): JwtPayload | null => {
   try {
-    const decoded = jwtDecode<JwtPayload>(token);
-    return decoded; 
-  } catch (err) {
-    console.error("Invalid token", err);
+    const token =
+      typeof window !== "undefined"
+        ? localStorage.getItem("token")
+        : req?.headers?.authorization?.split(" ")[1] ?? null;
+
+    if (!token) return null;
+
+    return jwtDecode<JwtPayload>(token);
+  } catch {
     return null;
   }
 };
