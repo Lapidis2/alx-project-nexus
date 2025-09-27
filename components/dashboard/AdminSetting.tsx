@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Logout from "@/services/Logout";
+import {useHandleLogout} from "@/services/Logout"
 
 interface Passwords {
   password: string;
@@ -37,7 +37,7 @@ const AdminSettings: React.FC<AdminSettingsProps> = ({ user, updatePassword }) =
     confirmPassword: "",
   });
   const [errors, setErrors] = useState<Errors>({});
-  const logout = Logout();
+  const logout = useHandleLogout();
 
   const handleChangePassword = () => setIsChangingPassword(true);
 

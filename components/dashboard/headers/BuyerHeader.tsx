@@ -152,7 +152,6 @@ const BuyerHeader: React.FC<AdminHeaderProps> = ({ userData }) => {
 	  {isMenuOpen && (
 		<div className="absolute top-16 right-4 bg-white shadow-md rounded-md p-2 flex flex-col space-y-2 lg:hidden">
 		  <Link href="/buyer">Dashboard</Link>
-		  <Link href="/buyer/profile/[id]">My Orders</Link>
 		  <Link href="/buyer/analytics">Analytics</Link>
 		  <Link href="/buyer/settings">Settings</Link>
 		</div>

@@ -27,7 +27,7 @@ const SellerHeader: React.FC<AdminHeaderProps> = ({ userData }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const { t } = useTranslation();
-
+  const handleLogout = useHandleLogout();
   return (
 	<header className="fixed top-0 left-0 lg:left-80 w-full lg:w-[calc(100%-20rem)] 
 			 bg-white shadow-md px-4 py-2 flex items-center justify-between 
@@ -120,7 +120,7 @@ const SellerHeader: React.FC<AdminHeaderProps> = ({ userData }) => {
 				Profile
 			  </Link>
 			  <button
-				onClick={() => useHandleLogout()}
+				onClick={handleLogout}
 				className="w-full text-left block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
 			  >
 				Logout

@@ -86,10 +86,10 @@ const AdminHome: React.FC = () => {
 
   {/* Tables */}
   <div className="flex flex-col lg:flex-row gap-6 w-full pb-10">
-    <div className="w-full">
+    <div className="w-ful lg:w-2/3">
       <UserTable users={users} />
     </div>
-    <div >
+    <div className="lg:w-1/2">
       <VendorRequestList sellers={sellers} />
     </div>
   </div>

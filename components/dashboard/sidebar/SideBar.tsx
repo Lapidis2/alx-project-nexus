@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-
+import { useHandleLogout } from "@/services/Logout";
 import {
   FaTachometerAlt,
   FaUsers,
@@ -106,7 +106,7 @@ const Sidebar: React.FC<SidebarProps> = () => {
         </nav>
 
         <button
-          onClick={() => router.push("/")}
+          onClick={() => useHandleLogout}
           className="flex items-center gap-3 p-3 mt-auto rounded-lg hover:bg-red-600 text-red-500 font-medium transition-all"
         >
           <FaSignOutAlt />

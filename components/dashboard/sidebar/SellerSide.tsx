@@ -2,8 +2,8 @@
 "use client";
 
 import React, { useState } from "react";
-import { useRouter } from "next/navigation"; // Next.js router
-
+import { useRouter } from "next/navigation"; 
+import { useHandleLogout } from "@/services/Logout";
 import { FaTachometerAlt, FaUsers, FaUserShield, FaChartLine, FaCog, FaSignOutAlt } from "react-icons/fa";
 
 interface NavLink {
@@ -56,7 +56,7 @@ const Sidebar = () => {
 
 	  {/* Logout */}
 	  <button
-	  onClick={() => alert('logout')}
+	  onClick={() => useHandleLogout}
 		className="flex items-center gap-3 p-3 mt-auto rounded-lg hover:bg-red-600 text-red-500 font-medium transition-all"
 	  >
 		<FaSignOutAlt />

@@ -55,7 +55,7 @@ const SignUpForm = ({ onSuccess }: SignUpFormProps) => {
         throw new Error(data?.message || "Registration failed");
       }
 
-      onSuccess(); // Call success callback
+      onSuccess(); 
     } catch (error: unknown) {
       if (error instanceof Error) {
         setError(error.message);

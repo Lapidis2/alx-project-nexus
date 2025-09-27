@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import WeeklyReport from "@/components/dashboard/analytics/WeeklyReports";
 import InteractionCard from "@/components/dashboard/InteractiveCard";
-
+import Image from "next/image";
 interface Product {
   id: string;
   name: string;
@@ -97,7 +97,6 @@ const SellerDashboard: React.FC = () => {
           </table>
         </div>
 
-        {/* Recent Purchases */}
         <div className="w-full lg:w-1/2 bg-white p-4 rounded-lg shadow-sm">
           <div className="flex justify-between items-center mb-2">
             <h2 className="font-semibold">Recent Purchases</h2>
@@ -107,7 +106,7 @@ const SellerDashboard: React.FC = () => {
             {products.map(p => (
               <li key={p.id} className="flex justify-between items-center border-b py-2">
                 <div className="flex items-center gap-2">
-                  <img src={p.imageUrl} alt={p.name} className="w-10 h-10 object-cover rounded" />
+                  <Image src={p.imageUrl} alt={p.name} fill className="w-10 h-10 object-cover rounded" />
                   <span>{p.name}</span>
                 </div>
                 <span className="text-sm text-blue-500 cursor-pointer">Details</span>
