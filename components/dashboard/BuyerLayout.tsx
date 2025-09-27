@@ -9,7 +9,7 @@ interface AdminLayoutProps {
 
 const BuyerLayout: React.FC<AdminLayoutProps> = ({ children }) => {
   return (
-    <ProtectedRoute allowedRoles={["admin"]}>
+    <ProtectedRoute allowedRoles={["buyer"]}>
       <div className="w-full min-h-screen flex flex-row">
         <div className="hidden lg:flex lg:w-[15%] relative">
           <BuyerSide />
