@@ -3,7 +3,7 @@
 import { NextPage } from "next";
 import Link from "next/link";
 import { useState } from "react";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import AuthButton from "@/constants/AuthButton";
 import Input from "@/constants/Input";
@@ -22,6 +22,7 @@ interface User {
 
 interface LoginResponse {
   user: User;
+  role: string;
   token: string;
   message?: string;
 }
@@ -30,7 +31,7 @@ const Signin: NextPage = () => {
   const router = useRouter();
   const { t } = useTranslation();
 
-  const [email, setEmail] = useState<string>("");
+  const [identifier, setIdentifier] = useState<string>(""); // username or email
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string>("");
   const [isRedirecting, setIsRedirecting] = useState(false);
@@ -40,22 +41,22 @@ const Signin: NextPage = () => {
     e.preventDefault();
     setError("");
 
-    const trimmedEmail = email.trim();
+    const trimmedIdentifier = identifier.trim();
     const trimmedPassword = password.trim();
 
-    if (!trimmedEmail || !trimmedPassword) {
-      setError(t("Email and password are required"));
+    if (!trimmedIdentifier || !trimmedPassword) {
+      setError(t("Username/email and password are required"));
       return;
     }
 
     setLoading(true);
     try {
       const res = await fetch(
-        "https://umurava-challenge-bn.onrender.com/api/login",
+        `${process.env.NEXT_PUBLIC_API_URL}/auth/login/`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email: trimmedEmail, password: trimmedPassword }),
+          body: JSON.stringify({ identifier: trimmedIdentifier, password: trimmedPassword }),
         }
       );
 
@@ -67,17 +68,20 @@ const Signin: NextPage = () => {
         return;
       }
 
-  
-      
+      // Save token and user info
       localStorage.setItem("token", data.token);
       localStorage.setItem("user", JSON.stringify(data.user));
 
-     
-      switch (data.user.role) {
+      // Normalize role to lowercase
+      const role = data.role?.toLowerCase() || "buyer";
+
+      // Redirect based on role
+      switch (role) {
         case "buyer":
           router.push("/");
           break;
-        case "seller":
+        case "vendor":
+        case "seller": // in case your backend calls it vendor
           router.push("/seller/dashboard");
           break;
         case "admin":
@@ -86,7 +90,7 @@ const Signin: NextPage = () => {
         default:
           router.push("/");
       }
-    } catch {
+    } catch (err) {
       setError(t("Something went wrong"));
     } finally {
       setLoading(false);
@@ -104,6 +108,7 @@ const Signin: NextPage = () => {
       <Link href="/" aria-label="Homepage">
         <Image src={Logo} alt="Logo" width={120} height={48} />
       </Link>
+
       <div className="w-full max-w-md p-6 bg-white shadow-lg rounded-lg">
         <h1 className="text-2xl font-bold text-center mb-6">{t("Sign In")}</h1>
 
@@ -111,10 +116,10 @@ const Signin: NextPage = () => {
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <Input
-            type="email"
-            placeholder={t("Email")}
-            value={email}
-            onChange={(value: string) => setEmail(value)}
+            type="text"
+            placeholder={t("Username or Email")}
+            value={identifier}
+            onChange={(value: string) => setIdentifier(value)}
           />
           <Input
             type="password"
