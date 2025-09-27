@@ -4,8 +4,8 @@ import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useTranslation } from "react-i18next";
-import { useRouter } from "next/router";
-
+import { useHandleLogout } from "@/services/Logout";
+import { Circles } from "react-loader-spinner";
 const BellIcon = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -27,8 +27,10 @@ interface AdminHeaderProps {
 const AdminHeader: React.FC<AdminHeaderProps> = ({ userData }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
-  const router=useRouter()
   const { t } = useTranslation();
+  const {handleLogout,loading} = useHandleLogout(); 
+
+ 
 
   return (
     <header className="fixed top-0 lg:ml-64 right-0 w-full lg:w-[calc(100%-16rem)] bg-white shadow-md px-4 py-2 flex items-center justify-between z-50">
@@ -119,12 +121,20 @@ const AdminHeader: React.FC<AdminHeaderProps> = ({ userData }) => {
               >
                 Profile
               </Link>
-              <button
-                onClick={() => router.push("/")}
-                className="w-full text-left block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-              >
-                Logout
-              </button>
+			  <button
+      onClick={handleLogout}
+      disabled={loading}
+      className="w-full text-left block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+    >
+      {loading ? (
+        <div className="flex items-center gap-2">
+          <Circles visible height="20" width="20" color="#C9974C" />
+          Logging out...
+        </div>
+      ) : (
+        "Logout"
+      )}
+    </button>
             </div>
           )}
         </div>

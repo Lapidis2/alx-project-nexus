@@ -79,12 +79,12 @@ const AdminHome: React.FC = () => {
     </div>
   </div>
 
-  {/* Weekly Report */}
+ 
   <div className="w-full h-60 md:h-80 xl:h-96 2xl:h-[500px]">
     <WeeklyReport />
   </div>
 
-  {/* Tables */}
+
   <div className="flex flex-col lg:flex-row gap-6 w-full pb-10">
     <div className="w-ful lg:w-2/3">
       <UserTable users={users} />
