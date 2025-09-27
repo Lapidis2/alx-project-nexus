@@ -1,6 +1,6 @@
 import { ReactNode, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { getUserFromToken } from "@/utils/auth"; // full payload helper
+import { getUserFromToken } from "@/utils/auth"; 
 import { Circles } from "react-loader-spinner"; 
 
 interface ProtectedRouteProps {
@@ -13,7 +13,7 @@ const ProtectedRoute = ({ children, allowedRoles }: ProtectedRouteProps) => {
   const [isAuthorized, setIsAuthorized] = useState<boolean | null>(null);
 
   useEffect(() => {
-    const tokenData = getUserFromToken(); // { userId, role, exp }
+    const tokenData = getUserFromToken();
 
     if (!tokenData || !allowedRoles.includes(tokenData.role)) {
       router.replace("/auth/login");

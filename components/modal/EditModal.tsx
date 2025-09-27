@@ -2,35 +2,38 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
+
 interface AdminProduct {
-  id: string;
+  id?: string; // optional for new product
   name: string;
   price: number;
   description?: string;
   quantity?: number;
   category?: string;
   expiration?: string;
-  images: string[];
+  images?: string[];
 }
 
-interface UpdateModalProps {
-  product: AdminProduct;
+interface NewModalProps {
   onClose: () => void;
-  onUpdate: (updatedProduct: AdminProduct) => void;
+  onAdd: (newProduct: AdminProduct) => void;
 }
 
-const UpdateProductModal: React.FC<UpdateModalProps> = ({
-  product,
-  onClose,
-  onUpdate,
-}) => {
-  const [formData, setFormData] = useState<AdminProduct>({ ...product });
+const NewProductModal: React.FC<NewModalProps> = ({ onClose, onAdd }) => {
+  const [formData, setFormData] = useState<AdminProduct>({
+    name: "",
+    price: 0,
+    description: "",
+    quantity: 0,
+    category: "",
+    expiration: "",
+    images: [], // ensure always an array
+  });
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
-
     setFormData((prev) => ({
       ...prev,
       [name]:
@@ -44,30 +47,30 @@ const UpdateProductModal: React.FC<UpdateModalProps> = ({
     const newImages = files.map((file) => URL.createObjectURL(file));
     setFormData((prev) => ({
       ...prev,
-      images: [...prev.images, ...newImages],
+      images: [...(prev.images || []), ...newImages], // safe fallback
     }));
   };
 
   const handleRemoveImage = (index: number) => {
     setFormData((prev) => ({
       ...prev,
-      images: prev.images.filter((_, i) => i !== index),
+      images: (prev.images || []).filter((_, i) => i !== index),
     }));
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onUpdate(formData); 
+    onAdd(formData);
     onClose();
   };
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
       <div className="bg-white p-6 rounded-lg w-96 shadow-lg max-h-[90vh] overflow-y-auto">
-        <h2 className="text-xl font-bold mb-4">Edit Product</h2>
+        <h2 className="text-xl font-bold mb-4">Add New Product</h2>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          {/* Product Name */}
+          {/* Name */}
           <div>
             <label className="block text-sm font-medium">Name</label>
             <input
@@ -80,7 +83,7 @@ const UpdateProductModal: React.FC<UpdateModalProps> = ({
             />
           </div>
 
-          {/* Product Price */}
+          {/* Price */}
           <div>
             <label className="block text-sm font-medium">Price</label>
             <input
@@ -105,7 +108,7 @@ const UpdateProductModal: React.FC<UpdateModalProps> = ({
             />
           </div>
 
-          {/* Optional fields */}
+          {/* Description */}
           <div>
             <label className="block text-sm font-medium">Description</label>
             <textarea
@@ -116,6 +119,7 @@ const UpdateProductModal: React.FC<UpdateModalProps> = ({
             />
           </div>
 
+          {/* Category */}
           <div>
             <label className="block text-sm font-medium">Category</label>
             <input
@@ -127,6 +131,7 @@ const UpdateProductModal: React.FC<UpdateModalProps> = ({
             />
           </div>
 
+          {/* Expiration */}
           <div>
             <label className="block text-sm font-medium">Expiration</label>
             <input
@@ -142,7 +147,7 @@ const UpdateProductModal: React.FC<UpdateModalProps> = ({
           <div>
             <label className="block text-sm font-medium mb-2">Images</label>
             <div className="grid grid-cols-3 gap-2 mb-2">
-              {formData.images.map((img, idx) => (
+              {(formData.images || []).map((img, idx) => (
                 <div key={idx} className="relative w-full h-24 border rounded overflow-hidden">
                   <Image
                     src={img}
@@ -183,9 +188,9 @@ const UpdateProductModal: React.FC<UpdateModalProps> = ({
             </button>
             <button
               type="submit"
-              className="px-4 py-2 rounded bg-green-600 text-white hover:bg-green-700"
+              className="px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700"
             >
-              Update
+              Add
             </button>
           </div>
         </form>
@@ -194,4 +199,4 @@ const UpdateProductModal: React.FC<UpdateModalProps> = ({
   );
 };
 
-export default UpdateProductModal;
+export default NewProductModal;

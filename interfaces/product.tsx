@@ -13,3 +13,24 @@ export interface ProductFormData {
 	id: string;           
    
   }
+
+
+  export interface AdminProduct {
+	id: string;
+	name: string;
+	price: number;
+	image?: string;          
+	description?: string;
+	quantity?: number;
+	category?: string;
+	expiration?: string;
+	images?: string[];
+  }
+
+  export interface ApiResponse<T> {
+	message: string;
+	product?: T;
+	products?: T[];
+	id?: string;
+  }
+  

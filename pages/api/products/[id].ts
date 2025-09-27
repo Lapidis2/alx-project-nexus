@@ -1,21 +1,35 @@
+
 import type { NextApiRequest, NextApiResponse } from "next";
+import clientPromise from "@/lib/mongo";
+import { ObjectId } from "mongodb";
 
-const products = [
-  { id: "1", name: "HeadPhones", price: 1200, image: '["/assets/images/products/headphone.jpg"]', description: "High-end laptop", quantity: 10, Vendor: { storeName: "Tech Store" } },
-  { id: "2", name: "Phone", price: 800, image: '["/assets/images/products/phone.png"]', description: "Latest smartphone", quantity: 15, Vendor: { storeName: "Phone World" } },
-  { id: "3", name: "Tablet", price: 500, image: '["/assets/images/products/shoes.jpg"]', description: "Lightweight tablet", quantity: 8, Vendor: { storeName: "Gadget Shop" } },
-  { id: "4", name: "Phone", price: 800, image: '["/assets/images/products/phone.png"]', description: "Latest smartphone", quantity: 15, Vendor: { storeName: "Phone World" } },
-];
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  const client = await clientPromise;
+  const db = client.db("shopDB");
+  const { id } = req.query;
 
-export default function handler(req: NextApiRequest, res: NextApiResponse) {
-  let { id } = req.query;
-  if (Array.isArray(id)) id = id[0]; 
+  if (!ObjectId.isValid(id as string)) return res.status(400).json({ message: "Invalid ID" });
 
-  const product = products.find((p) => p.id === id);
+  switch (req.method) {
+    case "GET":
+      const product = await db.collection("products").findOne({ _id: new ObjectId(id as string) });
+      return res.status(200).json(product);
 
-  if (!product) {
-    return res.status(404).json({ message: "Product not found" });
+    case "PUT":
+      const updated = req.body;
+      if (!updated.images) updated.images = [];
+      await db.collection("products").updateOne(
+        { _id: new ObjectId(id as string) },
+        { $set: updated }
+      );
+      return res.status(200).json({ message: "Updated" });
+
+    case "DELETE":
+      await db.collection("products").deleteOne({ _id: new ObjectId(id as string) });
+      return res.status(200).json({ message: "Deleted" });
+
+    default:
+      res.setHeader("Allow", ["GET", "PUT", "DELETE"]);
+      return res.status(405).end(`Method ${req.method} Not Allowed`);
   }
-
-  res.status(200).json(product);
 }
