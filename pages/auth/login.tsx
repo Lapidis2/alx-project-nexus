@@ -52,7 +52,7 @@ const Signin: NextPage = () => {
     setLoading(true);
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/auth/login/`,
+        `https://alx-e-commerce.onrender.com/api/auth/login/`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
