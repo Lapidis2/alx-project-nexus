@@ -10,7 +10,7 @@ interface AdminProduct {
   quantity?: number;
   category?: string;
   expiration?: string;
-  images?: string[];
+  images: string[];
 }
 
 const AdminProductsPage: React.FC = () => {
