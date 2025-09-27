@@ -11,13 +11,18 @@ interface FormData {
   firstname: string;
   lastname: string;
   email: string;
-  role?: string;
   password: string;
+  is_vendor: boolean;
+  businessname?: string;
+  contactinfo?: string;
+  address?: string;
+  bankaccount?: string;
+  tin?: string;
 }
 
 interface ApiResponse {
   message?: string;
-  success?: boolean;
+  error?: string;
 }
 
 const SignUpForm = ({ onSuccess }: SignUpFormProps) => {
@@ -26,15 +31,24 @@ const SignUpForm = ({ onSuccess }: SignUpFormProps) => {
     firstname: "",
     lastname: "",
     email: "",
-    role: "",
     password: "",
+    is_vendor: false,
+    businessname: "",
+    contactinfo: "",
+    address: "",
+    bankaccount: "",
+    tin: "",
   });
 
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value, type, checked } = e.target;
+    setFormData({
+      ...formData,
+      [name]: type === "checkbox" ? checked : value,
+    });
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -43,7 +57,7 @@ const SignUpForm = ({ onSuccess }: SignUpFormProps) => {
     setLoading(true);
 
     try {
-      const res = await fetch("https://umurava-challenge-bn.onrender.com/api/registerUser", {
+      const res = await fetch(`https://alx-e-commerce.onrender.com/api/auth/register/`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
@@ -52,13 +66,13 @@ const SignUpForm = ({ onSuccess }: SignUpFormProps) => {
       const data: ApiResponse = await res.json();
 
       if (!res.ok) {
-        throw new Error(data?.message || "Registration failed");
+        throw new Error(data?.error || "Registration failed");
       }
 
-      onSuccess(); 
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        setError(error.message);
+      onSuccess();
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message);
       } else {
         setError("Registration failed");
       }
@@ -71,12 +85,11 @@ const SignUpForm = ({ onSuccess }: SignUpFormProps) => {
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-1">
-          Enter username
+          Username
         </label>
         <input
           type="text"
           name="username"
-          placeholder="Enter username"
           value={formData.username}
           onChange={handleChange}
           className="w-full px-4 py-2 border rounded-lg focus:ring focus:ring-blue-500"
@@ -86,12 +99,11 @@ const SignUpForm = ({ onSuccess }: SignUpFormProps) => {
 
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-1">
-          Enter your firstname
+          First Name
         </label>
         <input
           type="text"
           name="firstname"
-          placeholder="Enter your firstname"
           value={formData.firstname}
           onChange={handleChange}
           className="w-full px-4 py-2 border rounded-lg focus:ring focus:ring-blue-500"
@@ -101,12 +113,11 @@ const SignUpForm = ({ onSuccess }: SignUpFormProps) => {
 
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-1">
-          Enter your lastname
+          Last Name
         </label>
         <input
           type="text"
           name="lastname"
-          placeholder="Enter your lastname"
           value={formData.lastname}
           onChange={handleChange}
           className="w-full px-4 py-2 border rounded-lg focus:ring focus:ring-blue-500"
@@ -116,12 +127,11 @@ const SignUpForm = ({ onSuccess }: SignUpFormProps) => {
 
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-1">
-          Enter your email
+          Email
         </label>
         <input
           type="email"
           name="email"
-          placeholder="Enter your email address"
           value={formData.email}
           onChange={handleChange}
           className="w-full px-4 py-2 border rounded-lg focus:ring focus:ring-blue-500"
@@ -129,32 +139,95 @@ const SignUpForm = ({ onSuccess }: SignUpFormProps) => {
         />
       </div>
 
-      <div className="mt-4">
-        <label className="block text-sm font-medium text-gray-700 mb-1">
-          Select Role
+      <div>
+        <label className="flex items-center gap-2">
+          <input
+            type="checkbox"
+            name="is_vendor"
+            checked={formData.is_vendor}
+            onChange={handleChange}
+          />
+          Register as Vendor
         </label>
-        <select
-          name="role"
-          value={formData.role}
-          onChange={handleChange}
-          className="w-full px-4 py-2 border rounded-lg focus:ring focus:ring-blue-500"
-          required
-        >
-          <option value="">-- Select a role --</option>
-          <option value="buyer">Buyer</option>
-          <option value="seller">Seller</option>
-          <option value="admin">Admin</option>
-        </select>
       </div>
+
+      {formData.is_vendor && (
+        <>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Business Name
+            </label>
+            <input
+              type="text"
+              name="businessname"
+              value={formData.businessname || ""}
+              onChange={handleChange}
+              className="w-full px-4 py-2 border rounded-lg focus:ring focus:ring-blue-500"
+              required
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Contact Info
+            </label>
+            <input
+              type="text"
+              name="contactinfo"
+              value={formData.contactinfo || ""}
+              onChange={handleChange}
+              className="w-full px-4 py-2 border rounded-lg focus:ring focus:ring-blue-500"
+              required
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Address
+            </label>
+            <input
+              type="text"
+              name="address"
+              value={formData.address || ""}
+              onChange={handleChange}
+              className="w-full px-4 py-2 border rounded-lg focus:ring focus:ring-blue-500"
+              required
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Bank Account
+            </label>
+            <input
+              type="text"
+              name="bankaccount"
+              value={formData.bankaccount || ""}
+              onChange={handleChange}
+              className="w-full px-4 py-2 border rounded-lg focus:ring focus:ring-blue-500"
+              required
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              TIN
+            </label>
+            <input
+              type="text"
+              name="tin"
+              value={formData.tin || ""}
+              onChange={handleChange}
+              className="w-full px-4 py-2 border rounded-lg focus:ring focus:ring-blue-500"
+              required
+            />
+          </div>
+        </>
+      )}
 
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-1">
-          Enter your password
+          Password
         </label>
         <input
           type="password"
           name="password"
-          placeholder="Enter your password"
           value={formData.password}
           onChange={handleChange}
           className="w-full px-4 py-2 border rounded-lg focus:ring focus:ring-blue-500"
