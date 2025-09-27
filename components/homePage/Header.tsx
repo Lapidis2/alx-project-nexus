@@ -15,7 +15,7 @@ interface User {
 	userId:string,
   name: string;
   email: string;
-  role: "buyer" | "vendor";
+  role: "buyer" | "seller";
   profile: string;
 }
 
@@ -125,7 +125,7 @@ const Header = () => {
                       onClick={() => {
                         if (role === "buyer") {
                           router.push(`/buyer/profile/${user.userId}`);
-                        } else if (role === "vendor") {
+                        } else if (role === "seller") {
                           router.push(`/seller/profile/${user.userId}`);
                         } else {
                           router.push("/");
@@ -144,8 +144,8 @@ const Header = () => {
                     <button
                       onClick={() => {
                         if (role === "buyer") {
-                          router.push("/buyer/orders");
-                        } else if (role === "vendor") {
+						router.push(`/buyer/profile/${user.userId}`);
+                        } else if (role === "seller") {
                           router.push("/seller/dashboard");
                         } else {
                           router.push("/");
@@ -184,7 +184,7 @@ const Header = () => {
               href="/auth/login"
               className="px-4 py-2 bg-white text-primary rounded hover:bg-gray-200 transition"
             >
-              {t("Register")}
+              {t("Login")}
             </Link>
             <Link
               href="/auth/register"
