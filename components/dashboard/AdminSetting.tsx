@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import {useHandleLogout} from "@/services/Logout"
+import { useHandleLogout } from "@/services/Logout";
 
 interface Passwords {
   password: string;
@@ -37,7 +37,8 @@ const AdminSettings: React.FC<AdminSettingsProps> = ({ user, updatePassword }) =
     confirmPassword: "",
   });
   const [errors, setErrors] = useState<Errors>({});
-  const logout = useHandleLogout();
+
+  const { handleLogout, loading } = useHandleLogout();
 
   const handleChangePassword = () => setIsChangingPassword(true);
 
@@ -69,7 +70,8 @@ const AdminSettings: React.FC<AdminSettingsProps> = ({ user, updatePassword }) =
         await updatePassword(user.userId, passwords);
         toast.success("Password updated successfully");
         handleDiscard();
-        setTimeout(() => logout(), 4000);
+        
+        setTimeout(() => handleLogout(), 4000);
       } catch {
         toast.error("Failed to update password");
       }
@@ -186,8 +188,9 @@ const AdminSettings: React.FC<AdminSettingsProps> = ({ user, updatePassword }) =
             <button
               type="submit"
               className="bg-primary hover:bg-secondary text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              disabled={loading}
             >
-              Save changes
+              {loading ? "Saving..." : "Save changes"}
             </button>
           </div>
         </form>
