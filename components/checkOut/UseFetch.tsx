@@ -45,12 +45,11 @@ const useFetch = (url: string): UseFetchReturn => {
 		  },
 		});
   
-		console.log("Fetching data from URL:", url);
-		console.log("Response status:", res.status);
+	
   
 		if (!res.ok) {
 		  const errorText = await res.text();
-		  console.error("Error response body:", errorText);
+		
 		  throw new Error("Failed to fetch cart data");
 		}
   
