@@ -2,12 +2,13 @@
 import React, { useState, useEffect } from "react";
 import ProductModal from "@/components/modal/ProductModal";
 
+
 interface AdminProduct {
   _id?: string;
   name: string;
-  price: number;
+  price: number | string;  
   description?: string;
-  quantity?: number;
+  quantity: number | string;  
   category?: string;
   expiration?: string;
   images: string[];
@@ -18,7 +19,9 @@ const AdminProductsPage: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<AdminProduct | undefined>(undefined);
+  const [modalMode, setModalMode] = useState<"edit" | "add">("add");
 
+  // Fetch Products from API
   const fetchProducts = async () => {
     setLoading(true);
     try {
@@ -37,8 +40,12 @@ const AdminProductsPage: React.FC = () => {
   }, []);
 
   const handleSave = async (product: AdminProduct) => {
+ 
+    product.price = typeof product.price === "string" ? parseFloat(product.price as string) : product.price;
+    product.quantity = typeof product.quantity === "string" ? parseInt(product.quantity as string) : product.quantity;
+
     if (product._id) {
-      // Update
+      
       await fetch(`/api/products/${product._id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
@@ -46,7 +53,7 @@ const AdminProductsPage: React.FC = () => {
       });
       setProducts((prev) => prev.map((p) => (p._id === product._id ? product : p)));
     } else {
-      // Add
+      // Add new product
       const res = await fetch("/api/products", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -57,6 +64,7 @@ const AdminProductsPage: React.FC = () => {
     }
   };
 
+  // Delete Product
   const handleDelete = async (_id?: string) => {
     if (!_id) return;
     const confirmed = confirm("Delete product?");
@@ -69,7 +77,12 @@ const AdminProductsPage: React.FC = () => {
     <div className="p-6 mt-20">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">All Products</h1>
-        <button onClick={() => { setSelectedProduct(undefined); setShowModal(true); }} className="text-blue-500 underline">+ Add Product</button>
+        <button
+          onClick={() => { setSelectedProduct(undefined); setModalMode("add"); setShowModal(true); }}
+          className="text-blue-500 underline"
+        >
+          + Add Product
+        </button>
       </div>
 
       {loading ? <p>Loading...</p> : (
@@ -81,8 +94,18 @@ const AdminProductsPage: React.FC = () => {
                 <p>${p.price}</p>
               </div>
               <div className="flex gap-4">
-                <button onClick={() => { setSelectedProduct(p); setShowModal(true); }} className="text-green-600 underline">Edit</button>
-                <button onClick={() => handleDelete(p._id)} className="text-red-500">Delete</button>
+                <button
+                  onClick={() => { setSelectedProduct(p); setModalMode("edit"); setShowModal(true); }}
+                  className="text-green-600 underline"
+                >
+                  Edit
+                </button>
+                <button
+                  onClick={() => handleDelete(p._id)}
+                  className="text-red-500"
+                >
+                  Delete
+                </button>
               </div>
             </li>
           ))}
@@ -91,7 +114,7 @@ const AdminProductsPage: React.FC = () => {
 
       {showModal && (
         <ProductModal
-          product={selectedProduct}
+          product={modalMode === "edit" ? selectedProduct : undefined}
           onClose={() => setShowModal(false)}
           onSave={handleSave}
         />
