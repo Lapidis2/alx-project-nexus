@@ -22,7 +22,7 @@ interface ApiProduct {
   id: string;
   name: string;
   price: number;
-  image?: string;
+  images?: string[];
   category?: string;
 }
 
@@ -51,7 +51,7 @@ const ProductsPage: React.FC = () => {
 		  id: p.id,
 		  name: p.name,
 		  price: p.price,
-		  image: p.image || "/placeholder.jpg",
+		  image: p.images && p.images.length > 0 ? p.images[0] : "/placeholder.jpg", 
 		  category: p.category || "Uncategorized",
 		}));
   

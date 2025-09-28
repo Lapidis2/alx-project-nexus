@@ -19,7 +19,7 @@ interface Product {
 interface Props {
   product: Product;
   isLoading?: boolean;
-  onCartUpdate?: (count: number) => void; // callback for header
+  onCartUpdate?: (count: number) => void; 
 }
 
 interface CartItem {
