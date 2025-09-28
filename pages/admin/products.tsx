@@ -89,7 +89,6 @@ const ProductModal: React.FC<ProductModalProps> = ({
     return data.url;
   };
 
-  // Handle multiple image uploads
   const handleImageUpload = async (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -112,7 +111,7 @@ const ProductModal: React.FC<ProductModalProps> = ({
     }
   };
 
-  // Handle removal of image
+ 
   const handleRemoveImage = (idx: number) => {
     setFormData((prev) => ({
       ...prev,
@@ -120,11 +119,10 @@ const ProductModal: React.FC<ProductModalProps> = ({
     }));
   };
 
-  // Handle form submission
+  
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Ensure price and quantity are converted to numbers if not empty
     const formattedData: AdminProduct = {
       ...formData,
       price: typeof formData.price === "string" ? Number(formData.price) : formData.price,

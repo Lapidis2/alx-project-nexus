@@ -48,7 +48,7 @@ const useFetch = (url: string): UseFetchReturn => {
 	
   
 		if (!res.ok) {
-		  const errorText = await res.text();
+		
 		
 		  throw new Error("Failed to fetch cart data");
 		}

@@ -3,17 +3,16 @@
 import { useEffect, useState } from "react";
 import ProductModal from "@/components/modal/ProductModal";
 
-export interface AdminProduct {
-  id?: string;
-  name: string;
-  price: number;
-  image?: string;
-  description?: string;
-  quantity?: number;
-  category?: string;
-  expiration?: string;
-  images: string[];
-}
+interface AdminProduct {
+	_id?: string;
+	name: string;
+	price: number | string; 
+	description?: string;
+	quantity?: number | string;
+	category?: string;
+	expiration?: string;
+	images: string[];
+  }
 
 const AdminProductsPage = () => {
   const [products, setProducts] = useState<AdminProduct[]>([]);
@@ -40,14 +39,14 @@ const AdminProductsPage = () => {
     fetchProducts();
   }, []);
 
-  const handleDelete = async (id: string) => {
+  const handleDelete = async (_id: string) => {
     const confirmed = confirm("Are you sure you want to delete this product?");
     if (!confirmed) return;
 
     try {
-      const res = await fetch(`/api/products/${id}`, { method: "DELETE" });
+      const res = await fetch(`/api/products/${_id}`, { method: "DELETE" });
       if (res.ok) {
-        setProducts((prev) => prev.filter((p) => p.id !== id));
+        setProducts((prev) => prev.filter((p) => p._id !== _id));
       } else {
         alert("Failed to delete product.");
       }
@@ -70,9 +69,9 @@ const AdminProductsPage = () => {
   const handleSave = (product: AdminProduct) => {
 	if (modalMode === "edit") {
 	  setProducts((prev) =>
-		prev.map((p) => (p.id === product.id ? product : p))
+		prev.map((p) => (p._id === product._id ? product : p))
 	  );
-	  fetch(`/api/products/${product.id}`, {
+	  fetch(`/api/products/${product._id}`, {
 		method: "PUT",
 		headers: { "Content-Type": "application/json" },
 		body: JSON.stringify(product),
@@ -108,7 +107,7 @@ const AdminProductsPage = () => {
         <ul className="space-y-4">
           {products.map((product) => (
             <li
-              key={product.id}
+              key={product._id}
               className="border p-4 rounded shadow flex justify-between items-center"
             >
               <div>
@@ -124,7 +123,7 @@ const AdminProductsPage = () => {
                 </button>
                 <button
                   className="text-red-500"
-                  onClick={() => handleDelete(product.id!)}
+                  onClick={() => handleDelete(product._id!)}
                 >
                   Delete
                 </button>

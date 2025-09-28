@@ -45,7 +45,7 @@ const ProductPage: React.FC = () => {
         }
 
         setProduct(data);
-      } catch (err) {
+      } catch {
         
         setProduct(null);
       } finally {
