@@ -1,18 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import ProductModal from "@/components/modal/ProductModal";
-
-
-interface AdminProduct {
-  _id?: string;
-  name: string;
-  price: number | string;  
-  description?: string;
-  quantity: number | string;  
-  category?: string;
-  expiration?: string;
-  images: string[];
-}
+import { AdminProduct } from "@/interfaces/product";  // Import the AdminProduct interface
 
 const AdminProductsPage: React.FC = () => {
   const [products, setProducts] = useState<AdminProduct[]>([]);
@@ -21,7 +10,6 @@ const AdminProductsPage: React.FC = () => {
   const [selectedProduct, setSelectedProduct] = useState<AdminProduct | undefined>(undefined);
   const [modalMode, setModalMode] = useState<"edit" | "add">("add");
 
-  // Fetch Products from API
   const fetchProducts = async () => {
     setLoading(true);
     try {
@@ -40,18 +28,18 @@ const AdminProductsPage: React.FC = () => {
   }, []);
 
   const handleSave = async (product: AdminProduct) => {
- 
+    // Ensure price and quantity are always numbers before saving
     product.price = typeof product.price === "string" ? parseFloat(product.price as string) : product.price;
     product.quantity = typeof product.quantity === "string" ? parseInt(product.quantity as string) : product.quantity;
 
-    if (product._id) {
-      
-      await fetch(`/api/products/${product._id}`, {
+    if (product.id) {
+      // Update product
+      await fetch(`/api/products/${product.id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(product),
       });
-      setProducts((prev) => prev.map((p) => (p._id === product._id ? product : p)));
+      setProducts((prev) => prev.map((p) => (p.id === product.id ? product : p)));
     } else {
       // Add new product
       const res = await fetch("/api/products", {
@@ -64,13 +52,12 @@ const AdminProductsPage: React.FC = () => {
     }
   };
 
-  // Delete Product
-  const handleDelete = async (_id?: string) => {
-    if (!_id) return;
+  const handleDelete = async (id?: string) => {
+    if (!id) return;
     const confirmed = confirm("Delete product?");
     if (!confirmed) return;
-    await fetch(`/api/products/${_id}`, { method: "DELETE" });
-    setProducts((prev) => prev.filter((p) => p._id !== _id));
+    await fetch(`/api/products/${id}`, { method: "DELETE" });
+    setProducts((prev) => prev.filter((p) => p.id !== id));
   };
 
   return (
@@ -88,7 +75,7 @@ const AdminProductsPage: React.FC = () => {
       {loading ? <p>Loading...</p> : (
         <ul className="space-y-4">
           {products.map((p) => (
-            <li key={p._id} className="border p-4 rounded shadow flex justify-between items-center">
+            <li key={p.id} className="border p-4 rounded shadow flex justify-between items-center">
               <div>
                 <p className="font-bold">{p.name}</p>
                 <p>${p.price}</p>
@@ -101,7 +88,7 @@ const AdminProductsPage: React.FC = () => {
                   Edit
                 </button>
                 <button
-                  onClick={() => handleDelete(p._id)}
+                  onClick={() => handleDelete(p.id)}
                   className="text-red-500"
                 >
                   Delete

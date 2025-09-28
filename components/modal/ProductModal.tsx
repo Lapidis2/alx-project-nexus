@@ -1,18 +1,5 @@
-// components/modal/ProductModal.tsx
-
 import React, { useState, useEffect } from "react";
-
-// AdminProduct Type Interface
-interface AdminProduct {
-  _id?: string;
-  name: string;
-  price: number | string;
-  description?: string;
-  quantity: number | string;
-  category?: string;
-  expiration?: string;
-  images: string[];
-}
+import { AdminProduct } from "@/interfaces/product"; // Import AdminProduct from the centralized file
 
 interface ProductModalProps {
   product?: AdminProduct;
@@ -22,22 +9,23 @@ interface ProductModalProps {
 
 const ProductModal: React.FC<ProductModalProps> = ({ product, onClose, onSave }) => {
   const [formData, setFormData] = useState<AdminProduct>({
+    id: "",
     name: "",
-    price: "",
+    price: 0,
     description: "",
-    quantity: "",
+    quantity: 0,
     category: "",
     expiration: "",
     images: [],
-    ...product, // Pre-fill form with the existing product data
+    ...product,  // Pre-fill form with the existing product data if available
   });
 
   useEffect(() => {
     if (product) {
       setFormData({
         ...product,
-        price: typeof product.price === "string" ? product.price : product.price.toString(),
-        quantity: typeof product.quantity === "string" ? product.quantity : product.quantity.toString(),
+        price: typeof product.price === "number" ? product.price : 0,
+        quantity: typeof product.quantity === "number" ? product.quantity : 0,
       });
     }
   }, [product]);
@@ -51,7 +39,7 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, onClose, onSave })
       [name]:
         type === "number"
           ? value === "" || isNaN(Number(value))
-            ? ""
+            ? 0
             : Number(value)
           : value,
     }));
@@ -108,7 +96,6 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, onClose, onSave })
               value={formData.quantity}
               onChange={handleChange}
               className="w-full p-2 border border-gray-300 rounded"
-              required
             />
           </div>
 
@@ -117,25 +104,25 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, onClose, onSave })
             <textarea
               name="description"
               id="description"
-              value={formData.description || ""}
+              value={formData.description}
               onChange={handleChange}
               className="w-full p-2 border border-gray-300 rounded"
             />
           </div>
 
-          <div className="flex justify-between">
+          <div className="flex justify-between gap-4 mt-6">
             <button
               type="button"
+              className="w-full py-2 bg-gray-300 rounded text-black"
               onClick={onClose}
-              className="px-4 py-2 bg-gray-300 rounded"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="px-4 py-2 bg-blue-500 text-white rounded"
+              className="w-full py-2 bg-blue-500 rounded text-white"
             >
-              Save
+              {product ? "Save Changes" : "Add Product"}
             </button>
           </div>
         </form>
