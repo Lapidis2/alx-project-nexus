@@ -1,251 +1,103 @@
 "use client";
-import React, { useState } from "react";
-import Image from "next/image";
+import React, { useState, useEffect } from "react";
+import ProductModal from "@/components/modal/ProductModal";
 
 interface AdminProduct {
   _id?: string;
   name: string;
-  price: number | string; 
+  price: number;
   description?: string;
-  quantity?: number | string;
+  quantity?: number;
   category?: string;
   expiration?: string;
   images: string[];
 }
 
-interface ProductModalProps {
-  product?: AdminProduct;
-  onClose: () => void;
-  onSave: (product: AdminProduct) => void | Promise<void>;
-}
+const AdminProductsPage: React.FC = () => {
+  const [products, setProducts] = useState<AdminProduct[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<AdminProduct | undefined>(undefined);
 
-const categories = [
-  "Electronics",
-  "Food",
-  "Fruits",
-  "Mechanism",
-  "Sport Kit",
-  "Clothing",
-  "Books",
-  "Furniture",
-  "Toys",
-  "Stationary",
-  "Cars",
-  "Shoes",
-];
-
-const ProductModal: React.FC<ProductModalProps> = ({
-  product,
-  onClose,
-  onSave,
-}) => {
-
-  const [formData, setFormData] = useState<AdminProduct>({
-    name: "",
-    price: "",
-    description: "",
-    quantity: "",
-    category: "",
-    expiration: "",
-    images: [],
-    ...product,
-  });
-
-  const [uploading, setUploading] = useState(false);
-
-  const handleChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >
-  ) => {
-    const { name, value, type } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]:
-        type === "number"
-          ? value === "" || isNaN(Number(value)) 
-            ? ""
-            : Number(value)
-          : value,
-    }));
-  };
-
-
-  const uploadToLocal = async (file: File) => {
-    const formData = new FormData();
-    formData.append("file", file);
-
-    const res = await fetch("/api/upload", {
-      method: "POST",
-      body: formData,
-    });
-
-    if (!res.ok) {
-      throw new Error("Failed to upload image");
-    }
-
-    const data = await res.json();
-    return data.url;
-  };
-
-  const handleImageUpload = async (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    if (!e.target.files) return;
-    setUploading(true);
-
+  const fetchProducts = async () => {
+    setLoading(true);
     try {
-      const files = Array.from(e.target.files);
-      const uploadPromises = files.map((file) => uploadToLocal(file));
-      const urls = await Promise.all(uploadPromises);
-
-      setFormData((prev) => ({
-        ...prev,
-        images: [...(prev.images || []), ...urls],
-      }));
-    } catch (error) {
-      console.error("Upload failed:", error);
+      const res = await fetch("/api/products");
+      const data = await res.json();
+      setProducts(data);
+    } catch (err) {
+      console.error(err);
     } finally {
-      setUploading(false);
+      setLoading(false);
     }
   };
 
- 
-  const handleRemoveImage = (idx: number) => {
-    setFormData((prev) => ({
-      ...prev,
-      images: (prev.images || []).filter((_, i) => i !== idx),
-    }));
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  const handleSave = async (product: AdminProduct) => {
+    if (product._id) {
+      // Update
+      await fetch(`/api/products/${product._id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(product),
+      });
+      setProducts((prev) => prev.map((p) => (p._id === product._id ? product : p)));
+    } else {
+      // Add
+      const res = await fetch("/api/products", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(product),
+      });
+      const saved = await res.json();
+      setProducts((prev) => [...prev, saved]);
+    }
   };
 
-  
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-
-    const formattedData: AdminProduct = {
-      ...formData,
-      price: typeof formData.price === "string" ? Number(formData.price) : formData.price,
-      quantity: typeof formData.quantity === "string" ? Number(formData.quantity) : formData.quantity,
-    };
-
-    onSave(formattedData);
-    onClose(); 
+  const handleDelete = async (_id?: string) => {
+    if (!_id) return;
+    const confirmed = confirm("Delete product?");
+    if (!confirmed) return;
+    await fetch(`/api/products/${_id}`, { method: "DELETE" });
+    setProducts((prev) => prev.filter((p) => p._id !== _id));
   };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
-      <div className="bg-white p-6 rounded-lg w-96 shadow-lg max-h-[90vh] overflow-y-auto">
-        <h2 className="text-xl font-bold mb-4">
-          {product ? "Edit Product" : "Add Product"}
-        </h2>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <input
-            type="text"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            placeholder="Name"
-            required
-            className="w-full border rounded px-3 py-2"
-          />
-          <input
-            type="number"
-            name="price"
-            value={formData.price !== undefined && formData.price !== null ? formData.price.toString() : ""}
-            onChange={handleChange}
-            placeholder="Price"
-            required
-            className="w-full border rounded px-3 py-2"
-          />
-          <input
-            type="number"
-            name="quantity"
-            value={formData.quantity !== undefined && formData.quantity !== null ? formData.quantity.toString() : ""}
-            onChange={handleChange}
-            placeholder="Quantity"
-            className="w-full border rounded px-3 py-2"
-          />
-          <textarea
-            name="description"
-            value={formData.description || ""}
-            onChange={handleChange}
-            placeholder="Description"
-            className="w-full border rounded px-3 py-2"
-          />
-          <select
-            name="category"
-            value={formData.category || ""}
-            onChange={handleChange}
-            className="w-full border rounded px-3 py-2"
-          >
-            <option value="">Select Category</option>
-            {categories.map((cat) => (
-              <option key={cat} value={cat}>
-                {cat}
-              </option>
-            ))}
-          </select>
-          <input
-            type="date"
-            name="expiration"
-            value={formData.expiration || ""}
-            onChange={handleChange}
-            className="w-full border rounded px-3 py-2"
-          />
-          <div className="grid grid-cols-3 gap-2">
-            {(formData.images || []).map((img, idx) => (
-              <div
-                key={idx}
-                className="relative w-full h-24 border rounded overflow-hidden"
-              >
-                <Image
-                  src={img}
-                  alt={`img-${idx}`}
-                  fill
-                  style={{ objectFit: "cover" }}
-                />
-                <button
-                  type="button"
-                  onClick={() => handleRemoveImage(idx)}
-                  className="absolute -top-2 -right-2 bg-red-500 text-white w-5 h-5 flex items-center justify-center text-xs rounded-full"
-                >
-                  ×
-                </button>
-              </div>
-            ))}
-            <label className="w-full h-24 flex flex-col items-center justify-center border-2 border-dashed rounded cursor-pointer hover:bg-gray-50">
-              <span className="text-xs text-gray-600">
-                {uploading ? "Uploading..." : "Upload"}
-              </span>
-              <input
-                type="file"
-                multiple
-                accept="image/*"
-                onChange={handleImageUpload}
-                className="hidden"
-              />
-            </label>
-          </div>
-          <div className="flex justify-end gap-3 pt-4">
-            <button
-              type="button"
-              onClick={onClose}
-              className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              disabled={uploading}
-              className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-            >
-              {product ? "Update" : "Add"}
-            </button>
-          </div>
-        </form>
+    <div className="p-6 mt-20">
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-2xl font-bold">All Products</h1>
+        <button onClick={() => { setSelectedProduct(undefined); setShowModal(true); }} className="text-blue-500 underline">+ Add Product</button>
       </div>
+
+      {loading ? <p>Loading...</p> : (
+        <ul className="space-y-4">
+          {products.map((p) => (
+            <li key={p._id} className="border p-4 rounded shadow flex justify-between items-center">
+              <div>
+                <p className="font-bold">{p.name}</p>
+                <p>${p.price}</p>
+              </div>
+              <div className="flex gap-4">
+                <button onClick={() => { setSelectedProduct(p); setShowModal(true); }} className="text-green-600 underline">Edit</button>
+                <button onClick={() => handleDelete(p._id)} className="text-red-500">Delete</button>
+              </div>
+            </li>
+          ))}
+        </ul>
+      )}
+
+      {showModal && (
+        <ProductModal
+          product={selectedProduct}
+          onClose={() => setShowModal(false)}
+          onSave={handleSave}
+        />
+      )}
     </div>
   );
 };
 
-export default ProductModal;
+export default AdminProductsPage;

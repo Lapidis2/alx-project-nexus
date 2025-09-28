@@ -2,12 +2,13 @@
 import React, { useState } from "react";
 import Image from "next/image";
 
+
 interface AdminProduct {
   _id?: string;
   name: string;
-  price: number | string; // allow string temporarily for input
+  price: number;
   description?: string;
-  quantity?: number | string;
+  quantity?: number;  
   category?: string;
   expiration?: string;
   images: string[];
@@ -39,21 +40,19 @@ const ProductModal: React.FC<ProductModalProps> = ({
   onClose,
   onSave,
 }) => {
-  // Initialize formData with either the passed product or default values
+
   const [formData, setFormData] = useState<AdminProduct>({
-    name: "",
-    price: "",
-    description: "",
-    quantity: "",
-    category: "",
-    expiration: "",
-    images: [],
-    ...product,
+    name: product?.name || "",
+    price: product?.price || 0,  
+    description: product?.description || "",
+    quantity: product?.quantity ?? 0, 
+    category: product?.category || "",
+    expiration: product?.expiration || "",
+    images: product?.images || [],
   });
 
   const [uploading, setUploading] = useState(false);
 
-  // Handle changes to input fields
   const handleChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
@@ -64,14 +63,13 @@ const ProductModal: React.FC<ProductModalProps> = ({
       ...prev,
       [name]:
         type === "number"
-          ? value === "" || isNaN(Number(value)) // Prevent invalid number
-            ? ""
+          ? value === "" || isNaN(Number(value))
+            ? 0  
             : Number(value)
           : value,
     }));
   };
 
-  // Handle image upload
   const uploadToLocal = async (file: File) => {
     const formData = new FormData();
     formData.append("file", file);
@@ -89,7 +87,6 @@ const ProductModal: React.FC<ProductModalProps> = ({
     return data.url;
   };
 
-  // Handle multiple image uploads
   const handleImageUpload = async (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -112,7 +109,6 @@ const ProductModal: React.FC<ProductModalProps> = ({
     }
   };
 
-  // Handle removal of image
   const handleRemoveImage = (idx: number) => {
     setFormData((prev) => ({
       ...prev,
@@ -120,19 +116,17 @@ const ProductModal: React.FC<ProductModalProps> = ({
     }));
   };
 
-  // Handle form submission
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Ensure price and quantity are converted to numbers if not empty
     const formattedData: AdminProduct = {
       ...formData,
       price: typeof formData.price === "string" ? Number(formData.price) : formData.price,
       quantity: typeof formData.quantity === "string" ? Number(formData.quantity) : formData.quantity,
     };
 
-    onSave(formattedData); // Pass formatted data to onSave
-    onClose(); // Close the modal after saving
+    onSave(formattedData);
+    onClose();
   };
 
   return (
@@ -154,7 +148,7 @@ const ProductModal: React.FC<ProductModalProps> = ({
           <input
             type="number"
             name="price"
-            value={formData.price !== undefined && formData.price !== null ? formData.price.toString() : ""}
+            value={formData.price.toString()}
             onChange={handleChange}
             placeholder="Price"
             required
@@ -163,7 +157,7 @@ const ProductModal: React.FC<ProductModalProps> = ({
           <input
             type="number"
             name="quantity"
-            value={formData.quantity !== undefined && formData.quantity !== null ? formData.quantity.toString() : ""}
+            value={formData.quantity?.toString() || "0"} 
             onChange={handleChange}
             placeholder="Quantity"
             className="w-full border rounded px-3 py-2"
@@ -195,54 +189,53 @@ const ProductModal: React.FC<ProductModalProps> = ({
             onChange={handleChange}
             className="w-full border rounded px-3 py-2"
           />
-          <div className="grid grid-cols-3 gap-2">
-            {(formData.images || []).map((img, idx) => (
-              <div
-                key={idx}
-                className="relative w-full h-24 border rounded overflow-hidden"
-              >
+          <div className="flex flex-wrap gap-2">
+            {formData.images?.map((img, idx) => (
+              <div key={idx} className="relative w-20 h-20">
                 <Image
                   src={img}
-                  alt={`img-${idx}`}
-                  fill
-                  style={{ objectFit: "cover" }}
+                  alt="Uploaded image"
+                  layout="fill"
+                  objectFit="cover"
+                  className="rounded-md"
                 />
                 <button
                   type="button"
                   onClick={() => handleRemoveImage(idx)}
-                  className="absolute -top-2 -right-2 bg-red-500 text-white w-5 h-5 flex items-center justify-center text-xs rounded-full"
+                  className="absolute top-0 right-0 text-white bg-black/50 rounded-full w-6 h-6 flex items-center justify-center"
                 >
-                  ×
+                  X
                 </button>
               </div>
             ))}
-            <label className="w-full h-24 flex flex-col items-center justify-center border-2 border-dashed rounded cursor-pointer hover:bg-gray-50">
-              <span className="text-xs text-gray-600">
-                {uploading ? "Uploading..." : "Upload"}
-              </span>
-              <input
-                type="file"
-                multiple
-                accept="image/*"
-                onChange={handleImageUpload}
-                className="hidden"
-              />
+            <label
+              htmlFor="image-upload"
+              className="w-20 h-20 bg-gray-200 flex items-center justify-center text-center rounded-md cursor-pointer"
+            >
+              {uploading ? "Uploading..." : "Upload"}
             </label>
+            <input
+              id="image-upload"
+              type="file"
+              accept="image/*"
+              onChange={handleImageUpload}
+              multiple
+              hidden
+            />
           </div>
-          <div className="flex justify-end gap-3 pt-4">
+          <div className="flex justify-between gap-4">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
+              className="w-full py-2 bg-gray-300 rounded text-center"
             >
               Cancel
             </button>
             <button
               type="submit"
-              disabled={uploading}
-              className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+              className="w-full py-2 bg-blue-500 text-white rounded"
             >
-              {product ? "Update" : "Add"}
+              {product ? "Save Changes" : "Add Product"}
             </button>
           </div>
         </form>
