@@ -1,26 +1,16 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import ProductModal from "@/components/modal/ProductModal";
-
-interface AdminProduct {
-	_id?: string;
-	name: string;
-	price: number | string; 
-	description?: string;
-	quantity?: number | string;
-	category?: string;
-	expiration?: string;
-	images: string[];
-  }
+import ProductModal from "@/components/modal/ProductModal"
+import { AdminProductDetails } from "@/interfaces/product";
 
 const AdminProductsPage = () => {
-  const [products, setProducts] = useState<AdminProduct[]>([]);
+  const [products, setProducts] = useState<AdminProductDetails[]>([]);
   const [loading, setLoading] = useState(true);
 
   const [showModal, setShowModal] = useState(false);
   const [modalMode, setModalMode] = useState<"new" | "edit">("new");
-  const [selectedProduct, setSelectedProduct] = useState<AdminProduct | null>(null);
+  const [selectedProduct, setSelectedProduct] = useState<AdminProductDetails | null>(null);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -46,7 +36,7 @@ const AdminProductsPage = () => {
     try {
       const res = await fetch(`/api/products/${_id}`, { method: "DELETE" });
       if (res.ok) {
-        setProducts((prev) => prev.filter((p) => p._id !== _id));
+        setProducts((prev) => prev.filter((p) => p.id !== _id));
       } else {
         alert("Failed to delete product.");
       }
@@ -61,17 +51,17 @@ const AdminProductsPage = () => {
     setShowModal(true);
   };
 
-  const handleOpenEdit = (product: AdminProduct) => {
+  const handleOpenEdit = (product: AdminProductDetails) => {
     setModalMode("edit");
     setSelectedProduct(product);
     setShowModal(true);
   };
-  const handleSave = (product: AdminProduct) => {
+  const handleSave = (product: AdminProductDetails) => {
 	if (modalMode === "edit") {
 	  setProducts((prev) =>
-		prev.map((p) => (p._id === product._id ? product : p))
+		prev.map((p) => (p.id === product.id ? product : p))
 	  );
-	  fetch(`/api/products/${product._id}`, {
+	  fetch(`/api/products/${product.id}`, {
 		method: "PUT",
 		headers: { "Content-Type": "application/json" },
 		body: JSON.stringify(product),
@@ -107,7 +97,7 @@ const AdminProductsPage = () => {
         <ul className="space-y-4">
           {products.map((product) => (
             <li
-              key={product._id}
+              key={product.id}
               className="border p-4 rounded shadow flex justify-between items-center"
             >
               <div>
@@ -123,7 +113,7 @@ const AdminProductsPage = () => {
                 </button>
                 <button
                   className="text-red-500"
-                  onClick={() => handleDelete(product._id!)}
+                  onClick={() => handleDelete(product.id!)}
                 >
                   Delete
                 </button>
