@@ -8,6 +8,22 @@ export interface Product {
   quantity: number;
 }
 
+interface RawCartItem {
+  productId: string;
+  quantity: number;
+  name: string;
+  price: number;
+  img: string;
+}
+
+interface CartResponse {
+  email: string;
+  items: RawCartItem[];
+  updatedAt: string;
+  userId: string;
+  _id: string;
+}
+
 interface UseFetchReturn {
   cartItems: Product[];
   setCartItems: React.Dispatch<React.SetStateAction<Product[]>>;
@@ -19,27 +35,45 @@ interface UseFetchReturn {
 
 const useFetch = (url: string): UseFetchReturn => {
   const [cartItems, setCartItems] = useState<Product[]>([]);
-
   useEffect(() => {
-    const fetchCart = async () => {
-      try {
-        const res = await fetch(url);
-        if (!res.ok) throw new Error("Failed to fetch cart data");
-
-        const data: Product[] = await res.json();
-        // Ensure quantity is a number
-        const parsedData = data.map((item) => ({
-          ...item,
-          quantity: Number(item.quantity) || 1,
-        }));
-        setCartItems(parsedData);
-      } catch (error) {
-        console.error("Error fetching cart:", error);
-      }
-    };
-
-    fetchCart();
+	const fetchCart = async () => {
+	  try {
+		const token = localStorage.getItem("token");
+		const res = await fetch(url, {
+		  headers: {
+			Authorization: `Bearer ${token}`,
+		  },
+		});
+  
+		console.log("Fetching data from URL:", url);
+		console.log("Response status:", res.status);
+  
+		if (!res.ok) {
+		  const errorText = await res.text();
+		  console.error("Error response body:", errorText);
+		  throw new Error("Failed to fetch cart data");
+		}
+  
+		const data: CartResponse = await res.json();
+  
+		const parsedData: Product[] = data.items.map((item: RawCartItem) => ({
+		  id: Number(item.productId),
+		  name: item.name,
+		  img: item.img,
+		  price: item.price,
+		  quantity: Number(item.quantity) || 1,
+		}));
+  
+		setCartItems(parsedData);
+	  } catch (error) {
+		console.error("Error fetching cart:", error);
+	  }
+	};
+  
+	fetchCart();
   }, [url]);
+  
+  
 
   const discountPercentage = 5;
   const deliveryFeePercentage = 3;

@@ -9,7 +9,7 @@ interface Product {
   id: string;
   name: string;
   price: number;
-  image: string[];
+  images: string[];  // fixed from image to images
   description: string;
   quantity: number;
   discount?: number;
@@ -19,7 +19,7 @@ interface Product {
 interface Props {
   product: Product;
   isLoading?: boolean;
-  onCartUpdate?: (count: number) => void; 
+  onCartUpdate?: (count: number) => void;
 }
 
 interface CartItem {
@@ -31,7 +31,7 @@ interface CartItem {
 }
 
 const Sproduct: React.FC<Props> = ({ product, isLoading = false, onCartUpdate }) => {
-  const [selectedImage, setSelectedImage] = useState(product.image[0]);
+  const [selectedImage, setSelectedImage] = useState(product.images?.[0] || "/placeholder.jpg");
   const [quantity, setQuantity] = useState(1);
   const [size, setSize] = useState<number | null>(null);
   const [showFullDescription, setShowFullDescription] = useState(false);
@@ -43,16 +43,30 @@ const Sproduct: React.FC<Props> = ({ product, isLoading = false, onCartUpdate })
     setWishlist(storedWishlist);
   }, []);
 
+  // If product.images changes, update selectedImage
+  useEffect(() => {
+    setSelectedImage(product.images?.[0] || "/placeholder.jpg");
+  }, [product.images]);
+
   const handleImageClick = (img: string) => setSelectedImage(img);
-  const addQuantity = () => { if (quantity < product.quantity) setQuantity(quantity + 1); };
-  const subtractQuantity = () => { if (quantity > 1) setQuantity(quantity - 1); };
+  const addQuantity = () => {
+    if (quantity < product.quantity) setQuantity(quantity + 1);
+  };
+  const subtractQuantity = () => {
+    if (quantity > 1) setQuantity(quantity - 1);
+  };
   const addSize = () => setSize((size || 0) + 1);
-  const subtractSize = () => { if (size && size > 0) setSize(size - 1); };
+  const subtractSize = () => {
+    if (size && size > 0) setSize(size - 1);
+  };
 
   const toggleWishlist = () => {
     let updatedWishlist = [...wishlist];
-    if (wishlist.includes(product.id)) updatedWishlist = updatedWishlist.filter(id => id !== product.id);
-    else updatedWishlist.push(product.id);
+    if (wishlist.includes(product.id)) {
+      updatedWishlist = updatedWishlist.filter((id) => id !== product.id);
+    } else {
+      updatedWishlist.push(product.id);
+    }
     setWishlist(updatedWishlist);
     localStorage.setItem("wishlist", JSON.stringify(updatedWishlist));
   };
@@ -61,7 +75,11 @@ const Sproduct: React.FC<Props> = ({ product, isLoading = false, onCartUpdate })
     try {
       setLoading(true);
       const token = localStorage.getItem("token");
-      if (!token) return alert("Please login first.");
+      if (!token) {
+        alert("Please login first.");
+        setLoading(false);
+        return;
+      }
 
       const finalPrice = product.discount
         ? (product.price - product.price * (product.discount / 100)) * quantity
@@ -71,13 +89,16 @@ const Sproduct: React.FC<Props> = ({ product, isLoading = false, onCartUpdate })
         productId: product.id,
         name: product.name,
         price: finalPrice,
-        img: product.image[0],
+        img: product.images?.[0] || "/placeholder.jpg",
         quantity,
       };
 
       const res = await fetch("/api/cart", {
         method: "POST",
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
         body: JSON.stringify({ item }),
       });
 
@@ -86,16 +107,21 @@ const Sproduct: React.FC<Props> = ({ product, isLoading = false, onCartUpdate })
 
       alert(`${quantity} ${product.name} added to cart!`);
 
-      
       if (onCartUpdate) {
-        const cartRes = await fetch("/api/cart", { headers: { Authorization: `Bearer ${token}` } });
+        const cartRes = await fetch("/api/cart", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
         const cartData = await cartRes.json();
-        const count = cartData.cart?.items?.reduce((acc: number, item: CartItem) => acc + item.quantity, 0) || 0;
+        const count =
+          cartData.cart?.items?.reduce(
+            (acc: number, item: CartItem) => acc + item.quantity,
+            0
+          ) || 0;
         onCartUpdate(count);
       }
     } catch (err: unknown) {
       console.error(err);
-    
+      alert("Error adding to cart");
     } finally {
       setLoading(false);
     }
@@ -109,15 +135,24 @@ const Sproduct: React.FC<Props> = ({ product, isLoading = false, onCartUpdate })
     <div className="flex flex-col md:flex-row gap-8 p-6 md:p-10">
       <div className="flex flex-col gap-4 w-full md:w-1/2">
         <div className="relative w-full h-[300px] md:h-[400px] border rounded-md overflow-hidden">
-          <Image src={selectedImage} alt={product.name} fill className="object-contain" priority />
+          <Image
+            src={selectedImage}
+            alt={product.name}
+            fill
+            className="object-contain"
+            priority
+            sizes="(max-width: 768px) 100vw, 50vw"
+          />
         </div>
 
         <div className="flex gap-2 mt-2">
-          {product.image.map((img, idx) => (
+          {product.images.map((img, idx) => (
             <div
               key={idx}
               onClick={() => handleImageClick(img)}
-              className={`w-20 h-20 relative cursor-pointer border rounded-md ${selectedImage === img ? "border-primary" : "border-gray-300"}`}
+              className={`w-20 h-20 relative cursor-pointer border rounded-md ${
+                selectedImage === img ? "border-primary" : "border-gray-300"
+              }`}
             >
               <Image src={img} alt={`Thumbnail ${idx}`} fill className="object-cover" sizes="80px" />
             </div>
@@ -127,15 +162,22 @@ const Sproduct: React.FC<Props> = ({ product, isLoading = false, onCartUpdate })
 
       <div className="flex flex-col gap-4 w-full md:w-1/2">
         <h1 className="text-3xl font-bold">{product.name}</h1>
-        <p className="text-gray-700">Store: <span className="font-semibold">{product.Vendor.storeName}</span></p>
-
+        <p className="text-gray-700">
+  Store: <span className="font-semibold">{product.Vendor?.storeName || "Unknown Store"}</span>
+</p>
         <div className="flex items-center gap-4">
           <p className="text-xl font-bold text-blue-700">{finalPrice} RWF</p>
-          {product.discount && <p className="line-through text-gray-400">{product.price * quantity} RWF</p>}
-          {product.discount && <span className="bg-yellow-200 text-yellow-800 px-2 py-1 rounded">{product.discount}% OFF</span>}
+          {product.discount && (
+            <p className="line-through text-gray-400">{product.price * quantity} RWF</p>
+          )}
+          {product.discount && (
+            <span className="bg-yellow-200 text-yellow-800 px-2 py-1 rounded">{product.discount}% OFF</span>
+          )}
         </div>
 
-        <p className="bg-gray-200 inline-block px-3 py-1 rounded-md font-semibold">{product.quantity} IN STOCK</p>
+        <p className="bg-gray-200 inline-block px-3 py-1 rounded-md font-semibold">
+          {product.quantity} IN STOCK
+        </p>
 
         <div>
           <h2 className="font-semibold text-lg mt-2">Description</h2>
@@ -145,7 +187,9 @@ const Sproduct: React.FC<Props> = ({ product, isLoading = false, onCartUpdate })
             <p>
               {product.description.slice(0, 100)}
               {product.description.length > 100 && (
-                <button className="text-primary ml-2" onClick={() => setShowFullDescription(true)}>Show more</button>
+                <button className="text-primary ml-2" onClick={() => setShowFullDescription(true)}>
+                  Show more
+                </button>
               )}
             </p>
           )}
@@ -154,16 +198,24 @@ const Sproduct: React.FC<Props> = ({ product, isLoading = false, onCartUpdate })
         <div className="flex gap-4 mt-4">
           <div className="flex items-center border rounded-md p-2 gap-2">
             <span>Quantity:</span>
-            <button onClick={subtractQuantity}><FontAwesomeIcon icon={faMinus} /></button>
+            <button onClick={subtractQuantity} aria-label="Decrease quantity">
+              <FontAwesomeIcon icon={faMinus} />
+            </button>
             <span>{quantity}</span>
-            <button onClick={addQuantity}><FontAwesomeIcon icon={faPlus} /></button>
+            <button onClick={addQuantity} aria-label="Increase quantity">
+              <FontAwesomeIcon icon={faPlus} />
+            </button>
           </div>
 
           <div className="flex items-center border rounded-md p-2 gap-2">
             <span>Size:</span>
-            <button onClick={subtractSize}><FontAwesomeIcon icon={faMinus} /></button>
+            <button onClick={subtractSize} aria-label="Decrease size">
+              <FontAwesomeIcon icon={faMinus} />
+            </button>
             <span>{size || 0}</span>
-            <button onClick={addSize}><FontAwesomeIcon icon={faPlus} /></button>
+            <button onClick={addSize} aria-label="Increase size">
+              <FontAwesomeIcon icon={faPlus} />
+            </button>
           </div>
         </div>
 
@@ -171,7 +223,9 @@ const Sproduct: React.FC<Props> = ({ product, isLoading = false, onCartUpdate })
           <button
             onClick={handleAddToCart}
             disabled={loading || isLoading}
-            className={`bg-orange-400 text-white p-3 rounded-md w-full ${loading || isLoading ? "opacity-50 cursor-not-allowed" : "hover:bg-orange-500"}`}
+            className={`bg-orange-400 text-white p-3 rounded-md w-full ${
+              loading || isLoading ? "opacity-50 cursor-not-allowed" : "hover:bg-orange-500"
+            }`}
           >
             {loading ? "Adding..." : "Add to Cart"}
           </button>

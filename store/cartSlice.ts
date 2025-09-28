@@ -13,6 +13,7 @@ const initialState: CartState = {
 
 export const fetchCart = createAsyncThunk("cart/fetchCart", async () => {
   const token = typeof window !== "undefined" ? localStorage.getItem("token") : "";
+  console.log("Token from localStorage:", token);
   const res = await fetch("/api/cart", {
     headers: { Authorization: `Bearer ${token}` },
   });

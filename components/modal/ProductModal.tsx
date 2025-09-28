@@ -5,9 +5,9 @@ import Image from "next/image";
 interface AdminProduct {
   _id?: string;
   name: string;
-  price: string;
+  price: number | string; // allow string temporarily for input
   description?: string;
-  quantity?: string;
+  quantity?: number | string;
   category?: string;
   expiration?: string;
   images: string[];
@@ -41,7 +41,7 @@ const ProductModal: React.FC<ProductModalProps> = ({
 }) => {
   const [formData, setFormData] = useState<AdminProduct>({
     name: "",
-    price:"" ,
+    price: "",
     description: "",
     quantity: "",
     category: "",
@@ -57,14 +57,18 @@ const ProductModal: React.FC<ProductModalProps> = ({
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
     >
   ) => {
-    const { name, value } = e.target;
+    const { name, value, type } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: name === "price" || name === "quantity" ? Number(value) : value,
+      [name]:
+        type === "number"
+          ? value === ""
+            ? ""
+            : Number(value)
+          : value,
     }));
   };
 
-  
   const uploadToLocal = async (file: File) => {
     const formData = new FormData();
     formData.append("file", file);
@@ -79,7 +83,7 @@ const ProductModal: React.FC<ProductModalProps> = ({
     }
 
     const data = await res.json();
-    return data.url; 
+    return data.url;
   };
 
   const handleImageUpload = async (
@@ -136,7 +140,11 @@ const ProductModal: React.FC<ProductModalProps> = ({
           <input
             type="number"
             name="price"
-            value={formData.price}
+            value={
+              formData.price !== undefined && formData.price !== null
+                ? formData.price.toString()
+                : ""
+            }
             onChange={handleChange}
             placeholder="Price"
             required
@@ -145,7 +153,11 @@ const ProductModal: React.FC<ProductModalProps> = ({
           <input
             type="number"
             name="quantity"
-            value={formData.quantity ?? ""}
+            value={
+              formData.quantity !== undefined && formData.quantity !== null
+                ? formData.quantity.toString()
+                : ""
+            }
             onChange={handleChange}
             placeholder="Quantity"
             className="w-full border rounded px-3 py-2"
