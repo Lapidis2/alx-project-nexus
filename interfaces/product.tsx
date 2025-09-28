@@ -15,7 +15,7 @@ export interface ProductFormData {
   }
 
 
-  export interface AdminProduct {
+  export interface AdminProductDetails {
 	id: string;
 	name: string;
 	price: number;

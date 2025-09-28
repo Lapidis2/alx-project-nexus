@@ -1,13 +1,13 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import ProductModal from "@/components/modal/ProductModal";
-import { AdminProduct } from "@/interfaces/product";  // Import the AdminProduct interface
+import { AdminProductDetails } from "@/interfaces/product";  // Import the AdminProduct interface
 
 const AdminProductsPage: React.FC = () => {
-  const [products, setProducts] = useState<AdminProduct[]>([]);
+  const [products, setProducts] = useState<AdminProductDetails[]>([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
-  const [selectedProduct, setSelectedProduct] = useState<AdminProduct | undefined>(undefined);
+  const [selectedProduct, setSelectedProduct] = useState<AdminProductDetails | undefined>(undefined);
   const [modalMode, setModalMode] = useState<"edit" | "add">("add");
 
   const fetchProducts = async () => {
@@ -27,7 +27,7 @@ const AdminProductsPage: React.FC = () => {
     fetchProducts();
   }, []);
 
-  const handleSave = async (product: AdminProduct) => {
+  const handleSave = async (product: AdminProductDetails) => {
     // Ensure price and quantity are always numbers before saving
     product.price = typeof product.price === "string" ? parseFloat(product.price as string) : product.price;
     product.quantity = typeof product.quantity === "string" ? parseInt(product.quantity as string) : product.quantity;

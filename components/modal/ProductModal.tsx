@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { AdminProduct } from "@/interfaces/product"; // Import AdminProduct from the centralized file
+import { AdminProductDetails } from "@/interfaces/product"; // Import AdminProduct from the centralized file
 
 interface ProductModalProps {
-  product?: AdminProduct;
+  product?: AdminProductDetails;
   onClose: () => void;
-  onSave: (product: AdminProduct) => void | Promise<void>;
+  onSave: (product: AdminProductDetails) => void | Promise<void>;
 }
 
 const ProductModal: React.FC<ProductModalProps> = ({ product, onClose, onSave }) => {
-  const [formData, setFormData] = useState<AdminProduct>({
+  const [formData, setFormData] = useState<AdminProductDetails>({
     id: "",
     name: "",
     price: 0,
@@ -47,7 +47,7 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, onClose, onSave })
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const formattedData: AdminProduct = {
+    const formattedData: AdminProductDetails = {
       ...formData,
       price: typeof formData.price === "string" ? parseFloat(formData.price as string) : formData.price,
       quantity: typeof formData.quantity === "string" ? parseInt(formData.quantity as string) : formData.quantity,
