@@ -32,13 +32,12 @@ const LatestSales: React.FC = () => {
               key={sale.id}
               className="grid grid-cols-5 items-center bg-[#1e293b] p-4 rounded-xl text-sm"
             >
-              {/* No */}
+   
               <div>
                 <p className="text-gray-400">No</p>
                 <p>{String(sale.id).padStart(2, "0")}</p>
               </div>
 
-              {/* Order Date */}
               <div>
                 <p className="text-gray-400">Order Date</p>
                 <p>{sale.orderDate}</p>
@@ -50,7 +49,7 @@ const LatestSales: React.FC = () => {
                 <p>{sale.expectedDelivery}</p>
               </div>
 
-              {/* Status */}
+      
               <div>
                 <p className="text-gray-400">Status</p>
                 <div className="flex items-center space-x-2">
@@ -61,7 +60,6 @@ const LatestSales: React.FC = () => {
                 </div>
               </div>
 
-              {/* Action */}
               <div className="text-right">
                 <button className="text-sky-400 hover:underline">
                   View Details

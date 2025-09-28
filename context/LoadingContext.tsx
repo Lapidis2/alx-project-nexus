@@ -1,8 +1,8 @@
-// context/LoadingContext.tsx
+
 import React, { createContext, useContext, useState, ReactNode } from "react";
 
 interface LoadingContextType {
-  loading: boolean; // <-- must be declared here
+  loading: boolean; 
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }
 

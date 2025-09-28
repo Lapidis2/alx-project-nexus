@@ -7,7 +7,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const db = client.db("shopDB");
   const { id } = req.query;
 
-  // Ensure valid ObjectId
+
   if (!ObjectId.isValid(id as string)) {
     return res.status(400).json({ message: "Invalid product ID" });
   }
@@ -27,7 +27,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
         const product = {
           ...rest,
-          id: _id.toString(), // Convert MongoDB ObjectId to string
+          id: _id.toString(), 
         };
 
         return res.status(200).json(product);
@@ -36,7 +36,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       case "PUT": {
         const updated = req.body;
 
-        // Prevent _id overwrite if included in the body
+       
         if ("_id" in updated) {
           delete updated._id;
         }

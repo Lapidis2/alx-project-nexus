@@ -44,7 +44,7 @@ const VendorRequestList: React.FC<VendorRequestListProps> = () => {
 
   return (
     <section className="bg-white rounded-lg p-4 shadow-sm">
-      {/* Header */}
+
       <div className="flex justify-between mb-4 pr-7">
         <span className="px-3 py-1 text-sm rounded-md bg-secondary text-white">
           Vendor Applications ({sellers.length})
@@ -54,7 +54,7 @@ const VendorRequestList: React.FC<VendorRequestListProps> = () => {
         </Link>
       </div>
 
-      {/* Table */}
+
       <div className="overflow-x-auto">
         <table className="w-full border-collapse">
           <thead>

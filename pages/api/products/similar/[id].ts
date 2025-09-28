@@ -1,5 +1,5 @@
 import { ObjectId } from 'mongodb';
-import clientPromise from '@/lib/mongo'; // Adjust path as needed
+import clientPromise from '@/lib/mongo'; 
 import { NextApiRequest,NextApiResponse } from 'next';
 export default async function handler(req:NextApiRequest, res:NextApiResponse) {
   const { id } = req.query;
@@ -17,13 +17,13 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
       return res.status(404).json({ message: 'Product not found' });
     }
 
-    // Fetch similar products based on category, excluding the current product
+
     const similarProducts = await db.collection('products')
       .find({
-        category: product.category,  // Use the same category as the current product
-        _id: { $ne: product._id }   // Exclude the current product from the results
+        category: product.category, 
+        _id: { $ne: product._id }   
       })
-      .limit(5)  // You can adjust this number based on your needs
+      .limit(5) 
       .toArray();
 
     res.status(200).json({ similarProducts });

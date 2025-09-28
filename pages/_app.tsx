@@ -49,7 +49,6 @@ function InnerApp({ Component, pageProps }: AppProps) {
     }
   }, [router.pathname]);
 
-  // Listen to route changes and update loading state in context
   useEffect(() => {
     const handleStart = () => setLoading(true);
     const handleComplete = () => setLoading(false);

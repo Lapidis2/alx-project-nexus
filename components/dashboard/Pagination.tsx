@@ -29,7 +29,7 @@ const Pagination: React.FC<PaginationProps> = ({
       className="flex justify-center items-center mt-4 space-x-2"
       aria-label="Pagination Navigation"
     >
-      {/* Left scroll button */}
+      
       <button
         className="p-2 bg-gray-100 rounded hover:bg-gray-200 hidden sm:block"
         onClick={() => scroll("left")}
@@ -38,13 +38,13 @@ const Pagination: React.FC<PaginationProps> = ({
         &#8249;
       </button>
 
-      {/* Page numbers container */}
+ 
       <div className="overflow-x-auto">
         <ul
           ref={scrollRef}
           className="inline-flex items-center space-x-1 bg-white rounded-lg p-2 shadow-sm min-w-max"
         >
-          {/* Previous page */}
+      
           <li>
             <button
               className="px-3 py-1 rounded hover:bg-gray-100 disabled:opacity-50"
@@ -72,7 +72,7 @@ const Pagination: React.FC<PaginationProps> = ({
             </li>
           ))}
 
-          {/* Next page */}
+          
           <li>
             <button
               className="px-3 py-1 rounded hover:bg-gray-100 disabled:opacity-50"
@@ -86,7 +86,7 @@ const Pagination: React.FC<PaginationProps> = ({
         </ul>
       </div>
 
-      {/* Right scroll button */}
+   
       <button
         className="p-2 bg-gray-100 rounded hover:bg-gray-200 hidden sm:block"
         onClick={() => scroll("right")}

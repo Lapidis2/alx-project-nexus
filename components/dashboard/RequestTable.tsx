@@ -67,7 +67,7 @@ const RequestsTable: React.FC<RequestsTableProps> = ({ sellers: initialSellers }
         </p>
       ) : (
         <>
-          {/* Header */}
+      
           <header className="flex flex-col sm:flex-row justify-between items-center p-4 gap-2">
             <h2 className="text-xl font-semibold text-gray-600">
               Vendor Applications
@@ -82,7 +82,7 @@ const RequestsTable: React.FC<RequestsTableProps> = ({ sellers: initialSellers }
             />
           </header>
 
-          {/* Table */}
+       
           <main className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
               <thead>
@@ -122,7 +122,7 @@ const RequestsTable: React.FC<RequestsTableProps> = ({ sellers: initialSellers }
           </main>
 
 
-          {/* Modal */}
+        
           {selectedSeller && (
             <section
               role="dialog"
@@ -167,7 +167,6 @@ const RequestsTable: React.FC<RequestsTableProps> = ({ sellers: initialSellers }
             </section>
           )}
 
-          {/* Pagination */}
           <nav
             aria-label="Pagination"
             className="flex justify-center py-4 mb-5 overflow-x-auto"

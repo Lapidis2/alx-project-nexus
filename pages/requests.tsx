@@ -24,12 +24,12 @@ const Requests: React.FC = () => {
     try {
       const response = await axios.get<SellerData[]>("/api/seller-requests");
 
-      // Optional: Map API data if it doesn’t exactly match SellerData
+   
       const mappedSellers: SellerData[] = response.data.map((s) => ({
         sellerId: s.sellerId,
         userId: s.userId,
         storeName: s.storeName,
-        address: { city: s.address.city }, // ensure the structure matches
+        address: { city: s.address.city },
         TIN: s.TIN,
       }));
 

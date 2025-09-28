@@ -36,7 +36,7 @@ const UserTable: React.FC<UserTableProps> = ({ users }) => {
 
   return (
     <section className="bg-white rounded-lg p-4 shadow-sm">
-      {/* Tabs Header */}
+
       <div className="flex justify-between mb-4 pr-7">
         <div className="flex flex-row items-center gap-4">
           <button
@@ -65,7 +65,7 @@ const UserTable: React.FC<UserTableProps> = ({ users }) => {
         </Link>
       </div>
 
-      {/* Table */}
+    
       <div className="overflow-x-auto">
         <table className="w-full border-collapse">
           <thead>

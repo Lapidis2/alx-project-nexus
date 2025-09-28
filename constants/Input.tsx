@@ -45,7 +45,7 @@ const Input: React.FC<InputProps> = ({ label, type, value, placeholder, onChange
             className="absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer"
           >
             {showPassword ? (
-              // Eye Open SVG
+           
               <svg width="31" height="24" viewBox="0 0 31 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path
                   fillRule="evenodd"

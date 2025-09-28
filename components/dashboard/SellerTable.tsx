@@ -8,7 +8,7 @@ interface UserData {
   role: string;
 }
 
-// mock users for now (replace with API later)
+
 const mockUsers: UserData[] = [
   { id: 1, name: "Jean Pierre", email: "jean@example.com", role: "seller" },
   { id: 2, name: "Aime Uwase", email: "aime@example.com", role: "buyer" },
@@ -23,7 +23,7 @@ const SellerTable: React.FC = () => {
   const usersPerPage = 15;
 
   useEffect(() => {
-    // simulate loading delay
+
     const timer = setTimeout(() => setLoading(false), 1000);
     return () => clearTimeout(timer);
   }, []);

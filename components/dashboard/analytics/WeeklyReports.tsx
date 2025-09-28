@@ -1,15 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import Image from "next/image";
-import {
-  Bar,
-  BarChart,
-  CartesianGrid,
-  Legend,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis,
-} from "recharts";
+import { BarChart, Bar, CartesianGrid, Legend, Tooltip, XAxis, YAxis, ResponsiveContainer } from "recharts";
 import { Circles } from "react-loader-spinner";
 
 type DaySales = {
@@ -22,19 +13,16 @@ const WeeklyReport: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  
   useEffect(() => {
     const fetchWeeklySales = async () => {
       try {
         const res = await fetch("/api/weekly-sales");
         if (!res.ok) throw new Error("Failed to fetch weekly sales");
-        const data = await res.json();
+        const data: DaySales[] = await res.json();
         setWeeklySales(data);
       } catch (err: unknown) {
-		if (err instanceof Error) {
-			setError(err.message);
-		  } else {
-			setError("An unexpected error occurred");
-		  }
+        setError(err instanceof Error ? err.message : "An unexpected error occurred");
       } finally {
         setIsLoading(false);
       }
@@ -42,24 +30,39 @@ const WeeklyReport: React.FC = () => {
     fetchWeeklySales();
   }, []);
 
-  if (isLoading)
+  const chartData = useMemo(
+    () =>
+      weeklySales.map((day) => ({
+        name: day.day,
+        TotalSales: day.totalSales,
+      })),
+    [weeklySales]
+  );
+
+
+  if (isLoading) {
     return (
       <div className="flex justify-center items-center h-24">
-        <Circles visible height="80" width="80" color="#C9974C" />
+        <Circles visible height={80} width={80} color="#C9974C" />
       </div>
     );
+  }
 
-  if (error)
+  if (error) {
     return (
       <div className="flex justify-center items-center h-[90%]">
-        <p className="text-red-600 font-semibold">{error}</p>
+        <div className="text-center">
+          <p className="text-red-600 font-semibold">{error}</p>
+          <button
+            className="mt-3 px-4 py-2 bg-primary text-white rounded-md hover:bg-secondary"
+            onClick={() => window.location.reload()}
+          >
+            Retry
+          </button>
+        </div>
       </div>
     );
-
-  const data = weeklySales.map((day) => ({
-    name: day.day,
-    TotalSales: day.totalSales,
-  }));
+  }
 
   return (
     <div className="flex flex-col h-full w-full m-auto text-xs rounded-lg bg-white pb-3">
@@ -71,17 +74,17 @@ const WeeklyReport: React.FC = () => {
           <Image
             src="/assets/images/products/category-icon.png"
             className="w-5 h-5 absolute top-3 right-2"
-			width={20}
-			height={20}
+            width={20}
+            height={20}
             alt="category-icon"
           />
         </span>
       </div>
-      <ResponsiveContainer width="99%" height="100%">
+
+  
+      <ResponsiveContainer width="100%" height={400}>
         <BarChart
-          width={500}
-          height={300}
-          data={data}
+          data={chartData}
           margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
         >
           <CartesianGrid strokeDasharray="3 3" />

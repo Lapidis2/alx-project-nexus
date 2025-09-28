@@ -34,12 +34,11 @@ const BuyerSide = () => {
 
   return (
 	<aside className="w-80 hidden lg:flex flex-col fixed gap-6 bg-primary p-6 h-full text-white">
-	  {/* Logo */}
+	 
 	  <div className="text-2xl font-bold mb-10 cursor-pointer" onClick={() => router.push("/admin")}>
 		AdminPanel
 	  </div>
 
-	  {/* Navigation Links */}
 	  <nav className="flex flex-col gap-4 flex-1">
 		{Navlinks.map((link) => (
 		  <div
@@ -55,7 +54,6 @@ const BuyerSide = () => {
 		))}
 	  </nav>
 
-	  {/* Logout */}
 	  <button
 	  onClick={() => useHandleLogout}
 		className="flex items-center gap-3 p-3 mt-auto rounded-lg hover:bg-red-600 text-red-500 font-medium transition-all"

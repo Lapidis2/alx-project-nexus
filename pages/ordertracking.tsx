@@ -13,7 +13,6 @@ import OrderProductDetails from "@/components/OrderTracking/OrderProductDetail";
 import type { Product as OrderProduct } from "@/components/OrderTracking/OrderProductDetail";
 
 
-// ------------------- TYPES -------------------
 
 
 interface Order {
@@ -31,7 +30,7 @@ interface UserInfo {
   phoneNumber: string;
 }
 
-// ------------------- COMPONENT -------------------
+
 const OrderTrackingPage: React.FC = () => {
   const router = useRouter();
   const { orderId } = router.query;
@@ -104,7 +103,7 @@ const OrderTrackingPage: React.FC = () => {
       <Navbar />
 
       <main className="flex flex-col gap-20 p-10 lg:p-20">
-        {/* Order Details Section */}
+      
         <section className="order-details-container border-b pb-8">
           <header>
             <h1 className="text-2xl font-bold mb-4">Order Details</h1>
@@ -118,7 +117,7 @@ const OrderTrackingPage: React.FC = () => {
           </article>
         </section>
 
-        {/* Contact Info Section */}
+ 
         <section className="contact-info-container">
           <header>
             <h2 className="text-xl font-semibold mb-2">Contact Information</h2>
@@ -133,7 +132,6 @@ const OrderTrackingPage: React.FC = () => {
           </article>
         </section>
 
-        {/* Order Products Section */}
         <section className="pb-10">
           <header>
             <h2 className="text-xl font-semibold mb-2">Products in Your Order</h2>

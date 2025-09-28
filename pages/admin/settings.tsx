@@ -41,7 +41,7 @@ const SettingsPage: React.FC<UserProfileProps> = ({ profileImage}) => {
 
   return (
     <div className="max-w-4xl mx-auto p-8 bg-white rounded-lg shadow mt-20">
-      {/* Tabs */}
+    
       <div className="flex gap-8 border-b">
         <button
           className={`py-2 px-4 -mb-px ${
@@ -96,7 +96,7 @@ const SettingsPage: React.FC<UserProfileProps> = ({ profileImage}) => {
                 />
               )}
 
-              {/* Initials fallback */}
+        
               <div
                 id="fallback-initials"
                 style={{ display: "none" }}
@@ -111,7 +111,7 @@ const SettingsPage: React.FC<UserProfileProps> = ({ profileImage}) => {
               <p className="text-xs text-gray-400 mt-2">PNG or JPG file</p>
             </div>
 
-            {/* Right: Info */}
+    
             <div className="flex flex-col gap-6 flex-1">
               <div>
                 <label className="block text-sm font-medium mb-1">Email</label>
@@ -150,7 +150,7 @@ const SettingsPage: React.FC<UserProfileProps> = ({ profileImage}) => {
             </div>
           </div>
         ) : (
-          // Password Tab
+        
           <div className="flex flex-col gap-6 max-w-lg">
             <div>
               <label className="block text-sm font-medium mb-1">

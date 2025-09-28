@@ -148,7 +148,6 @@ const ProductsPage: React.FC = () => {
             </ul>
           </aside>
 
-          {/* Product Grid */}
           <section className="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-6 w-full">
             {isLoading ? (
               Array.from({ length: productsPerPage }).map((_, index) => <LoadingFrame key={index} />)

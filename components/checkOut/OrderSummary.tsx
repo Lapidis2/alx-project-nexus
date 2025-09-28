@@ -1,6 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import Image from "next/image";
+
 interface Product {
   id: number;
   img: string;
@@ -31,8 +32,8 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({
   const { t } = useTranslation();
 
   return (
-    <div className={`rounded-md hover:shadow-md hover:shadow-black p-4 bg-white ${className}`}>
-      <header className="bg-blue-900 text-white text-center p-3 rounded-t-[5px]">
+    <section className={`rounded-md hover:shadow-md hover:shadow-black p-4 bg-white ${className}`} aria-labelledby="order-summary-title">
+      <header className="bg-blue-900 text-white text-center p-3 rounded-t-[5px]" id="order-summary-title">
         {t("ORDER SUMMARY")}
       </header>
 
@@ -40,15 +41,22 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({
         {cartItems.length === 0 && <p className="text-center text-gray-500">{t("Your cart is empty")}</p>}
 
         {cartItems.map((item) => (
-          <div
+          <article
             key={item.id}
             className="flex flex-col sm:flex-row justify-between items-center bg-gray-100 rounded-md p-3 my-2 gap-3"
+            aria-labelledby={`item-${item.id}`}
           >
             <div className="img h-20 w-20 sm:h-24 sm:w-24 flex-shrink-0 relative">
-              <Image className="h-full w-full object-cover rounded-md " fill src={item.img} alt={item.name} />
+              <Image
+                className="h-full w-full object-cover rounded-md"
+                fill
+                src={item.img}
+                alt={`${item.name} image`}
+                aria-describedby={`item-img-${item.id}`}
+              />
             </div>
 
-            <div className="details flex-1 flex flex-col justify-center text-xs sm:text-sm">
+            <div className="details flex-1 flex flex-col justify-center text-xs sm:text-sm" id={`item-${item.id}`}>
               <p>
                 <span className="text-amber-600">{t("Product")}: </span>
                 {item.name}
@@ -67,6 +75,7 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({
               <button
                 className="bg-blue-900 text-white px-3 py-1 rounded text-xs"
                 onClick={() => handleDelete(item.id)}
+                aria-label={`Remove ${item.name} from cart`}
               >
                 {t("Remove")}
               </button>
@@ -74,10 +83,9 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({
                 {t("Subtotal")}: {item.quantity * item.price} Rwf
               </p>
             </div>
-          </div>
+          </article>
         ))}
 
-        {/* Totals */}
         <div className="summaryTotals mt-4 border-t pt-4 text-sm">
           <div className="flex justify-between my-1">
             <span className="text-blue-800">{t("Sub Total")}:</span>
@@ -98,7 +106,7 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import {
   BarChart,
   Bar,
@@ -30,11 +30,7 @@ const SellingReport: React.FC = () => {
         const data: MonthSales[] = await res.json();
         setMonthlySales(data);
       } catch (err: unknown) {
-		if (err instanceof Error) {
-			setError(err.message);
-		  } else {
-			setError("An unexpected error occurred");
-		  }
+        setError(err instanceof Error ? err.message : "An unexpected error occurred");
       } finally {
         setLoading(false);
       }
@@ -42,6 +38,17 @@ const SellingReport: React.FC = () => {
 
     fetchSales();
   }, []);
+
+  // Memoizing chart data so it's not recalculated unless `monthlySales` changes
+  const chartData = useMemo(
+    () =>
+      monthlySales.map((month) => ({
+        name: month.month,
+        TotalSales: month.totalSales,
+        Income: month.income,
+      })),
+    [monthlySales]
+  );
 
   if (loading) {
     return (
@@ -59,30 +66,31 @@ const SellingReport: React.FC = () => {
     );
   }
 
-  const chartData = monthlySales.map((month) => ({
-    name: month.month,
-    TotalSales: month.totalSales,
-    Income: month.income,
-  }));
-
   return (
     <section className="bg-white shadow-md rounded-lg p-4 font-poppins">
       <header className="mb-4">
         <h2 className="text-lg font-bold">Year Selling Analytics</h2>
-        <p>Monthly sales report overview</p>
+        <p className="text-sm text-gray-600">Monthly sales report overview</p>
       </header>
+
       <div className="flex justify-center items-center">
-        <ResponsiveContainer width="99%" height={400}>
-          <BarChart data={chartData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            <Bar dataKey="TotalSales" fill="#013362" barSize={30} />
-            <Bar dataKey="Income" fill="#C9974C" barSize={30} />
-          </BarChart>
-        </ResponsiveContainer>
+        {chartData.length === 0 ? (
+          <div className="flex justify-center items-center h-48">
+            <Circles visible height={80} width={80} color="#C9974C" />
+          </div>
+        ) : (
+          <ResponsiveContainer width="99%" height={400}>
+            <BarChart data={chartData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="name" />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+              <Bar dataKey="TotalSales" fill="#013362" barSize={30} />
+              <Bar dataKey="Income" fill="#C9974C" barSize={30} />
+            </BarChart>
+          </ResponsiveContainer>
+        )}
       </div>
     </section>
   );

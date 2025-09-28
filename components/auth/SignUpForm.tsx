@@ -68,109 +68,122 @@ const SignUpForm = ({ onSuccess }: SignUpFormProps) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
-          Enter username
-        </label>
-        <input
-          type="text"
-          name="username"
-          placeholder="Enter username"
-          value={formData.username}
-          onChange={handleChange}
-          className="w-full px-4 py-2 border rounded-lg focus:ring focus:ring-blue-500"
-          required
-        />
-      </div>
+    <form onSubmit={handleSubmit} className="space-y-4" aria-labelledby="signup-form">
+      <section>
+        <h2 id="signup-form" className="sr-only">Sign Up Form</h2>
 
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
-          Enter your firstname
-        </label>
-        <input
-          type="text"
-          name="firstname"
-          placeholder="Enter your firstname"
-          value={formData.firstname}
-          onChange={handleChange}
-          className="w-full px-4 py-2 border rounded-lg focus:ring focus:ring-blue-500"
-          required
-        />
-      </div>
+        <div>
+          <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-1">
+            Enter username
+          </label>
+          <input
+            type="text"
+            id="username"
+            name="username"
+            placeholder="Enter username"
+            value={formData.username}
+            onChange={handleChange}
+            className="w-full px-4 py-2 border rounded-lg focus:ring focus:ring-blue-500"
+            required
+            aria-describedby="username-help"
+          />
+          <small id="username-help" className="text-xs text-gray-500">Username must be unique</small>
+        </div>
 
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
-          Enter your lastname
-        </label>
-        <input
-          type="text"
-          name="lastname"
-          placeholder="Enter your lastname"
-          value={formData.lastname}
-          onChange={handleChange}
-          className="w-full px-4 py-2 border rounded-lg focus:ring focus:ring-blue-500"
-          required
-        />
-      </div>
+        <div>
+          <label htmlFor="firstname" className="block text-sm font-medium text-gray-700 mb-1">
+            Enter your firstname
+          </label>
+          <input
+            type="text"
+            id="firstname"
+            name="firstname"
+            placeholder="Enter your firstname"
+            value={formData.firstname}
+            onChange={handleChange}
+            className="w-full px-4 py-2 border rounded-lg focus:ring focus:ring-blue-500"
+            required
+          />
+        </div>
 
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
-          Enter your email
-        </label>
-        <input
-          type="email"
-          name="email"
-          placeholder="Enter your email address"
-          value={formData.email}
-          onChange={handleChange}
-          className="w-full px-4 py-2 border rounded-lg focus:ring focus:ring-blue-500"
-          required
-        />
-      </div>
+        <div>
+          <label htmlFor="lastname" className="block text-sm font-medium text-gray-700 mb-1">
+            Enter your lastname
+          </label>
+          <input
+            type="text"
+            id="lastname"
+            name="lastname"
+            placeholder="Enter your lastname"
+            value={formData.lastname}
+            onChange={handleChange}
+            className="w-full px-4 py-2 border rounded-lg focus:ring focus:ring-blue-500"
+            required
+          />
+        </div>
 
-      <div className="mt-4">
-        <label className="block text-sm font-medium text-gray-700 mb-1">
-          Select Role
-        </label>
-        <select
-          name="role"
-          value={formData.role}
-          onChange={handleChange}
-          className="w-full px-4 py-2 border rounded-lg focus:ring focus:ring-blue-500"
-          required
+        <div>
+          <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+            Enter your email
+          </label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="Enter your email address"
+            value={formData.email}
+            onChange={handleChange}
+            className="w-full px-4 py-2 border rounded-lg focus:ring focus:ring-blue-500"
+            required
+          />
+        </div>
+
+        <div className="mt-4">
+          <label htmlFor="role" className="block text-sm font-medium text-gray-700 mb-1">
+            Select Role
+          </label>
+          <select
+            id="role"
+            name="role"
+            value={formData.role}
+            onChange={handleChange}
+            className="w-full px-4 py-2 border rounded-lg focus:ring focus:ring-blue-500"
+            required
+          >
+            <option value="">-- Select a role --</option>
+            <option value="buyer">Buyer</option>
+            <option value="seller">Seller</option>
+            <option value="admin">Admin</option>
+          </select>
+        </div>
+
+        <div>
+          <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+            Enter your password
+          </label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            placeholder="Enter your password"
+            value={formData.password}
+            onChange={handleChange}
+            className="w-full px-4 py-2 border rounded-lg focus:ring focus:ring-blue-500"
+            required
+          />
+        </div>
+
+        {error && <p role="alert" className="text-red-500 text-sm">{error}</p>}
+
+        <button
+          type="submit"
+          disabled={loading}
+          className="w-full bg-[#0A2F6B] text-white py-3 rounded-lg font-semibold hover:bg-[#082855] disabled:opacity-50"
+          aria-label={loading ? "Signing up, please wait..." : "Sign up for an account"}
         >
-          <option value="">-- Select a role --</option>
-          <option value="buyer">Buyer</option>
-          <option value="seller">Seller</option>
-          <option value="admin">Admin</option>
-        </select>
-      </div>
-
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
-          Enter your password
-        </label>
-        <input
-          type="password"
-          name="password"
-          placeholder="Enter your password"
-          value={formData.password}
-          onChange={handleChange}
-          className="w-full px-4 py-2 border rounded-lg focus:ring focus:ring-blue-500"
-          required
-        />
-      </div>
-
-      {error && <p className="text-red-500 text-sm">{error}</p>}
-
-      <button
-        type="submit"
-        disabled={loading}
-        className="w-full bg-[#0A2F6B] text-white py-3 rounded-lg font-semibold hover:bg-[#082855] disabled:opacity-50"
-      >
-        {loading ? "Signing Up..." : "Sign Up"}
-      </button>
+          {loading ? "Signing Up..." : "Sign Up"}
+        </button>
+      </section>
     </form>
   );
 };

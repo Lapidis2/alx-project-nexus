@@ -52,7 +52,7 @@ const SellersView: React.FC = () => {
   const sellersPerPage = 15;
 
   useEffect(() => {
-    // simulate loading
+   
     setTimeout(() => setLoading(false), 1000);
   }, []);
 

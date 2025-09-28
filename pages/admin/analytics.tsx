@@ -59,7 +59,7 @@ const Analytics = () => {
     fetchData();
   }, []);
 
-  //   const approvedSellers = sellers.filter((seller) => seller.status === "approved");
+
   const transactions = orders.filter((order) => order.status === "delivered");
 
   const cardData = [

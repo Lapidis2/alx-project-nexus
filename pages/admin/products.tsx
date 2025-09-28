@@ -5,7 +5,7 @@ import Image from "next/image";
 interface AdminProduct {
   _id?: string;
   name: string;
-  price: number | string; // allow string temporarily for input
+  price: number | string; 
   description?: string;
   quantity?: number | string;
   category?: string;
@@ -39,7 +39,7 @@ const ProductModal: React.FC<ProductModalProps> = ({
   onClose,
   onSave,
 }) => {
-  // Initialize formData with either the passed product or default values
+
   const [formData, setFormData] = useState<AdminProduct>({
     name: "",
     price: "",
@@ -53,7 +53,6 @@ const ProductModal: React.FC<ProductModalProps> = ({
 
   const [uploading, setUploading] = useState(false);
 
-  // Handle changes to input fields
   const handleChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
@@ -64,14 +63,14 @@ const ProductModal: React.FC<ProductModalProps> = ({
       ...prev,
       [name]:
         type === "number"
-          ? value === "" || isNaN(Number(value)) // Prevent invalid number
+          ? value === "" || isNaN(Number(value)) 
             ? ""
             : Number(value)
           : value,
     }));
   };
 
-  // Handle image upload
+
   const uploadToLocal = async (file: File) => {
     const formData = new FormData();
     formData.append("file", file);
@@ -129,8 +128,8 @@ const ProductModal: React.FC<ProductModalProps> = ({
       quantity: typeof formData.quantity === "string" ? Number(formData.quantity) : formData.quantity,
     };
 
-    onSave(formattedData); // Pass formatted data to onSave
-    onClose(); // Close the modal after saving
+    onSave(formattedData);
+    onClose(); 
   };
 
   return (
