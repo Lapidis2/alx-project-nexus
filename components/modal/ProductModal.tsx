@@ -39,6 +39,7 @@ const ProductModal: React.FC<ProductModalProps> = ({
   onClose,
   onSave,
 }) => {
+  // Initialize formData with either the passed product or default values
   const [formData, setFormData] = useState<AdminProduct>({
     name: "",
     price: "",
@@ -52,6 +53,7 @@ const ProductModal: React.FC<ProductModalProps> = ({
 
   const [uploading, setUploading] = useState(false);
 
+  // Handle changes to input fields
   const handleChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
@@ -62,13 +64,14 @@ const ProductModal: React.FC<ProductModalProps> = ({
       ...prev,
       [name]:
         type === "number"
-          ? value === ""
+          ? value === "" || isNaN(Number(value)) // Prevent invalid number
             ? ""
             : Number(value)
           : value,
     }));
   };
 
+  // Handle image upload
   const uploadToLocal = async (file: File) => {
     const formData = new FormData();
     formData.append("file", file);
@@ -86,6 +89,7 @@ const ProductModal: React.FC<ProductModalProps> = ({
     return data.url;
   };
 
+  // Handle multiple image uploads
   const handleImageUpload = async (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -108,6 +112,7 @@ const ProductModal: React.FC<ProductModalProps> = ({
     }
   };
 
+  // Handle removal of image
   const handleRemoveImage = (idx: number) => {
     setFormData((prev) => ({
       ...prev,
@@ -115,10 +120,19 @@ const ProductModal: React.FC<ProductModalProps> = ({
     }));
   };
 
+  // Handle form submission
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSave(formData);
-    onClose();
+
+    // Ensure price and quantity are converted to numbers if not empty
+    const formattedData: AdminProduct = {
+      ...formData,
+      price: typeof formData.price === "string" ? Number(formData.price) : formData.price,
+      quantity: typeof formData.quantity === "string" ? Number(formData.quantity) : formData.quantity,
+    };
+
+    onSave(formattedData); // Pass formatted data to onSave
+    onClose(); // Close the modal after saving
   };
 
   return (
@@ -140,11 +154,7 @@ const ProductModal: React.FC<ProductModalProps> = ({
           <input
             type="number"
             name="price"
-            value={
-              formData.price !== undefined && formData.price !== null
-                ? formData.price.toString()
-                : ""
-            }
+            value={formData.price !== undefined && formData.price !== null ? formData.price.toString() : ""}
             onChange={handleChange}
             placeholder="Price"
             required
@@ -153,11 +163,7 @@ const ProductModal: React.FC<ProductModalProps> = ({
           <input
             type="number"
             name="quantity"
-            value={
-              formData.quantity !== undefined && formData.quantity !== null
-                ? formData.quantity.toString()
-                : ""
-            }
+            value={formData.quantity !== undefined && formData.quantity !== null ? formData.quantity.toString() : ""}
             onChange={handleChange}
             placeholder="Quantity"
             className="w-full border rounded px-3 py-2"
@@ -169,7 +175,6 @@ const ProductModal: React.FC<ProductModalProps> = ({
             placeholder="Description"
             className="w-full border rounded px-3 py-2"
           />
-
           <select
             name="category"
             value={formData.category || ""}
@@ -183,7 +188,6 @@ const ProductModal: React.FC<ProductModalProps> = ({
               </option>
             ))}
           </select>
-
           <input
             type="date"
             name="expiration"
@@ -191,7 +195,6 @@ const ProductModal: React.FC<ProductModalProps> = ({
             onChange={handleChange}
             className="w-full border rounded px-3 py-2"
           />
-
           <div className="grid grid-cols-3 gap-2">
             {(formData.images || []).map((img, idx) => (
               <div
@@ -226,7 +229,6 @@ const ProductModal: React.FC<ProductModalProps> = ({
               />
             </label>
           </div>
-
           <div className="flex justify-end gap-3 pt-4">
             <button
               type="button"

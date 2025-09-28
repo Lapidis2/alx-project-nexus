@@ -1,80 +1,74 @@
-"use client";
+// "use client";
 
-import React, { useEffect, useState } from "react";
-import ProductCard from "@/components/productsPage/ProductCard";
-import Skeleton from "react-loading-skeleton";
-import "react-loading-skeleton/dist/skeleton.css";
+// import React, { useEffect, useState } from "react";
+// import ProductCard from "@/components/productsPage/ProductCard";
+// import Skeleton from "react-loading-skeleton";
+// import "react-loading-skeleton/dist/skeleton.css";
 
-interface Product {
-  id: string;
-  productId: string;
-  name: string;
-  price: number;
-  image: string;
-  category: string;
-}
+// interface Product {
+//   id: string;
+//   name: string;
+//   price: number;
+//   image: string;
+//   category: string;
+// }
 
-interface SimilarProductProps {
-  productId: string;
-}
+// interface SimilarProductProps {
+//   productId: string;
+// }
 
-interface ApiResponse {
-  products?: Product[];
-}
+// interface ApiResponse {
+//   products: Product[];  // Fixed type
+// }
 
-const SimilarProduct: React.FC<SimilarProductProps> = ({ productId }) => {
-  const [similarProducts, setSimilarProducts] = useState<Product[]>([]);
-  const [status, setStatus] = useState<"loading" | "success" | "failed">("loading");
-  const [error, setError] = useState<string | null>(null);
+// const SimilarProduct: React.FC<SimilarProductProps> = ({ productId }) => {
+//   const [similarProducts, setSimilarProducts] = useState<Product[]>([]);
+//   const [status, setStatus] = useState<"loading" | "success" | "failed">("loading");
+//   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const fetchSimilarProducts = async () => {
-      setStatus("loading");
-      setError(null);
+//   useEffect(() => {
+//     const fetchSimilarProducts = async () => {
+//       setStatus("loading");
+//       setError(null);
+// 	  console.log('Fetching similar products for:', productId);
+//       try {
+//         const res = await fetch(`/api/products/similar/${productId}`);
+//         if (!res.ok) throw new Error("Failed to fetch similar products");
 
-      try {
-        const res = await fetch(`/api/products/similar/${productId}`);
-        if (!res.ok) throw new Error("Failed to fetch similar products");
+//         const data: ApiResponse = await res.json();
+//         setSimilarProducts(data.products || []);  // Safely access products
+//         setStatus("success");
+//       } catch (error: unknown) {
+//         setStatus("failed");
+//         if (error instanceof Error) setError(error.message);
+//         else setError("Something went wrong");
+//       }
+//     };
 
-        const data: ApiResponse = await res.json();
-        setSimilarProducts(data.products || []);
-        setStatus("success");
-      } catch (error: unknown) {
-        setStatus("failed");
-        if (error instanceof Error) {
-          setError(error.message);
-        } else {
-          setError("Something went wrong");
-        }
-      }
-    };
+//     fetchSimilarProducts();
+//   }, [productId]);
 
-    fetchSimilarProducts();
-  }, [productId]);
+//   return (
+//     <section className="similar-products-container flex flex-col items-center py-8">
+//       <h2 className="font-extrabold text-center text-2xl mb-6">Related Products</h2>
 
-  return (
-    <section className="similar-products-container flex flex-col items-center py-8">
-      <h2 className="font-extrabold text-center text-2xl mb-6">Related Products</h2>
+//       {status === "loading" ? (
+//         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 w-4/5">
+//           {Array(5).fill(0).map((_, index) => (
+//             <Skeleton key={index} height={250} width="100%" />
+//           ))}
+//         </div>
+//       ) : status === "failed" ? (
+//         <p className="text-red-500">{error}</p>
+//       ) : (
+//         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 w-4/5">
+//           {similarProducts.map((product) => (
+//             <ProductCard key={product.id} product={product} />
+//           ))}
+//         </div>
+//       )}
+//     </section>
+//   );
+// };
 
-      {status === "loading" ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 w-4/5">
-          {Array(4)
-            .fill(0)
-            .map((_, index) => (
-              <Skeleton key={index} height={250} width="100%" />
-            ))}
-        </div>
-      ) : status === "failed" ? (
-        <p className="text-red-500">{error}</p>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 w-4/5">
-          {similarProducts.map((product) => (
-            <ProductCard key={product.productId} product={product} />
-          ))}
-        </div>
-      )}
-    </section>
-  );
-};
-
-export default SimilarProduct;
+// export default SimilarProduct;

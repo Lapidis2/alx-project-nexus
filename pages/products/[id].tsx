@@ -5,24 +5,27 @@ import { useRouter } from "next/router";
 import Header from "@/components/homePage/Header";
 import Footer from "@/components/homePage/Footer";
 import Sproduct from "@/components/singleProduct/sproduct";
-import Reviews from "@/components/singleProduct/reviews";
-import SimilarProduct from "@/components/singleProduct/SimilarProduct";
+// import Reviews from "@/components/singleProduct/reviews";
+// import SimilarProduct from "@/components/singleProduct/SimilarProduct";
 
 interface Product {
   id: string;
   name: string;
   price: number;
-  image: string[];
+  images: string[];
   description: string;
   quantity: number;
+  category: string;
   discount?: number;
   Vendor: { storeName: string };
 }
 
 const ProductPage: React.FC = () => {
-  const router = useRouter()
+  const router = useRouter();
   const { id } = router.query;
-  const productId = Array.isArray(id) ? id[0] : id;
+  
+ 
+  const productId = Array.isArray(id) ? id[0] : id as string | undefined;
 
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
@@ -37,14 +40,13 @@ const ProductPage: React.FC = () => {
         if (!res.ok) throw new Error("Product not found");
         const data = await res.json();
 
-    
-        if (data.image && typeof data.image === "string") {
-          data.image = JSON.parse(data.image);
+        if (data.images && typeof data.images === "string") {
+          data.images = JSON.parse(data.images);
         }
 
         setProduct(data);
       } catch (err) {
-        console.error(err);
+        
         setProduct(null);
       } finally {
         setLoading(false);
@@ -64,14 +66,15 @@ const ProductPage: React.FC = () => {
     <div>
       <Header />
       <main className="flex flex-col justify-center pt-24">
-      
         <Sproduct product={product} />
 
- 
-        <Reviews productId={productId!} />
+        {/* <Reviews productId={productId!} />
 
-     
-        <SimilarProduct productId={productId!} />
+        {product && product.category && product.id ? (
+          <SimilarProduct productId={product.id} />
+        ) : (
+          <p>Loading similar products...</p>
+        )} */}
       </main>
       <Footer />
     </div>

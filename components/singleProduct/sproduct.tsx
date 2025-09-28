@@ -12,7 +12,7 @@ interface Product {
   images: string[];  // fixed from image to images
   description: string;
   quantity: number;
-  discount?: number;
+  discount?: number;  // Make discount optional
   Vendor: { storeName: string };
 }
 
@@ -31,19 +31,18 @@ interface CartItem {
 }
 
 const Sproduct: React.FC<Props> = ({ product, isLoading = false, onCartUpdate }) => {
-  const [selectedImage, setSelectedImage] = useState(product.images?.[0] || "/placeholder.jpg");
-  const [quantity, setQuantity] = useState(1);
-  const [size, setSize] = useState<number | null>(null);
-  const [showFullDescription, setShowFullDescription] = useState(false);
-  const [wishlist, setWishlist] = useState<string[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [selectedImage, setSelectedImage] = useState<string>(product.images?.[0] || "/placeholder.jpg");
+  const [quantity, setQuantity] = useState<number>(1);  // explicitly typed as number
+  const [size, setSize] = useState<number | null>(null);  // explicitly typed as number | null
+  const [showFullDescription, setShowFullDescription] = useState<boolean>(false);  // explicitly typed as boolean
+  const [wishlist, setWishlist] = useState<string[]>([]);  // explicitly typed as string[]
+  const [loading, setLoading] = useState<boolean>(false);  // explicitly typed as boolean
 
   useEffect(() => {
     const storedWishlist = JSON.parse(localStorage.getItem("wishlist") || "[]");
     setWishlist(storedWishlist);
   }, []);
 
-  // If product.images changes, update selectedImage
   useEffect(() => {
     setSelectedImage(product.images?.[0] || "/placeholder.jpg");
   }, [product.images]);
@@ -163,8 +162,8 @@ const Sproduct: React.FC<Props> = ({ product, isLoading = false, onCartUpdate })
       <div className="flex flex-col gap-4 w-full md:w-1/2">
         <h1 className="text-3xl font-bold">{product.name}</h1>
         <p className="text-gray-700">
-  Store: <span className="font-semibold">{product.Vendor?.storeName || "Unknown Store"}</span>
-</p>
+          Store: <span className="font-semibold">{product.Vendor?.storeName || "Unknown Store"}</span>
+        </p>
         <div className="flex items-center gap-4">
           <p className="text-xl font-bold text-blue-700">{finalPrice} RWF</p>
           {product.discount && (
