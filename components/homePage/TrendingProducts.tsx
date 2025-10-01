@@ -6,74 +6,41 @@ import "react-loading-skeleton/dist/skeleton.css";
 import { useRouter } from "next/navigation";
 
 interface Product {
-  id: number;
+  id: string; 
   name: string;
   category: string;
   price: number;
-  image: string;
+  images: string[]; 
 }
 
-const popularProducts: Product[] = [
-  {
-    id: 1,
-    name: "Classic Watch",
-    category: "Accessories",
-    price: 25000,
-    image: "/assets/images/products/watch1.jpg",
-  },
-  {
-    id: 2,
-    name: "Running Shoes",
-    category: "Footwear",
-    price: 45000,
-    image: "/assets/images/products/shoes.jpg",
-  },
-  {
-    id: 3,
-    name: "Headphones",
-    category: "Electronics",
-    price: 35000,
-    image: "/assets/images/products/headphone.jpg",
-  },
-  {
-    id: 4,
-    name: "Running Shoes",
-    category: "Footwear",
-    price: 45000,
-    image: "/assets/images/products/shoes.jpg",
-  },
-  {
-    id: 5,
-    name: "Headphones",
-    category: "Electronics",
-    price: 35000,
-    image: "/assets/images/products/headphone.jpg",
-  },
-  {
-    id: 6,
-    name: "Headphones",
-    category: "Electronics",
-    price: 35000,
-    image: "/assets/images/products/headphone.jpg",
-  },
-];
-
 const PopularProducts: React.FC = () => {
-  const [currentProducts] = useState<Product[]>(popularProducts);
+  const [currentProducts, setCurrentProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
-  const [likedProducts, setLikedProducts] = useState<number[]>([]);
+  const [likedProducts, setLikedProducts] = useState<string[]>([]);
   const router = useRouter();
 
   useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 1000);
-    return () => clearTimeout(timer);
+    const fetchPopularProducts = async () => {
+      try {
+        const res = await fetch("/api/products/popular");
+        const data = await res.json();
+		console.log("message fetched data are",data)
+        setCurrentProducts(data);
+      } catch (error) {
+        console.error("Failed to fetch popular products", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPopularProducts();
   }, []);
 
-  const handleCardClick = (id: number) => {
+  const handleCardClick = (id: string) => {
     router.push(`/products/${id}`);
   };
 
-  const toggleLike = (id: number) => {
+  const toggleLike = (id: string) => {
     setLikedProducts((prev) =>
       prev.includes(id) ? prev.filter((pid) => pid !== id) : [...prev, id]
     );
@@ -93,7 +60,7 @@ const PopularProducts: React.FC = () => {
           const isLiked = likedProducts.includes(product.id);
           return (
             <div
-              key={`${product.id}-${product.name}`}
+              key={product.id}
               onClick={() => handleCardClick(product.id)}
               className="cursor-pointer rounded-lg shadow-md p-4 transform transition-all duration-300 hover:scale-105 hover:shadow-xl bg-white relative"
             >
@@ -101,13 +68,14 @@ const PopularProducts: React.FC = () => {
                 <Skeleton className="w-full aspect-[4/3] mb-4 rounded-lg" />
               ) : (
                 <div className="relative w-full aspect-[4/3] mb-4">
-                  <Image
-                    src={product.image}
-                    alt={product.name}
-                    fill
-                    className="object-contain"
-                    priority
-                  />
+                <Image
+  src={product.images && product.images.length > 0 ? product.images[0] : "/assets/images/products/placeholder.jpg"}
+  alt={product.name}
+  fill
+  className="object-contain"
+  priority
+/>
+
                 </div>
               )}
 
@@ -123,7 +91,7 @@ const PopularProducts: React.FC = () => {
                 </p>
                 <button
                   onClick={(e) => {
-                    e.stopPropagation(); // stop click from propagating to card
+                    e.stopPropagation();
                     toggleLike(product.id);
                   }}
                   className={`text-2xl ${
