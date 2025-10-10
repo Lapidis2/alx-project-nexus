@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import ProductModal from "@/components/modal/ProductModal"
 import { AdminProductDetails } from "@/interfaces/product";
-
+import { toast } from "react-toastify";
 const AdminProductsPage = () => {
   const [products, setProducts] = useState<AdminProductDetails[]>([]);
   const [loading, setLoading] = useState(true);
@@ -38,7 +38,7 @@ const AdminProductsPage = () => {
       if (res.ok) {
         setProducts((prev) => prev.filter((p) => p.id !== _id));
       } else {
-        alert("Failed to delete product.");
+        toast.error("Failed to delete product.");
       }
     } catch (err) {
       console.error("Error deleting product:", err);

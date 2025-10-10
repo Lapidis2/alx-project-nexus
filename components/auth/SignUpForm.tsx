@@ -173,7 +173,7 @@ const SignUpForm = ({ onSuccess }: SignUpFormProps) => {
           />
         </div>
 
-        {error && <p role="alert" className="text-red-500 text-sm">{error}</p>}
+        {error && <p role="toast" className="text-red-500 text-sm">{error}</p>}
 
         <button
           type="submit"

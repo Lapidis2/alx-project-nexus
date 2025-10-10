@@ -4,15 +4,15 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faMinus } from "@fortawesome/free-solid-svg-icons";
-
+import {toast} from "react-toastify"
 interface Product {
   id: string;
   name: string;
   price: number;
-  images: string[];  // fixed from image to images
+  images: string[];  
   description: string;
   quantity: number;
-  discount?: number;  // Make discount optional
+  discount?: number;  
   Vendor: { storeName: string };
 }
 
@@ -72,10 +72,11 @@ const Sproduct: React.FC<Props> = ({ product, isLoading = false, onCartUpdate })
 
   const handleAddToCart = async () => {
     try {
+
       setLoading(true);
       const token = localStorage.getItem("token");
       if (!token) {
-        alert("Please login first.");
+        toast.error("Please login first.");
         setLoading(false);
         return;
       }
@@ -104,7 +105,7 @@ const Sproduct: React.FC<Props> = ({ product, isLoading = false, onCartUpdate })
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || "Failed to add to cart");
 
-      alert(`${quantity} ${product.name} added to cart!`);
+      toast.success(`${quantity} ${product.name} added to cart!`);
 
       if (onCartUpdate) {
         const cartRes = await fetch("/api/cart", {
@@ -120,7 +121,7 @@ const Sproduct: React.FC<Props> = ({ product, isLoading = false, onCartUpdate })
       }
     } catch (err: unknown) {
       console.error(err);
-      alert("Error adding to cart");
+      toast.error("Error adding to cart");
     } finally {
       setLoading(false);
     }
@@ -139,7 +140,7 @@ const Sproduct: React.FC<Props> = ({ product, isLoading = false, onCartUpdate })
             alt={product.name}
             fill
             className="object-contain"
-            priority
+    
             sizes="(max-width: 768px) 100vw, 50vw"
           />
         </div>

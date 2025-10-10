@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import {toast} from 'react-toastify'
 const ContactSection: React.FC = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -10,7 +10,7 @@ const ContactSection: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name || !email || !message) {
-      alert("All fields are required.");
+      toast.error("All fields are required.");
       return;
     }
 

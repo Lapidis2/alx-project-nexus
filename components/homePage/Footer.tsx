@@ -17,7 +17,7 @@ const Footer: React.FC = () => {
               alt="JEAN Logo"
               width={150}
               height={48}
-              priority
+              
             />
           </div>
           <p className="font-outfit font-[300]">

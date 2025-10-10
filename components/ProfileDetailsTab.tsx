@@ -3,7 +3,7 @@ import Image from "next/image";
 import CustomButton from "./CustomButton";
 import CustomInput from "./CustomInput";
 import { UserDataType } from "@/components/pages/UserPage";
-
+import {toast} from 'react-toastify'
 type ProfileDetailsTabProps = {
   user: UserDataType;
   setUser: (user: UserDataType) => void;
@@ -48,7 +48,7 @@ if(selectedFile){
       };
       setUser(updatedUser);
 
-      alert("Profile updated successfully!");
+      toast.success("Profile updated successfully!");
     } catch (err: unknown) {
       if (err instanceof Error) {
 			 console.error(err.message);

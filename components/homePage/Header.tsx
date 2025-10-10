@@ -51,7 +51,7 @@ const Header: React.FC = () => {
     router.push("/");
   };
 
-  // ✅ Fetch logged-in user
+
   useEffect(() => {
     const loadUser = async () => {
       const tokenUser = getUserFromToken();
@@ -129,7 +129,7 @@ const Header: React.FC = () => {
 
       <div className="flex items-center gap-8">
         <Link href="/" aria-label="Homepage">
-          <Image src={Logo} alt="Logo" width={120} height={48} priority />
+          <Image src={Logo} alt="Logo" width={120} height={48}  />
         </Link>
         <nav className="hidden lg:block">
           <ul className="flex gap-8">

@@ -8,10 +8,11 @@ import '@/styles/globals.css';
 import dynamic from 'next/dynamic';
 import { Provider } from 'react-redux';
 import { store } from '@/store';
-
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { Circles } from 'react-loader-spinner';
 
-import { LoadingProvider, useLoading } from '@/context/LoadingContext'; // adjust path
+import { LoadingProvider, useLoading } from '@/context/LoadingContext'; 
 
 const AuthProviderWrapper = dynamic(
   () => import('@/components/AuthProviderWrapper'),
@@ -92,6 +93,7 @@ export default function MyApp(props: AppProps) {
       <LoadingProvider>
         <AuthProviderWrapper>
           <InnerApp {...props} />
+          <ToastContainer position="top-right" autoClose={3000} />
         </AuthProviderWrapper>
       </LoadingProvider>
     </Provider>

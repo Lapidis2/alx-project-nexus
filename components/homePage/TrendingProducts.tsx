@@ -73,7 +73,7 @@ const PopularProducts: React.FC = () => {
   alt={product.name}
   fill
   className="object-contain"
-  priority
+
 />
 
                 </div>

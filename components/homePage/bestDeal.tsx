@@ -74,7 +74,7 @@ const BestDeals: React.FC = () => {
           className="object-contain rounded-lg"
           sizes="(max-width: 768px) 100vw, 50vw"
           onLoad={() => setLoading(false)}
-          priority
+          
         />
       </figure>
     </section>

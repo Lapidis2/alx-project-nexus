@@ -64,7 +64,7 @@ const HeroSection: React.FC = () => {
       isLoading ? "opacity-0" : "opacity-100"
     } object-contain md:object-cover`}
     onLoadingComplete={handleImageLoad}
-    priority
+    
   />
 
   <div className="absolute inset-0 bg-primary/50 rounded-lg pointer-events-none"></div>
